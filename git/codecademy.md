@@ -28,6 +28,7 @@ note that `git commit` requires a message, which can be specified in quotes usin
   * `--graph`  --  display graph for branches  
 * `git commit --amend`  --  overwrite HEAD, which is useful for fixing minor mistakes  
   * `--no-edit` keeps original commit message  
+  * may need to use `git push -f` to force update on remote repo
 * `git config -- global alias.<shorthand> "<git command>"`  --  define shorthand for git command  
 * `git --version`  --  display current git version  
 
@@ -40,7 +41,7 @@ note that `git commit` requires a message, which can be specified in quotes usin
   2. `git branch -M main`
   3. `git push -u origin main`
 
-git username =/= GitHub username, necessarily  
+git username =/= GitHub username, necessarily!  
 * `git config --global user.name "<name>"`  --  sets username  
 * `git config --global user.name`  --  checks username  
 can similarly set git email address  
