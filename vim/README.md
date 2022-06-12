@@ -1,4 +1,4 @@
-##vim
+## vim
 
 thus far I have compiled notes from:
 * vimtutor
