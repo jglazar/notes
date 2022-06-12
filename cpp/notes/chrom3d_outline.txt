@@ -1,0 +1,77 @@
+****************************************************************************************************
+* Chrom3D software structure
+****************************************************************************************************
+
+
+//////////////////////////////////////////////////
+/ MCMC.cpp loop
+//////////////////////////////////////////////////
+
+while unsuccessful:
+    proposeMove
+    getPartialLossScore
+    accept Move
+    getPartialLossScore
+
+
+//////////////////////////////////////////////////
+/ getPartialLossScore loop
+//////////////////////////////////////////////////
+
+loop through chromosome vector using iterator chr_iter
+
+    loop through constraints[ chr_iter ] using iterator constraint_iter
+ 
+        if find( chr.begin + startPos, chr.begin + endPos+1, (constraint_iter->bead1)) != chr.begin + endPos+1) 
+           and
+           find( chr.begin + startPos, chr.begin + endPos+1, (constraint_iter->bead2)) != chr.begin + endPos+1)
+ 
+               add constraint_iter.eval to energy_sum
+
+
+chr_iter          boost::container::static_vector<Bead,MAXSIZE>::iterator  (line 241, Model.cpp)
+constraint_iter   vector<Constraint>::iterator                             (line 242, Model.cpp)
+constraints       std::map< std::string, std::vector<Constraint> >         (line 82,  Model.h)
+
+
+
+****************************************************************************************************
+* Ideas
+****************************************************************************************************
+
+
+//////////////////////////////////////////////////
+/ profiling
+//////////////////////////////////////////////////
+
+profile a large run after chr_only and chr_separate
+start with profiling small toy run    
+
+how many unsuccessful attempts are made in MCMC loop?
+are some move types or chrs especially bad?
+how long does each step in MCMC.cpp take?
+
+
+//////////////////////////////////////////////////
+/ data structures
+//////////////////////////////////////////////////
+
+consolidate Move data structure and Loss calculations?
+    less encapsulation
+
+~~~ this seems promising ~~~
+instead of looping through chr and then constraints, can we create a matrix?
+    1st dimension is beads, 2nd dimension is constraints
+    contact matrix? larger but has contiguous memory chunk AND you know exactly where to look
+        this seems most natural
+        surely there is a best way to store and search sparse matrices
+
+
+//////////////////////////////////////////////////
+/ libraries, FORTRAN
+//////////////////////////////////////////////////
+
+if I can recase this as an arrays + matrices problem, then I can use pre-built libraries
+OR
+re-write the whole thing in FORTRAN
+which seems more fun and significant
