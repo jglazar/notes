@@ -1,6 +1,6 @@
-#vimtutor
+# vimtutor
 
-##navigation
+## navigation
 
    k
    |
@@ -12,7 +12,7 @@ can prepend number to skip that many spaces/lines
 `Ctrl+G`  --  display file status and current line
 `Ctrl+w`  --  jump between windows
 
-###modes
+### modes
 Normal   --  `esc`     --  perform actions
 Command  --  `:`       --  save/quit/interact with cmd line
 Insert   --  `i`       --  insert text before cursor
@@ -23,7 +23,7 @@ Insert   --  `i`       --  insert text before cursor
 Replace  --  `Ctrl+r`  --  overwrite text
 Visual   --  `v`       --  select text  
 
-###actions
+### actions
 singletons:
 `x`  --  delete current character
 `r`  --  replace character
@@ -32,7 +32,7 @@ work with motion:
 `d`  --  delete (`dd` deletes current line)
 `c`  --  change selection (e.g., `ce` changes word)
 
-###motions
+### motions
 `w`  --  skip to beginning of next word 
 `e`  --  skip to end of current word 
 `0`  --  skip to end of line
@@ -42,7 +42,7 @@ work with motion:
 
 may prepend number, as in `5w`
 
-###commands
+### commands
 `help`  --  open help
 `q`   --  quit file
 `q!`  --  quit without saving
@@ -59,16 +59,16 @@ prepend `no` to unset
 `Ctrl+d`  --  show available commands
 `Tab`  --  tab autocomplete
 
-###copy and paste
+### copy and paste
 `y`  --  copy (yank) selection 
 `p`  --  paste after cursor
 
-###undo and redo
+### undo and redo
 `u`  --  undo previous action
 `U`  --  undo all changes on line
 `Ctrl+R`  --  revert undo (redo)
 
-###search
+### search
 `/`  --  search forward
 `?`  --  search backward
 `n`  --  skip to next match
@@ -77,7 +77,7 @@ prepend `no` to unset
 `Ctrl+i`  --  check newer matches
 `%`  --  find matching ()/[]/{}
 
-###substitutions
+### substitutions
 `:s/old/new`         --  substitute first match in line
 `:s/old/new/g`       --  substitute all matches in line
 `:#,#s/old/new/g`    --  substitute all matches between line numbers
