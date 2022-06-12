@@ -1,13 +1,15 @@
 # vimtutor  
   
 ## navigation  
-  
+
+` 
    k    
    |    
 h-- --l    
    |    
    j    
-  
+`
+
 can prepend number to skip that many spaces/lines  
 `Ctrl+G`  --  display file status and current line  
 `Ctrl+w`  --  jump between windows  
@@ -16,10 +18,10 @@ can prepend number to skip that many spaces/lines
 Normal   --  `esc`     --  perform actions  
 Command  --  `:`       --  save/quit/interact with cmd line  
 Insert   --  `i`       --  insert text before cursor  
-             `a`       --  insert text (append) after cursor  
-             `A`       --  insert text (append) to end of line  
-             `o`       --  create newline below and insert text  
-             `O`       --  create newline above and insert text  
+.............`a`       --  insert text (append) after cursor  
+.............`A`       --  insert text (append) to end of line  
+.............`o`       --  create newline below and insert text  
+.............`O`       --  create newline above and insert text  
 Replace  --  `Ctrl+r`  --  overwrite text  
 Visual   --  `v`       --  select text    
   
