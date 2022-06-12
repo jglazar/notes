@@ -2,13 +2,10 @@
   
 ## navigation  
 
-` 
-   k    
-   |    
-h-- --l    
-   |    
-   j    
-`
+`h`  --  left  
+`j`  --  down  
+`k`  --  up  
+`l`  --  right  
 
 can prepend number to skip that many spaces/lines  
 `Ctrl+G`  --  display file status and current line  
