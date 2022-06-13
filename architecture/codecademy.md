@@ -77,3 +77,70 @@ cache associativity = assigning data to specific cache blocks
 write policy determines which cache entry is overwritten when new data must be written out  
 * write-through  --  write to cache and main memory
 * write-back  --  only write to main memory if cache must be overwritten
+
+some policies may be quicker based on how data is input.  
+ideally, keep queries to the same data bunched together so data can just stay in cache.  
+
+## instruction parallelism
+
+the instruction cycle comprises:  
+1. fetch  --  copy instruction address from program counter (PC) to instruction register (IR)
+2. decode  --  instruction turned into control signals 
+3. execute 
+4. memory access (if needed)
+5. registry write-back (if needed)
+
+"pipelining" performs independent tasks simultaneously through same execution units  
+e.g., fetch instruction 2 while decoding instruction 1   
+
+pipelining hazards include:  
+* structural  --  hardware limitations in memory access, ALU speed, etc.  
+  * solution: better cache design
+* data  --  one instruction is dependent on another
+  * solution: can pass results between instructions
+  * solution: reorder instruction sequence
+  * solution: create bubble/stall until required data is available
+* control  --  if, loop, branch. processor doesn't know what to do until branch processed
+  * (bad) solution: long stall until branch is processed
+  * solution: branch prediction
+  * solution: inline method to avoid calls
+  * solution: unroll loops
+
+"superscalar" architecture spreads instructions across several execution units using dispatcher  
+allows for specialization (one ALU for integers, another for floats, e.g.)  
+
+superscalar hazards include:
+* structural  --  poor assignments, registry conflicts
+* data  --  could execute 2nd instruction before 1st
+* control  --  if, loop, branch. 
+  * solution: speculative execution (execute both branches and keep the right one)
+
+superscaling is limited by:
+* instruction set parallelism
+* cost of dependency checking
+* cost of branch checking
+
+## data-level parallelism
+
+single instruction, multiple data (SIMD)  
+....same function applied to each data element
+
+includes:  
+### vector processing
+process multiple related values simultaneously  
+* only one instruction fetch + decode needed  
+* overlapping memory accesses  
+* internal looping keeps track of which element to process next  
+* uses vector registers to store vectors  
+* each vector lane can independently handle a chunk of the vector  
+
+### SIMD extensions
+scalar processors with some components of vector processors  
+* has unique vector asssembly commands like `ADDPS` and `VADDPS` 
+
+### GPUs
+contain many simple functional units  
+slower clock speeds than CPUs  
+very inefficient at branching 
+use single instruction multiple thread:
+* small processing units ("threads") synchronously process data 
