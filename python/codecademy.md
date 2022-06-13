@@ -54,4 +54,15 @@ put `@decorator` above basic_function definition to have Python automatically ap
 
 if `basic_function` takes arguments, then you need to:  
 * define wrapper with `def wrapper(*args, **kwargs)`
-* pass *args and **kwargs to `basic_function` in wrapper definition 
+* call `basic_function(*args, **kwargs)` in wrapper definition
+
+`@property` decorator refers to built-in function with arguments:  
+* `fget`  --   getter
+* `fset`  --   setter
+* `fdel`  --   delete
+* `doc`  --  docstring  
+
+define property with `@property; def prop(self): return self.prop` (getter method)    
+
+then define `fset` and `fdel` with `@prop.setter` and `@prop.deleter`  
+
