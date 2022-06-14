@@ -76,6 +76,66 @@ process control block sections:
 child processes have most properties of parent processes  
 parent processes generally wait for children before terminating  
 
+### threads
+"thread" = actual sequence of processor instructions  
+* at least one thread per process  
+* share common resources like memory pages and active files  
+* fast communication and context switching b/t threads
+* e.g. user input thread, sound thread, video thread within game process
+
+"multithreading" = single CPU core executes multiple threads  
+* pro: tasks evenly split between threads 
+* con: complex and non-deterministic (depends on CPU timing)
+  * data race -- multiple threads write to same data
+  * deadlock -- multiple threads wait for each other
+
+"kernel thread" = thread built into existing process  
+* OS kernel is aware of and manages thread   
+
+"user thread" = thread only in user space  
+* OS does not manage, so more efficient  
+* needs to be mapped to kernel thread for execution
+  * 1:1 kernel-level threading for simple system
+  * N:1 user-level threading for ultra-light threads
+    * no hardware acceleration
+  * M:N hybrid threading
+
+### Python
+
+threads  
+* define threads with `import threading; thr = threading.Thread(target=fnct, args=(a1,a2,...,))`  
+  * need trailing "," at end of arglist if only one arg 
+* start thread with `thr.start()`  
+* Python waits until the last thread to finish before terminating program  
+  * but will claim to be done after last thread begins  
+* use `thr.join()` after all `thr.start()` to force Python to wait for all thread execution to finish  
+  * use separate for-loops for start and join
+* threads may not finish in the order they are started  
+
+async  
+* defines functions as "coroutines", which may be be paused/resumed to mimic multitasking
+  * use `async def fn`
+* run with `asyncio.run(fn)`
+* `await` command waits for condition to finish before continuing 
+* `await asyncio.gather(*tasks)` groups all tasks together and allows them to run concurrently
+  * `*tasks` unpacks tasks list
+  * output order will be deterministic
+
+multiprocessing  
+* same syntax as threads: `import multiprocessing; proc = multiprocessing.Process(target=fnct, args=(a1,a2,...,))`
+* start with `proc.start()`, then join with `proc.join()`
+* output order is non-deterministic, like threads
+
+can use `time.perf_counter()` to track code performance  
+
+personal test:  
+`for t in range(10000000): 46271902.01283094 / (t+1.2)`  
+perform 3 times  
+results:  
+* multiprocessing ~ 0.6 s
+* sequential ~ thread ~ 1.8 s
+* async ~ 2.7 s
+
 ## misc
 
 ### decorators
