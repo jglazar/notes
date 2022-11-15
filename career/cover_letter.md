@@ -1,185 +1,128 @@
-# Resume
+# Cover Letter
 
 ## Goals
 
-3-5 clear takeaway themes / messages 
-  * not just “I have education and experience”
+Address "why" questions
+  * why do you want the job
+  * why are your skills/experiences relevant
+  * why you are applying and changing fields
 
-Create clear image in recruiter's head of you in that role
+Illustrate passion and emotion
 
-Create strong narrative prioritizing relevant skills
+Share stories overlapping what you're excited about AND what's relevant to employer
 
-Analogy -- complementary ice cream scoops in flavors the recruiter likes
+Equal weight with resume, providing color/depth to experiences
 
-Should sound good when read out loud
+1 page covering
+  * information on what you're applying for
+  * your relevant skills and experiences
+  * stories that make YOU make sense
+  * a glimpse of how you approach work
+  * a sense of passion
+  * a reason for being interested in the role and company
+  * your connection to the company (via subject matter or people in network, e.g.)
+  * a sreason to learn more about your value in an interview
 
-## Curb appeal
+## Formatting
 
-Notice spacing between sections, consistency
+❌ Don't include your or their address
 
-Fill lines with text. Dates don't deserve their own column of whitespace.
+✅ Include only name, email, and phone at top and before sign-off
 
-Also, dates on left priortize when, not what. Keep dates on right.
+> If you need any additional information from me, please feel free to contact 
+me at `email` or `phone`. I look forward to hearing from you.
 
-Months can be abbreviated
+Salutation should be
+  * "Dear `hiring manager name`"
+  * "To the Hiring Manager"
+  * "Dear Hiring Manager"
 
-Single column takes control over flow, compared to double column
+## Paragraph 1
 
-## Contact Info
+"I am applying for x that was advertised on y."
 
-Name should be biggest font + at top
+Then a summary of relevant skills.
 
-LinkedIn URL should be customized to remove random characters
+❌ Don't rush straight into "I believe I'm a good fit"
 
-No need for "phone" and "email" qualifiers
+✅ Give enough info about yourself BEFORE "I believe my combination of experience 
+as x and y is a great fit for this role."
 
-Just city and state, not full address
+> With x experience doing y during my PhD at Penn, and with z, I am excited 
+to bring my passion for q to this role / I believe that my combination of x and y 
+is a great fit for this role
 
-## Bullet points
+## Paragraph 2
 
-`Summary` may contain buzzwords and non-specific language
+Put most relevant and recent experiences first -- doesn't need to be chronological
 
-> * Effective collaborator across disciplines, with ability to quickly integrate into new environments and understand needs of communities using ethnograph
-> * Skilled in managing extensive, highly variable health data sets using Python, R and mySQ
-> * Extensive knowledge and cutting-edge research experience in immuno-oncology, cell and gene therapy, biomarkers and rare disease
+Use exciting words like "new", "cutting-edge", "dynamic", "novel", "unique", "innovative"
+> * When I was doing x, one of the most exciting/challenging tasks was y.
+> * It was exciting/challenging to
+> * One of the most challenging aspects was
+> * It was satisfying/wonderful to see
+> * This meant a lot to me
+> * I really enjoy
+> * I am passionate about
+> * I found this to be really energizing
+> * ... and I am excited about this new role because
 
-`Education` bullets can be condensed like:
+❌ Avoid listing skills -- those belong in a cover letter
 
-**degree, major, school,** city, state ... date 
+✅ Convey a theme with general information about relevant aspects, with drama
 
-Not `Work Experience`, but `Relevant Experience` -- no need to include anything 
-you did that paid you. 
-PhD research should be top relevant experience.
-May also include group membership/leadership, volunteering, undergrad research.
+> During my PhD in materials science at Penn, I have **developed** two new research 
+protocols as part of the 3 research projects I am currently **leading**. 
+I have taken every opportunity to keep the tools I am developing to answer 
+questions on memory formation at the very **cutting-edge** of this field of study. 
+One of my most **challenging** projects has been the development of **new AI** systems 
+to analyze our data. We didn’t have any of these tools in our lab, so I had 
+to **develop a new relationship** with a faculty member and postdoc from the 
+Engineering School, and was able to implement their software to help us 
+analyze the data we are about to publish. I really enjoyed learning these new 
+skills, teaching them to the other researchers in the lab, and forming what 
+has already been a wonderfully **productive collaboration** with our partners.
 
-Most relevant skills to job at beginning of resume, and beginning of bullet points
-  * match exact wording to job description when possible
+## Paragraph 3
 
-Format = `skill` - `context` - `outcome` or `primary skill` - `application` - `award/effectiveness`
-  * de-emphasize context if not relevant to job
+❌ Don't repeat or reference specifics in resume
 
-* Adding quantity makes claims more believable and tangible
-* Adding context and quality gives better insight
-* Using action verbs shows transferrable skills
+✅ Use STARER stories (see Interview markdown file)
 
-E.g. TA has skills: subject knowledge, communications, time management, adaptability, 
-giving feedback, mentoring, teaching, problem solving, relationship building, quickly learning, 
-empathy, enthusiasm
+Focus on how you approach problems -- collaboration, intense research, etc.
 
-> * **Liaised** with professor to **communicate** key challenges students faced in course, and made actionable 
- recommendations on approaches that would help based on information **gathered** from office hours
+Try to match wording in job description when translating resume -> cover letter
+> * Mentored 3 graduate students -> I sought out opportunities to mentor graduate 
+students because I have always been energized by the mentoring that I have received 
+throughout my academic life.
+> * Gained knowledge of 1st-gen student needs by holding 2 focus groups, and used 
+data collected to develop 2 workshops -> When I was on the 1st-gen committee, 
+I used the data we collected to successfully advocate to the Dean of the School 
+for more resources to support our programming. It is really satisfying to 
+see that these resources are still provided 3 years after my involvement
+> * Collaborated with 4-member team from 3 different schools to perform market 
+analysis for a small ed-tech startup as part of consulting club -> As a 
+member of a student team working with an ed-tech startup, I quickly brought 
+the team together for a skill-sharing icebreaker. This helped us identify the 
+skills and knowledge areas we each brought. My idea to spend the first few 
+meetings engaged in blue-sky thinking contributed to the innovative ideas our 
+team presented to the CEO, which have now been implemented. I really enjoyed the 
+learning journey we took as a team to achieve this great outcome.
 
-Combine lab rotations or TA classes into one entry with many bullet points
+## Paragraph 4
 
-Same stories can be re-framed to match company's values and requirements
+Answer "Why this employer?" and "What do you gain?"
 
-Understand your audience, what they care about, the job descriptoin, the nature of the role
-  * study similar job descriptions at similar companies -- highlight key skills
-  * read company website
-  * follow industry trends
-  * get familiar with lingo
-  * listen to people in job network
+✅ Put your gains at the end because you need to build connection with reader first
 
-## ResumeWorded
+> Having spoken with several Penn alumni who work in this department, including x, 
+it is great to know about how helpful your new hire mentoring program is for 
+new staff. I have always benefited from strong mentors at Penn, so I would find 
+this support to be invaluable.
 
-Only use Targeted Resume feature
+Highlight knowledge of projects, company culture, and resources
 
-Pro features not needed
+Mention alumni contacts, recruiters, career fairs/sessions
 
-Can directly edit resume in "Your Resume" tab to calculate new scores
-
-Be sure to use specific technical keywords in job description
- * can add to relevant coursework in `Education` section
-
-## CV vs Resume
-
-### CV
-
-A CV is a complete list
-
-Focuses on research, collaborators, results (publications), teaching
-
-contact, education, dissertation topic, fellowships, awards, research experience,
-publications, teaching experience, abstracts and presentations, lectures,
-professional affiliations, research grants / funding, certifications
-
-Dissertation committee is great if audience knows who they are.
-Otherwise, it dilutes your impact.
-
-Papers often use "This paper does x" -- replace with "I x"
-
-Academic CVs are reviewed over months-long application processes
-
-1 CV can create many resumes
-
-### Resume
-
-Requires: contact, education with relevant coursework, relevant experience, skills
-
-Optional: summary, leadership experience, community engagement, honors/awards, publications
-
-If using publications, consolidate to most relevant + best with (selected/total) on side
-> * Presented x articles in refereed journals. Presented research to experts on y 
-from around the world at z conferences
-> * Effectively communicated research results across subject fields with publication 
-in interdisciplinary conference proceedings suitable for broad audience
-
-Industrial resumes are glanced at for 30 seconds or less
-
-### Translation
-
-TA may have 
-* planned and organized lessons, provided resources, developed multimedia, 
-held office hours, graded papers, answered questions, and met 1-on-1
-
-Convert to transferable skills
-* planned, organized, publicly spoke, translated complex concepts, 
-used interpersonal skills, managed groups, practiced diplomacy, supervised, thought on my feet
-
-Similarly, PhDs have skills
-* interpreted data, analyzed literature, used abstract reasoning, solved problems, 
-researched, communicated, synthesized ideas, self-managed, independently executed, 
-questioned, expressed complex information simply
-
-Tasks should only be used as **context**, and skills should be highlighted within that context
-* Tasks make it easy to imagine your skills being used in a situation
-
-> * Collaborated with 3 chemical engineers and physical chemists from 2 international labs to coordinate 
-detailed project update meetings, ensuring strict adherence to research protocols
-> * Identified inconsistent humidity levels with lab as confounding factor in multiple research projects, 
-and successfully advocated for direct environmental control that enabled 3 new research projects to be completed
-> * Independently managed 2 concurrent research projects, and collaborated with a team of 4 researchers in a 
-side project, over the past 12 months — resulting in 1 first-author and 1 coauthored paper, and 2 submitted conference presentations
-
-Address typically missing skills in PhD students by digging into non-work activities
-* multi-tasking, understanding the real world, money, communicating with non-academics,
-responding to heirarchy, leadership, teamwork
-* _I could use experience planning/leading group retreat -- coordination, RSVP_
-* _I could use experience budgeting, ordering, and setting up $60k of computer equipment_
-
-Use action verbs to create stories related to responsibilities like
-* communicator, leader, manager, collaborator, developer, initiator, finisher, 
-problem solver, teacher, mentor, advisor, creator, explorer
-
-Avoid deeply specialized terms about research
-* extract skills from research and present using STAR method
-
-Think of value you bring -- expertise, skills, standing out
-
-## Additional resources
-
-Career Services Informational Interview guide
-
-Listen to how others describe their skills:
-* How did you know the position was right for you?
-* What are valuable skills and how did you use them?
-* What do you still want to learn?
-* What are key challenges in this job?
-* What’s your favorite project so far
-
-Penn Career Services for 3rd-person perspective
-* same-day advising for 15 minute session -- bring job description!
-
-Consult others to hear:
-* how they positively describe you
-* why they seek you for help
+Highlight desire to grow professionally, excitement to bring value, and eagerness to 
+be part of their community
