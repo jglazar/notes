@@ -1,146 +1,185 @@
 # Resume
 
-## basics
+## Goals
 
-primary memory = RAM, volatile (lost if power out)  
-secondary memory = disk, non-volatile (kept if power out)    
-bus = high-speed wire  
-* data  --  send data bidirectionally
-* address  --  carry addresses, unidirectional
-* control  --  carry control+clock signals, unidirectional
+3-5 clear takeaway themes / messages 
+  * not just “I have education and experience”
 
-8 bits = byte  
-2 bytes = word  
+Create clear image in recruiter's head of you in that role
 
-## instruction set architecture (ISA)
+Create strong narrative prioritizing relevant skills
 
-defines:  
-* list of functions the CPU can understand  
-* how to translate a message between the hardware and software  
+Analogy -- complementary ice cream scoops in flavors the recruiter likes
 
-3 popular styles:
-* Complex Instruction Set Computer (CISC) -- old -- x86 -- machine code length varies
-  * tries to reduce total number of instructions
-* Reduced Instruction Set Computer (RISC) -- new -- ARM -- machine code same length
-  * many pipelined single-cycle instructions
-* Microprocessor without Interlocked Pipeline Stages (MIPS) -- new RISC -- embedded processors
-  * 3 instruction types:
-    * register -- arithmetic and logic
-    * immediate -- data transfer and operations on constants
-    * jump -- used in loops
-  * 32 registers total
-  * format is `opcode` `source_register1` `source_register2` `destination_register` `bit_shift` `extra_functions`
+Should sound good when read out loud
 
-heirarchy:  programs --> high-level language --> compiler --> assembly --> ISA --> hardware  
+## Curb appeal
 
-first few bits are operation code (OPCODE)  
-remaining bits are operands  
+Notice spacing between sections, consistency
 
-## central processing unit (CPU)
+Fill lines with text. Dates don't deserve their own column of whitespace.
 
-comprises:  
-* control unit (CU)  --  handles input/output, contains clock
-* arithmetic and logic unit (ALU)  --  performs work
-* registers (immediate access store)  --  high speed memory, 8/16/32/64 total
+Also, dates on left priortize when, not what. Keep dates on right.
 
-## assembly
+Months can be abbreviated
 
-1. preprocessing -- remove comments, expand macros, perform code maintenance
-2. compiling -- translate code into assembly
-3. assembling -- translate assembly into machine code
-4. linking -- fill in functions, objects, and libraries
+Single column takes control over flow, compared to double column
 
-MIPS assembly language uses format `opcode operand_1 operand_2 ...`  
-direct register addresses begin with `$`  
-adding takes 3 operands: source_1, source_2, target. optionally a constant   
-can load and store words (32 bits)  
-can branch on equality or < / > zero  
-can jump to register and execute its code  
-($#) tells language that the value is an address + to use value in THAT address (not this one)  
+## Contact Info
 
-## cache
+Name should be biggest font + at top
 
-processor speeds outperform memory  
-each entry in cache contains tag (address in main memory) and value  
-cache hit = data found in cache, so no need to query main memory  
+LinkedIn URL should be customized to remove random characters
 
-replacement policy determines which cache entry is overwritten when new data wants to enter cache  
-* first-in-first-out
-* least-recently used (hard to implement)
-* random replacement (may cause more misses)
+No need for "phone" and "email" qualifiers
 
-cache associativity = assigning data to specific cache blocks   
-* fully associative  --  data can go anywhere
-* directly mapped  --  one cache entry for each location in main memory
-* n-way set associative  --  cache partitioned into sets of n blocks
+Just city and state, not full address
 
-write policy determines which cache entry is overwritten when new data must be written out  
-* write-through  --  write to cache and main memory
-* write-back  --  only write to main memory if cache must be overwritten
+## Bullet points
 
-some policies may be quicker based on how data is input.  
-ideally, keep queries to the same data bunched together so data can just stay in cache.  
+`Summary` may contain buzzwords and non-specific language
 
-## instruction parallelism
+> * Effective collaborator across disciplines, with ability to quickly integrate into new environments and understand needs of communities using ethnograph
+> * Skilled in managing extensive, highly variable health data sets using Python, R and mySQ
+> * Extensive knowledge and cutting-edge research experience in immuno-oncology, cell and gene therapy, biomarkers and rare disease
 
-the instruction cycle comprises:  
-1. fetch  --  copy instruction address from program counter (PC) to instruction register (IR)
-2. decode  --  instruction turned into control signals 
-3. execute 
-4. memory access (if needed)
-5. registry write-back (if needed)
+`Education` bullets can be condensed like:
 
-"pipelining" performs independent tasks simultaneously through same execution units  
-e.g., fetch instruction 2 while decoding instruction 1   
+**degree, major, school,** city, state ... date 
 
-pipelining hazards include:  
-* structural  --  hardware limitations in memory access, ALU speed, etc.  
-  * solution: better cache design
-* data  --  one instruction is dependent on another
-  * solution: can pass results between instructions
-  * solution: reorder instruction sequence
-  * solution: create bubble/stall until required data is available
-* control  --  if, loop, branch. processor doesn't know what to do until branch processed
-  * (bad) solution: long stall until branch is processed
-  * solution: branch prediction
-  * solution: inline method to avoid calls
-  * solution: unroll loops
+Not `Work Experience`, but `Relevant Experience` -- no need to include anything 
+you did that paid you. 
+PhD research should be top relevant experience.
+May also include group membership/leadership, volunteering, undergrad research.
 
-"superscalar" architecture spreads instructions across several execution units using dispatcher  
-allows for specialization (one ALU for integers, another for floats, e.g.)  
+Most relevant skills to job at beginning of resume, and beginning of bullet points
+  * match exact wording to job description when possible
 
-superscalar hazards include:
-* structural  --  poor assignments, registry conflicts
-* data  --  could execute 2nd instruction before 1st
-* control  --  if, loop, branch. 
-  * solution: speculative execution (execute both branches and keep the right one)
+Format = `skill` - `context` - `outcome` or `primary skill` - `application` - `award/effectiveness`
+  * de-emphasize context if not relevant to job
 
-superscaling is limited by:
-* instruction set parallelism
-* cost of dependency checking
-* cost of branch checking
+* Adding quantity makes claims more believable and tangible
+* Adding context and quality gives better insight
+* Using action verbs shows transferrable skills
 
-## data-level parallelism
+E.g. TA has skills: subject knowledge, communications, time management, adaptability, 
+giving feedback, mentoring, teaching, problem solving, relationship building, quickly learning, 
+empathy, enthusiasm
 
-single instruction, multiple data (SIMD)  
-....same function applied to each data element
+> * **Liaised** with professor to **communicate** key challenges students faced in course, and made actionable 
+ recommendations on approaches that would help based on information **gathered** from office hours
 
-includes:  
-### vector processing
-process multiple related values simultaneously  
-* only one instruction fetch + decode needed  
-* overlapping memory accesses  
-* internal looping keeps track of which element to process next  
-* uses vector registers to store vectors  
-* each vector lane can independently handle a chunk of the vector  
+Combine lab rotations or TA classes into one entry with many bullet points
 
-### SIMD extensions
-scalar processors with some components of vector processors  
-* has unique vector asssembly commands like `ADDPS` and `VADDPS` 
+Same stories can be re-framed to match company's values and requirements
 
-### GPUs
-contain many simple functional units  
-slower clock speeds than CPUs  
-very inefficient at branching 
-use single instruction multiple thread:
-* small processing units ("threads") synchronously process data 
+Understand your audience, what they care about, the job descriptoin, the nature of the role
+  * study similar job descriptions at similar companies -- highlight key skills
+  * read company website
+  * follow industry trends
+  * get familiar with lingo
+  * listen to people in job network
+
+## ResumeWorded
+
+Only use Targeted Resume feature
+
+Pro features not needed
+
+Can directly edit resume in "Your Resume" tab to calculate new scores
+
+Be sure to use specific technical keywords in job description
+ * can add to relevant coursework in `Education` section
+
+## CV vs Resume
+
+### CV
+
+A CV is a complete list
+
+Focuses on research, collaborators, results (publications), teaching
+
+contact, education, dissertation topic, fellowships, awards, research experience,
+publications, teaching experience, abstracts and presentations, lectures,
+professional affiliations, research grants / funding, certifications
+
+Dissertation committee is great if audience knows who they are.
+Otherwise, it dilutes your impact.
+
+Papers often use "This paper does x" -- replace with "I x"
+
+Academic CVs are reviewed over months-long application processes
+
+1 CV can create many resumes
+
+### Resume
+
+Requires: contact, education with relevant coursework, relevant experience, skills
+
+Optional: summary, leadership experience, community engagement, honors/awards, publications
+
+If using publications, consolidate to most relevant + best with (selected/total) on side
+> * Presented x articles in refereed journals. Presented research to experts on y 
+from around the world at z conferences
+> * Effectively communicated research results across subject fields with publication 
+in interdisciplinary conference proceedings suitable for broad audience
+
+Industrial resumes are glanced at for 30 seconds or less
+
+### Translation
+
+TA may have 
+* planned and organized lessons, provided resources, developed multimedia, 
+held office hours, graded papers, answered questions, and met 1-on-1
+
+Convert to transferable skills
+* planned, organized, publicly spoke, translated complex concepts, 
+used interpersonal skills, managed groups, practiced diplomacy, supervised, thought on my feet
+
+Similarly, PhDs have skills
+* interpreted data, analyzed literature, used abstract reasoning, solved problems, 
+researched, communicated, synthesized ideas, self-managed, independently executed, 
+questioned, expressed complex information simply
+
+Tasks should only be used as **context**, and skills should be highlighted within that context
+* Tasks make it easy to imagine your skills being used in a situation
+
+> * Collaborated with 3 chemical engineers and physical chemists from 2 international labs to coordinate 
+detailed project update meetings, ensuring strict adherence to research protocols
+> * Identified inconsistent humidity levels with lab as confounding factor in multiple research projects, 
+and successfully advocated for direct environmental control that enabled 3 new research projects to be completed
+> * Independently managed 2 concurrent research projects, and collaborated with a team of 4 researchers in a 
+side project, over the past 12 months — resulting in 1 first-author and 1 coauthored paper, and 2 submitted conference presentations
+
+Address typically missing skills in PhD students by digging into non-work activities
+* multi-tasking, understanding the real world, money, communicating with non-academics,
+responding to heirarchy, leadership, teamwork
+* _I could use experience planning/leading group retreat -- coordination, RSVP_
+* _I could use experience budgeting, ordering, and setting up $60k of computer equipment_
+
+Use action verbs to create stories related to responsibilities like
+* communicator, leader, manager, collaborator, developer, initiator, finisher, 
+problem solver, teacher, mentor, advisor, creator, explorer
+
+Avoid deeply specialized terms about research
+* extract skills from research and present using STAR method
+
+Think of value you bring -- expertise, skills, standing out
+
+## Additional resources
+
+Career Services Informational Interview guide
+
+Listen to how others describe their skills:
+* How did you know the position was right for you?
+* What are valuable skills and how did you use them?
+* What do you still want to learn?
+* What are key challenges in this job?
+* What’s your favorite project so far
+
+Penn Career Services for 3rd-person perspective
+* same-day advising for 15 minute session -- bring job description!
+
+Consult others to hear:
+* how they positively describe you
+* why they seek you for help
