@@ -322,7 +322,7 @@ Use Penn Career Services to schedule a Mock Interview
 
 Canvas Interviewing course
 
-LinkedIn course
+LinkedIn Learning course
 
 O-Net has resources like growth rates on different fields, industries, and technologies
 
