@@ -9,7 +9,13 @@ Address "why" questions
 
 Illustrate passion and emotion
 
-Share stories overlapping what you're excited about AND what's relevant to employer
+Pitch yourself to the recruiter
+
+Share stories overlapping what you're excited about AND what's relevant to employer. 
+Stories are small slices of PhD and other experiences
+
+Build tension in story with structure: `quest` - `surprise` - `critical action` 
+- `climax` - `outcome`
 
 Equal weight with resume, providing color/depth to experiences
 
