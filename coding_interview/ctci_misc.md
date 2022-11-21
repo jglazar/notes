@@ -2,6 +2,19 @@
 
 ## Bit Manipulation
 
+### xor, and, or 
+
+XOR is commutative, associative, and self-cancelling so 
+`A xor B xor A = A xor A xor B = (A xor A) xor B = 0 xor B = B`
+  * ✅ Useful for reducing an array to find non-paired item
+
+| 0             | 1                 | A             |
+|---------------|-------------------|---------------|
+| `A and 0 = 0` | `A and 1 = A`     | `A and A = A` |
+| `A or 0 = A`  | `A or 1 = 1`      | `A or A = A`  |
+| `A xor 0 = A` | `A xor 1 = not A` | `A xor A = 0` |
+
+### arithmetic
 ➕ Add binary just like base-10. Line up places and add with carry.
 
 ➖ Subtract binary just like base-10. Line up places and subtract with 
