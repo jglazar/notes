@@ -40,6 +40,23 @@ copy sentence N times and x + x + ... + Nx = N * (N+1) / 2
 StringBuilder creates resizable array with all strings, copying 
 only when necessary -- O(x * N)
 
+### Tips
+
+Use modular arithmetic to cyclically change array in-place, with 
+temp variables if needed
+  * Little hack -- keep track of number visited, and compare to len(arr)
+
+Two pointer trick -- define what you want `slow` pointer to track and 
+`fast` pointer to track. Be careful about update conditions and overflow.
+  * e.g. `slow` tracks lead zero, `fast` tracks next non-zero
+  * e.g. `slow` tracks latest unique, `fast` finds next that differs 
+  from `slow`
+  * e.g. `slow` tracks lowest price, `fast` tracks each new price after
+
+Sliding window trick -- drop first element, add next element to sublist
+  * ✅ Useful for optimality, like longest sequence or shortest sequence 
+  of something that satisfies a given condition.
+
 ### Problems
 
 1. determine if string has all unique characters. what if no other 
