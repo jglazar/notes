@@ -56,6 +56,11 @@ Two pointer trick -- define what you want `slow` pointer to track and
 Sliding window trick -- drop first element, add next element to sublist
   * ✅ Useful for optimality, like longest sequence or shortest sequence 
   of something that satisfies a given condition.
+  * Can have fixed length (max sum of size k) or dynamic length 
+  (smallest sum greater than x). Subtract off arr[i-(k-1)] as you go
+  * Auxiliary datastructures like hashmaps useful for longest substring 
+  with no more than k distinct characters, e.g.
+  * Better than brute force b/c reduces duplicate brute force work O(kn)
 
 ### Problems
 
