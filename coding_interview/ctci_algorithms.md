@@ -50,6 +50,17 @@ Most important search is binary
 
 Also consider leveraging binary trees and hash tables
 
+❗️General format:
+1. Develop notation for states. Must be unique and hashable. Strings are good.
+2. Establish hmap (Python `set`) with visited states -- can skip or use 
+dict as memo to speed up search
+3. Implement queue (BFS) or stack (DFS) for next state to search
+4. pop, evaluate, add to visited, propose more moves, add to stack/queue
+
+Takes O(branches^depth) time --> O(s) time with visited memo.
+Takes O(s) space for stack/queue. s = state space, which will have 
+problem-specific dependence on input length
+
 ### Sort
 
 Bubble -- try swap 1+2, then 2+3,... then repeatedly start over
@@ -100,7 +111,9 @@ less than 1Gb memory
   * "list the first n"
 
 ❌ Can be very space inefficient -- at least O(depth)
-  * Consider implementing it iteratively instead, discussing tradeoffs
+  * Consider implementing it iteratively (using a stack) instead, 
+  discussing tradeoffs
+  * Recursive depth limit in Python is 1000
 
 Bottom-up: build solution up from simple case
 
@@ -112,6 +125,12 @@ Dynamic programming takes advantage of overlapping subproblems
 (repeated calls) with a cache
   * Observe recursion call tree for repeated nodes
   * Call `function( input, memo )` instead of `function( input )`
+  * Can sometimes just use last k members of memo, in which case you 
+  can just dynamically change k individual variables (constant space)
+
+✅ Use `@lru_cache` decorator before recursive function to create 
+automatic memoization. Requires that function arguments are hashable, 
+so that Python can create a dict behind-the-scenes
 
 ### Problems
 
