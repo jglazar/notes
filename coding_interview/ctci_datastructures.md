@@ -97,8 +97,18 @@ Deleting node just reconfigures prior to point to next
   * e.g. move fast ptr 2x per move for slow ptr, so that 
   fast gets to middle of list
   * can weave elements from 2nd half into 1st half
+  * can have defined offset b/t fast and slow to get (n-k)th element
+  * 3 pointers (prev, curr, next) useful for reversing list
 
 Recursion plays well with linked list problems
+
+✅ Imitate stack with recursion on a helper function editing `nonlocal` 
+variables
+  * if node.next != None: node=node.next
+  * This starts peeling back at end, so now you can edit going backwards 
+  and keep track of slow pointer with nonlocal edits to `slow` and `result`
+
+❗️ Watch out for accidentally overwriting `next` before `val`!
 
 ### Problems
 
