@@ -14,7 +14,7 @@ XOR is commutative, associative, and self-cancelling so
 | `A or 0 = A`  | `A or 1 = 1`      | `A or A = A`  |
 | `A xor 0 = A` | `A xor 1 = not A` | `A xor A = 0` |
 
-### arithmetic
+### Arithmetic
 ➕ Add binary just like base-10. Line up places and add with carry.
 
 ➖ Subtract binary just like base-10. Line up places and subtract with 
@@ -75,7 +75,11 @@ Clear x'th bit and right
 Update x'th bit to value = 0 or 1
 1. shift 1 << x and negate to get 111...101...111
 2. AND with source number
-2. then OR that with value << x
+3. then OR that with value << x
+
+n is xxx1000, n-1 is xxx0111, so n AND n-1 is xxx0000. In other words, 
+it zeros out the least significant 1. Useful for counting number of 1s 
+in a number.
 
 ## Math and Logic
 
