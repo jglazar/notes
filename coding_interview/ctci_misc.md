@@ -217,3 +217,19 @@ thread at a time
 	* no preemption -- processes can't hijack resources
 	* circular wait -- processes wait in circular chain. Easiest to 
 	fix
+
+## OCaml -- Jane Street talk
+
+Imperative and Dynamically typed -- slow but short syntax (Python)
+
+Imperative and Statically typed -- fast but long syntax, w compiler (C++) 
+
+Functional and Dynamically typed -- pure functions w/o mutation (Lisp)
+
+Functional and Statically typed -- short syntax, stronger type system (OCaml)
+
+Mutable state can yield unnecessary interdependence. But mutation is the 
+goal of programming (write to file, send to network, ...)
+
+Compiler forces checking every possible case due to strong type system
+  * Catches bugs
