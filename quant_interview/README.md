@@ -6,3 +6,4 @@ thus far I have compiled notes from:
 * Vault Guide to Quant Finance Interviews
 * Swing Trading for Dummies
 * Penny Stocks for Dummies
+* Numerical Methods in Python
