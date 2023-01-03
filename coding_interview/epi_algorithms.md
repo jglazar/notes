@@ -43,4 +43,18 @@ made along the way
 Can fill cache bottom-up to conserve storage
   * e.g. only keep queue of length 2 for Fibonacci cache
 
+Use memoryless principle to build up solution
+
 ### Examples
+
+1. Unbounded knapsack
+  * Create array with best value for that weight. Compare 
+  max(v1 + m[w-w1], v2 + m[w-w2], ...) to get best value up to point
+  * Coin change. Compare min( m[n-ca], m[n-cb], ... ) then add 1
+2. 0/1 knapsack
+  * Create matrix with best value up to that weight (j), given possible 
+  subsequence of items (i). Compare diagonally with max( m[i-1, j-wj] + 
+  vi, m[i-1,j] ) to decide to accept/reject new item
+  * Longest increasing subsequence. Create array with longest subsequence 
+  ending in that element. Requires iterating over previous elements of 
+  array repeatedly -- O(n^2). m[i] = max( [m[i]+1 if n[i] < num] )

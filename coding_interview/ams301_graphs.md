@@ -39,6 +39,8 @@ edge cover acts as an intermediate
 Planar = no crossing edges
 
 All planar graphs can be 4-colored. k-complete subgraphs require k colors.
+  * 5-color proof takes away deg-5 vertex, then posits that re-inserting 
+  it can use a color not used for the neighboring deg-<5 vertices
 
 Must contain a vertex with degree <= 5 bc if all were 6+, then 
 e = 3v > 3v - 6
