@@ -189,20 +189,43 @@ n existing regions into 2n, an increase of n
 
 Towers of Hanoi -- an = a(n-1) + 1 + a(n-1), solution is 2^n - 1
 
-No 012 in ternary sequence -- start with full n sequence and chop off 
-from front: 1xxxx and 2xxxx are fine, but 0xxxx has issues with 012xx. 
-So an = a(n-1) + a(n-1) + (a(n-1) - a(n-3)) = 3 * a(n-1) - a(n-3).
-
 No 222 in ternary sequence -- consider n=4. 0xxx, 1xxx are ok but 2xxx is 
 broken into 20xx, 21xx, which are ok but 22xx is broken into 220x, 221x, 
 which are ok but 222x is disallowed. 
 an = 2 * a(n-1) + 2 * a(n-2) + 2 * a(n-3)
+  * Alternatively, append to end. Take n-1 sequence and append 0 or 1 
+  without any issues, but 2 has 222 issue. Consider appending x2 to n-2 
+  or x22 to n-3. This is safe.
+
+No 012 in ternary sequence -- start with full n sequence and chop off 
+from front: 1xxxx and 2xxxx are fine, but 0xxxx has issues with 012xx. 
+So an = a(n-1) + a(n-1) + (a(n-1) - a(n-3)) = 3 * a(n-1) - a(n-3).
+  * Alternatively, append to end. Take n-1 sequence and append 0 or 
+  1 without any issues, but 2 has 012 issue. Subtract off explicit 012 
+  to correct.
+  * Must be careful of accidentally completing sequence! Tacking on 
+  xxxx0 or xxxx1 is fine, but xxx02 or xxx22 runs into 012 issue!
+
+Probability of HH in sequence of length n -- 1/2 chance of T then 
+any p(n-1), 1/2 chance of H and then require T then any p(n-2). So 
+pn = 1/2 p(n-1) + 1/4 p(n-2) gives recurrence.
+  * Same as finding 1 - p(HH) in Markov chain with states start, T, H, 
+  and HH.
+
+Conditioning is powerful!
+
+Probability of even number of heads in n flips -- p (1 - p(n-1)) + 
+(1-p) p(n-1) gives recurrence. Solution is 1/2 ( 1 + (1-2p)^n ).
 
 Expected number of flips until HHH -- use total expectation. 
 E(x) = E(x|T)P(T) + E(x|HT)P(HT) + E(x|HHT)P(HHT) + E(x|HHH)P(HHH) 
 = (x+1)/2 + (x+2)/4 + (x+3)/8 + (3)/8 --> x = 14. Could try to find 
 probability by counting fails with an = a(n-1) + a(n-2) + a(n-3) but 
 Tribonacci sequence is unwieldy in calculations.
+
+Gambler's ruin: pi = p p(i+1) + (1-p) p(i-1) --> set up recurrence and 
+solve by subbing pi = x^i or taking difference equations p2 - p1, p3 - p2 
+and backsolving.
 
 Solve recurrence relations with backwards substitution or 
 guess a solution + check with induction.
@@ -227,6 +250,11 @@ All recurrence relations may be written as difference relations
   * delta^2 a = delta an - delta a(n-1) = an - 2a(n-1) + a(n-2)
   * a(n-1) = an - delta an
   * a(n-2) = an - 2 delta an + delta^2 an
+
+Challenge problems 
+  * Probability of HH before TT for biased coin
+  * Probability that number of H in sequence of length n is divisible by 
+  3 for a biased coin.
 
 ### Divide and conquer
 
