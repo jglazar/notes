@@ -68,3 +68,61 @@ venture, debt, and more. Huge fund.
 
 5AM Ventures (led by Andrew Schwab and Kush Parmar) pioneered the 
 investor-operator model for life sciences.
+
+## The Century of Biology
+
+Link [here](https://www.statnews.com/2022/11/03/why-were-not-prepared-for-next-wave-of-biotech-innovation/)
+
+White blood cell therapies, gene editing, pills for cystic fibrosis, 
+CRISPR therapies for sickle cell anemia all within past 20 years.
+
+Medicines with human studies fail 90% of the time.
+
+Electronic health records are siloed and unstructured.
+
+📈 FDA drug approvals are up 70% compared to 2000-2010 and 25% compared to 
+1990-2000.
+
+New medicines for common diseases need huge studies w 1000s of patients.
+
+Many drugs have been rescinded due to side effects
+  * Paxil (depression), Vioxx (arthritis), Ketek (antibiotic), 
+  Avandia (diabetes), Zelnorm (IBS), Bextra (arthritis), Meridia (weight)
+
+Cost per trial patient has skyrocketed from $10k to $500k.
+
+New strategy is rare disease treatments to test less and charge more.
+  * MS, rheumatoid arthritis, rare cancers, cystic fibrosis.
+  * 📈 Avg. new medicine price in 2007 = $2k, 2021 = $180k.
+
+UK NHS used large datasets to test Covid treatment efficacies.
+  * Take little data from many people. Big, simple trials.
+
+Don't replace trials with databases. Need randomization and control!
+
+Don't focus on hot new tech, focus on improving the testing system.
+  * Too much reliance on pharma companies.
+
+Link [here](https://a16z.com/2017/06/21/jorge-conde-bio-fund/)
+
+Bio vs biotech/engineering -- science is empirical and involves discovery 
+with no typical roadmap, while engineering can have plan with incremental 
+innovations and systematic progress 
+
+Bioengineering allows reading AND writing biological code.
+
+Advances in sequencing let you see DNA, RNA expression, and proteomics 
+with quick turnaround (1 day or less).
+  * Can also see on scale of single cell, rather than averaging over many.
+
+ML methods with invariances (translational, e.g.) help find patterns and 
+deconvolute signal from noise.
+
+Biotech startups need to navigate the science, scaling, and deployment.
+
+Pande's "cloud biology" idea: make centralized bio mega-labs like AWS 
+server farms so that people can easily and efficiently test hypotheses
+  * Would help efficiency and reproducibility
+  * Main issue is tinkering with tools. Hasn't panned out like ML yet.
+
+
