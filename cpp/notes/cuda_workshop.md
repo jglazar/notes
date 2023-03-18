@@ -59,6 +59,8 @@ Example -- matrix multiplication is O(N^3)
   * Avoid accessing global memory many times in kernel
   * Memory is the killer, not the compute (opposite of CPU)
     * Mainly limited by number of blocks
+  * Avoid global memory access on device -- assign each block its own local tile of 
+  the matrix.
 
 ## Architecture
 
@@ -84,7 +86,8 @@ Progression: GT08, GT200, Fermi, Kepler, Maxwell, Turing, Ampere
 
 `__syncthreads` acts like MPI barrier
   * Can only sync within block (own shared memory and context)
-  * Each line has its own `__syncthreads`
+  * Each line has its own `__syncthreads` instance, so each thread must stop on same 
+  line number's `__syncthreads` command!
 
 ## Advice
 
