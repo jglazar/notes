@@ -125,4 +125,125 @@ server farms so that people can easily and efficiently test hypotheses
   * Would help efficiency and reproducibility
   * Main issue is tinkering with tools. Hasn't panned out like ML yet.
 
+## Getting public and staying public
 
+Link [here](https://lifescivc.com/2021/11/getting-public-is-easy-being-public-is-hard/)
+
+Biotech equity issuance in 2021 broke records
+  * Founding to IPO: 10 years in 2013 to 4 years in 2021
+  * IPOs in preclinical or Phase 1: 20% in 2010, 80% in 2021
+  * Spending over $100M/year: 20 in 2016, 120 in 2021
+  * IPO valuation: $150M in 2010, $500M in 2021
+
+IPOs are no longer exits, but just another step.
+
+Public stock is cheaper for companies to provide than private preferred 
+stock (to VC firms). Helps fuel growth.
+
+But hard to stay relevant on public markets!
+  * Need to get into big investor's portfolio
+  * Stay vigilant and speedy after IPO
+  * Keep costs variable and be able to scale down spending
+  * Stay away from duress, when cost of capital skyrockets
+  * Don't fall, bc it's near-impossible to bounce back
+
+## Joseph Edelman and Perceptive Advisors
+
+Link [here](https://www.institutionalinvestor.com/article/b19hj4gjrwh1x9/The-41-Man)
+
+Founded Perceptive Advisors in 1999 with $6M, now worth $4.1B
+  * Perceptive Life Science Fund has 30% return / year, net of fees
+  * But high volatility with big single-month losses
+  * Sticks with small-mid companies over several years
+  * Focuses on event perception, only investing after understanding 
+  reality from in-depth research
+  * 200 positions in portfolio, but top 10 account for 50%
+  * Has 21 employees total, with 11 analysts incl MDs and PhDs
+  * Has some private, but that fraction can grow when they sell public
+  * Max daily loss of 5%
+  * Long-short, with options to hedge
+  * Charges 3-and-25
+  * Big wins include Neurocrine, Alnylam, Amicus, Global Blood, Zogenix, 
+  and Sarepta (a rollercoaster!)
+  * Large size could be unwieldy in public markets
+  * New Xontogeny venture partnership and credit opportunities arm for 
+  private investments 
+
+Biotech is volatile and tricky
+  * Of 500 total companies, only 20 are profitable
+  * Main profitable focuses are neurology, hematology, and orphan 
+  diseases (<200k patients)
+  * Big biotech tends to be like pharma -- profitable, predictable, 
+  moderate growth, low volatility
+  * No guarantee for approval after Phase 3 complete
+  * Risky to get in early, like after Phase 1
+  * Must understand management team's scientific aptitude and honesty
+  * Can have asset-liability mismatch with illiquidity
+
+Edelman has psych degree from UCSD
+  * Dropped out of psychopharmacology grad degree due to lack of patience
+  * Father was a biochem professor at UCSF, then chair of molecular 
+  chem/biophys at Columbia
+  * Enrolled at NYU Stern and worked in accounting
+  * Worked at small brokerage, Paramount AM, Aries, then prop trading
+
+## Value investing in life sciences
+
+Link [here](https://axial.substack.com/p/value-investing-in-life-sciences)
+
+Value investing determines a company's intrinsic value, then invests 
+at a lower price
+  * Biotech has high technology risk -- easier to invest by momentum or 
+  event gambles
+  * Important intangibles -- founders, RnD value, culture, mission
+
+### Key aspects
+
+Margins of safety -- ability to fail without dying
+  * Typically achieved with non-dilutive partnerships or large financing 
+  for platform technology
+  * AbCellera has cash engine in licensing business, internal pipeline, 
+  quick responsiveness (to COVID, e.g.)
+  * Ligand Pharma and XOMA have hidden asset in medicine royalties
+  * Strong comparables and large companies in the same field help too
+
+Strong owners
+  * Regeneron still has founders leading company after 30 years
+  * Ample cash, obsessive about great partnerships
+  * Can be slept on by investment community
+
+Growing moats from new tech and transactions
+  * Need to own and keep big chunk of valuable market
+  * Typically achieved via:
+    * Partnerships for discovery
+    * Minimal need for big sales force
+	* Access to cheap supply
+	* Owning the customer relationship
+	* Tech to enable new price structure
+	* Economies of scale
+	* Brand
+	* Patents
+	* High switching costs
+	* Organization
+  * Color Genomics used vertical integration and a Supreme Court ruling 
+  to entrench itself in BRCA screening
+
+Less dilution
+  * Typically achieved through alternative financing
+  * Adimab built an antibody licensing cash engine
+
+Misunderstood business model
+  * BridgeBio got financing from debt to develop drugs for rare diseases
+
+Undervalued tech
+  * Check for weird cities, universities, tech
+  * Arvinas developed PROTAC, which faced initial skepticism
+
+Winning franchise
+  * Strong organization, culture, and history
+  * Merck has had big successes for decades
+
+Monopoly
+  * Rare, but can own specific modalities/diseases/distribution channels
+  * Should become easier as biotech enters consumer markets
+  * Regenxbio monopolized AAV gene therapies
