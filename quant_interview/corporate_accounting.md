@@ -7,16 +7,7 @@ Accountants check transactions and operations in real-time.
   * Track ownership, spending, debt, profit
   * There are formal standard rules, like GAAP and IFRS
 
-Cash flow statement is cash inflow and outflow in some period. 
-  * Most "honest" accounting statement 
-  * Cash flows from operations (after taxes + interest expenses)
-  * Cash flows from investing (incl divestiture, acquisitions/cap ex, 
-  disposal/purchase of financial assets)
-  * Cash flows from financing (issues/repurchase of equity, issue/
-  repayment of debt, dividend payment)
-  * Sum = net change in cash balance 
-
-All 3 are interconnected
+All 3 financial statements are interconnected
   * E.g., depreciation/amortization on income statement (-) is added 
   back on cash flow statement (+)
 
@@ -126,7 +117,8 @@ Special sector-specific line items:
   high depreciation cost.
 2. SGA as % of total operating expense
   * 10%, 30%, 20%. Nordstrom needs many salespeople, while a manufacturer 
-  has a few consistent clients. Roughly acts as "economy-of-scale" metric.
+  has a few consistent clients. Roughly acts as "economy-of-scale" 
+  metric, where higher is better.
 3. What is Navistar's financing revenues/expenses
   * They issue payment plans for large purchases
 4. Taxes represent:
@@ -218,19 +210,19 @@ value for:
 
 ### Examples
 
-Peloton -- young
+Peloton -- young company
   * Small but fast-growing assets
   * Negative shareholder's equity bc company has been losing money
   * Biggest single asset is cash/marketable securities
   * Future growth is not accounted for on balance sheet
 
-Netflix -- growth
+Netflix -- growth company
   * Biggest single asset is non-current content (IP)
   * Big liability is deferred revenue from revenue accounted for, 
   but services not yet provided (subscriptions)
   * Common stock par value (useless)
 
-Coca Cola -- mature
+Coca Cola -- mature company
   * Huge asset base with little growth
   * High equity method invesements (holdings in other companies)
   * Deferred income tax assets -- positive means they overpaid before and 
@@ -242,7 +234,7 @@ Coca Cola -- mature
   shareholder equity.
   * Also provides breakdown of debt in footnotes.
 
-Toyota -- aging
+Toyota -- aging company
   * Total assets with zero growth
   * Finance receivables and affiliated companies (like financial assets)
   * Accrued pension/severance liabilites is unique to Japan
@@ -281,3 +273,63 @@ How to make definition more meaningful?
   * underfunded pension and post-retirement obligations
   * if pensionfound in both assets and liabilities, then assets 
   represents pension fund and liabilities represents total due.
+
+## Cash flow statement
+
+Cash flow statement is cash inflow and outflow in some period. 
+  * Most "honest" accounting statement 
+  * Cash flows from operations (after taxes + interest expenses)
+  * Cash flows from investing (incl divestiture, acquisitions/cap ex, 
+  disposal/purchase of financial assets)
+  * Cash flows from financing (issues/repurchase of equity, issue/
+  repayment of debt, dividend payment)
+  * Sum = net change in cash balance 
+
+Cash flows from operations
+  * Start with net income from income statement
+  * Add back depreciation/amortization and non-cash expenses
+  * Add or subtract changes in accounts receivable, inventory, 
+  other current assets/liabilities, accounts payable, and taxes due.
+  * This captures change in non-cash working capital (= non-cash 
+  current assets - non-debt current liabilities), which correlates 
+  negatively with cash flows (ties up cash).
+
+Cash flows from investing
+  * Investments in operating assets -- -capex, +divestitures of assets, 
+  -cash acquisitions (divestitures = selling old equipment, e.g.)
+    * Drives growth in revenue/operating income
+  * Investments in non-operating assets -- -financial assets, 
+  -non-operating assets, +divestitures of securities
+
+Cash flows from financing
+  * Net cash from/to debt -- +debt raised, -debt repaid
+  * Net cash from/to equity -- +new equity issuances, -dividends paid, 
+  -stock buybacks
+    * 1980s saw introduction of buybacks. Those who sell back gain cash, 
+	and those who don't gain bigger equity slice.
+  * Note that interest expenses are already accounted for in net income
+
+Cash flows can predict free cash flow to equity = possible dividend
+  * Start with cash flows from operations
+  * Add investments in operating assets (see Investing above)
+  * Add net case from/to debt (see Financing above)
+
+### Problems
+
+1. To get operating cash flows:
+  * Take net income and add back depr./amort. and other non-cash charges
+2. After that, consider:
+  * Increasing inventory decreases CF and increasing accounts payable 
+  increases CF
+3. Acquisitions may be made with cash, stock, or mix. What shows up 
+under investing activities?
+  * Cash-based acquisitions and the cash portion of mixed acquisitions
+4. Dividends can be cash or stock. Buybacks can be kept as treasury 
+stock or destroyed. What shows up under financing?
+  * Cash dividends and all buybacks
+5. Cash flows for young, high-growth companies have:
+  * Negative operations, negative investing, positive financing
+
+### Examples
+
+
