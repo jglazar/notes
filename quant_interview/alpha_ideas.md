@@ -9,8 +9,7 @@ The 101 alphas are held from 0.6 - 6.4 days and tested between 4 January 2010
 and 31 December 2013 (1006 observations).
 
 Found to have pairwise correlation of 15.9% and have returns correlated with 
-volatility.
-  * `returns ~ volatility ^ 0.76` 
+volatility s.t. `returns ~ volatility ^ 0.76`.
 
 Combining many alphas results in too many variables with too few observations, 
 yielding near-singular covariance matrices.
