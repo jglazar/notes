@@ -144,3 +144,37 @@ Cents-per-share: 0.13 (min) - 0.31 (Q1) - 0.40 (median) - 0.51 (Q3) - 2.0 (max)
 99. `((rank(correlation(sum(((high + low) / 2), 19.8975), sum(adv60, 19.8975), 8.8136)) <rank(correlation(low, volume, 6.28259))) * -1)`
 100. `(0 - (1 * (((1.5 * scale(indneutralize(indneutralize(rank(((((close - low) - (high -close)) / (high - low)) * volume)), IndClass.subindustry), IndClass.subindustry))) - scale(indneutralize((correlation(close, rank(adv20), 5) - rank(ts_argmin(close, 30))), IndClass.subindustry))) * (volume / adv20))))`
 101. `((close - open) / ((high - low) + .001))`
+     
+Many of the mean-reversion ones work especially well in 2020 and 2021. 
+33 and 101 are simple and work great. I even edited 57 to create a 
+submittable alpha.
+
+Short `ts_decay_linear`, `rank`, and only using relative values (pcts) 
+help performance
+
+## WorldQuant website
+
+Groups include market, sector, industry, and subindustry
+
+All data is auto-pasteurized s.t. non-universe stocks are NaN.
+  * Manually pasteurize data in group-wise comparisons to only consider group 
+  stocks inside the universe. Default behavior groups using data outside universe!
+  * Pasteurize doesn't affect single-stock operators like +,-,ts,max,min,etc. Only 
+  affects group operators like `group_rank`, `group_mean`, `group_max`, etc.
+  * Pasteurize only makes big difference if universe is small (USATOP200, e.g.)
+  * Check the following:
+  * `group_rank(pasteurize((close - ts_delay(close, 5)) / close) , sector)`
+  * `group_rank( (close - ts_delay(close, 5)) / close , sector)`
+
+Try ideas on TOP3000 (can be illiquid) vs TOP1000 vs TOP200 (liquid)
+
+Short term predictions -- use price–volume data or news. 
+Long term predictions -- use fundamental, analyst, or news data
+
+Increase returns:
+  * Increase turnover — more trading, potentially higher returns.
+  * Use lower decay (in settings)
+  * Work on smaller, more liquid universes (in settings)
+  * Keeping returns and drawdown constant, increase the volatility 
+  * Use news and analyst datasets
+  * Use fundamental data rather than price data
