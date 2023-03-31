@@ -154,6 +154,15 @@ help performance
 
 ## WorldQuant website
 
+Rules
+  * Daily score is capped at 2000, which can be achieved with 1 or 2 alphas.
+  * Score depends on quantity (more alphas submitted is better) and avg. alpha quality
+    * Smaller universe, lower self-correlation, higher fitness, longer delay (d1 vs. d0), 
+    * Score is normalized across all users with >= 1 alpha submitted that day. 
+  * Bronze over 1000, Silver over 5000, Gold over 10000
+  * Silver and Gold get access to special training and videos
+  * Scores over 10000 are eligible for interview invite
+
 Groups include market, sector, industry, and subindustry
 
 All data is auto-pasteurized s.t. non-universe stocks are NaN.
@@ -166,7 +175,17 @@ All data is auto-pasteurized s.t. non-universe stocks are NaN.
   * `group_rank(pasteurize((close - ts_delay(close, 5)) / close) , sector)`
   * `group_rank( (close - ts_delay(close, 5)) / close , sector)`
 
+All alphas should be neutralized s.t. longs and shorts balance out in each 
+subindustry/industry/sector/market
+  * Neutralizing by market favors some sectors over others (I think)
+  * Neutralizing simple price reversion alpha by market instead of by subindustry 
+  can reduce Sharpe but greatly increases fitness! 
+  * Turns out, no neutralization is insanely good for price reversion 
+  (so you can long or short the whole market)
+
 Try ideas on TOP3000 (can be illiquid) vs TOP1000 vs TOP200 (liquid)
+  * Incorporate weighting (e.g. by market cap or volume) to trade low liquidity 
+  stocks less frequently.
 
 Short term predictions -- use price–volume data or news. 
 Long term predictions -- use fundamental, analyst, or news data
