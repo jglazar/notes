@@ -162,26 +162,64 @@ Rules
   * Bronze over 1000, Silver over 5000, Gold over 10000
   * Silver and Gold get access to special training and videos
   * Scores over 10000 are eligible for interview invite
+  * Reported turnover = average daily turnover. 
+    * Daily turnover = percentage of portfolio bought/sold b/t today and yesterday, 
+    by dollar value 
 
 Groups include market, sector, industry, and subindustry
 
+Simulation settings
+  * Decay takes weighted sum of last n days: 
+  `(n x0 + (n-1) x1 + ... + x(n-1)) / (n + n-1 + ... + 1)`
+    * Decay reduces turnover but attenuates signal
+  * Truncation sets max weight for portfolio. 0 = no restriction.
+    * Recommended 0.05 - 0.10
+  * Neutralization sets total long = total short within group  
+  by reassigning `alpha <- alpha - mean(alpha)`
+  * NaN handling: 0 for time-series data, group mean/median/count for 
+  group data
+  * Unit handling raises a warning if wrong units are combined. E.g, 
+  price + volume.
+
+### Pasteurization and neutralization
+
 All data is auto-pasteurized s.t. non-universe stocks are NaN.
   * Manually pasteurize data in group-wise comparisons to only consider group 
-  stocks inside the universe. Default behavior groups using data outside universe!
+  stocks inside the universe. 
   * Pasteurize doesn't affect single-stock operators like +,-,ts,max,min,etc. Only 
   affects group operators like `group_rank`, `group_mean`, `group_max`, etc.
   * Pasteurize only makes big difference if universe is small (USATOP200, e.g.)
   * Check the following:
   * `group_rank(pasteurize((close - ts_delay(close, 5)) / close) , sector)`
   * `group_rank( (close - ts_delay(close, 5)) / close , sector)`
+  * `group_rank(pasteurize(sales_growth),sector) - group_rank(sales_growth,sector)`
 
 All alphas should be neutralized s.t. longs and shorts balance out in each 
 subindustry/industry/sector/market
-  * Neutralizing by market favors some sectors over others (I think)
+  * Neutralizing by market favors some sectors over others 
   * Neutralizing simple price reversion alpha by market instead of by subindustry 
   can reduce Sharpe but greatly increases fitness! 
   * Turns out, no neutralization is insanely good for price reversion 
   (so you can long or short the whole market)
+  * Can use `group_neutralize` to apply granular neutralization 
+  * Use big groups for small liquid universes, small groups for big illiquid universes
+
+### Tips
+
+Neutralization 
+  * Fundamentals affect price differently in different industries -- neutralize by industry 
+  * Analyst data estimates future fundamental data -- neutralize by industry 
+  * Model datasets vary wildly with subcategory -- try different neutralization groups
+  * News impacts companies differently based on subindustry --  neutralize by subindustry
+  * Options have consistent impact across industries -- neutralize by market or sector
+  * Price volume ideas work for all instruments -- don't neutralize by industry or subindustry!
+  * Social media impact is company-dependent -- neutralize by subindustry or industry 
+  * Institution data depends on type and provider -- neutralize by sector or industry
+  * Short interest -- neutralize by industry and experiment with other groups
+  * Insider news is company-dependent -- neutralize by industry or subindustry
+  * Sentiment is company-dependent -- neutralize by industry or subindustry
+  * Earnings is like fundamentals -- neutralize by industry
+  * Sector/Market/Industry are macroeconomic -- neutralize macro groups (not subindustries) 
 
 Try ideas on TOP3000 (can be illiquid) vs TOP1000 vs TOP200 (liquid)
   * Incorporate weighting (e.g. by market cap or volume) to trade low liquidity 
@@ -197,3 +235,54 @@ Increase returns:
   * Keeping returns and drawdown constant, increase the volatility 
   * Use news and analyst datasets
   * Use fundamental data rather than price data
+
+Popular ideas
+  * Mean reversion
+  * Technical indicators -- RSI, stochastic oscillator, MACD
+  * Accruals and cashflow
+    * High accrual (change in net operating assets) is bad
+    * `-delta(assets_curr - (liabilities_curr - debt_st), 60)`
+  * Growth of revenue, assets, or headcount
+    * `- (assets / delay(assets, 250) – 1)`
+  * Inventory turnover
+    * `sales / inventory`
+
+### Listed alphas
+
+* `1/close`
+* `volume/adv20`
+* `ts_corr(close, open, 10)`
+* `open`
+* `(high + low)/2 - close`
+* `vwap < close ? high : low`
+* `Rank(adv20)`
+* `Min(0.5*(open+close), vwap)`
+* `Max(0.5*(high+low), vwap)`
+* `1/ts_stddev(returns, 22)`
+* `ts_sum(sharesout, 5)`
+* `ts_covariance(vwap, returns, 22)`
+* `1/Abs(0.5*(open+close) - vwap)	`
+* `ts_corr(vwap, ts_delay(close, 1), 5)`
+* `ts_delta(close, 5)`
+* `ts_decay_linear(sharesout*vwap, 5)`
+* `ts_decay_exp_window(close, 5, factor=0.25)`
+* `ts_product(volume/sharesout, 5)`
+* `Tail(close/vwap, lower=0.9, upper=1.1, newval=1.0)`
+* `Sign(close-vwap)`
+* `SignedPower(close-open, 0.5)`
+* `Pasteurize(1/(close-open))`
+* `Log(high/low)`
+* `group_neutralize(volume*vwap, market)`
+* `Scale(close^0.5)`
+* `Ts_Min(open, 22)`
+* `Ts_Max(close, 22)`
+* `Ts_Rank(volume, 22)`
+* `Ts_Skewness(returns, 11)`
+* `Ts_Kurtosis(returns, 11)`
+* `Ts_Moment(returns, 11, k=3)`
+* `ts_count_nans((close-open)^0.5, 22)`
+* `ts_corr(close, ts_step(1), 5)`
+* `Last_Diff_Value(sales, lookback=125)`
+* `group_rank(returns, industry)`
+* `group_mean(returns, volume, subindustry)`
+* `Ts_Regression(close, open, 20, lag =0, rettype= 2)`
