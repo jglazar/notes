@@ -181,6 +181,19 @@ Simulation settings
   * Unit handling raises a warning if wrong units are combined. E.g, 
   price + volume.
 
+Data can be in vector form, with different vector lengths for each stock
+  * e.g., `scl15_d1_sentiment`
+  * Need to aggregate vector into single number, then apply normal operations
+    * `vec_avg`, `vec_choose`, `vec_count`, `vec_ir`, `vec_kurtosis`, 
+    `vec_max`, `vec_min`, `vec_norm`, `vec_percentage`, `vec_powersum`, 
+    `vec_range`, `vec_skewness`, `vec_stddev`, `vec_sum`
+  * `nws12_afterhsz_1_minute` gives pct change within 1 minute after news 
+  release. Predict momentum for high-intensity (high count) and reversion for 
+  low-intensity (low-count). 
+  * `scl15_d1_sentiment` gives sentiment score for each event in a day. Predict 
+  momentum for good sentiment (high mean or median). 
+  * Both above alphas have high turnover -- use `ts_rank` or `ts_decay` to smooth.
+
 ### Pasteurization and neutralization
 
 All data is auto-pasteurized s.t. non-universe stocks are NaN.
@@ -249,40 +262,42 @@ Popular ideas
 
 ### Listed alphas
 
-* `1/close`
-* `volume/adv20`
-* `ts_corr(close, open, 10)`
-* `open`
-* `(high + low)/2 - close`
-* `vwap < close ? high : low`
-* `Rank(adv20)`
-* `Min(0.5*(open+close), vwap)`
-* `Max(0.5*(high+low), vwap)`
-* `1/ts_stddev(returns, 22)`
-* `ts_sum(sharesout, 5)`
-* `ts_covariance(vwap, returns, 22)`
-* `1/Abs(0.5*(open+close) - vwap)	`
-* `ts_corr(vwap, ts_delay(close, 1), 5)`
-* `ts_delta(close, 5)`
-* `ts_decay_linear(sharesout*vwap, 5)`
-* `ts_decay_exp_window(close, 5, factor=0.25)`
-* `ts_product(volume/sharesout, 5)`
-* `Tail(close/vwap, lower=0.9, upper=1.1, newval=1.0)`
-* `Sign(close-vwap)`
-* `SignedPower(close-open, 0.5)`
-* `Pasteurize(1/(close-open))`
-* `Log(high/low)`
-* `group_neutralize(volume*vwap, market)`
-* `Scale(close^0.5)`
-* `Ts_Min(open, 22)`
-* `Ts_Max(close, 22)`
-* `Ts_Rank(volume, 22)`
-* `Ts_Skewness(returns, 11)`
-* `Ts_Kurtosis(returns, 11)`
-* `Ts_Moment(returns, 11, k=3)`
-* `ts_count_nans((close-open)^0.5, 22)`
-* `ts_corr(close, ts_step(1), 5)`
-* `Last_Diff_Value(sales, lookback=125)`
-* `group_rank(returns, industry)`
-* `group_mean(returns, volume, subindustry)`
-* `Ts_Regression(close, open, 20, lag =0, rettype= 2)`
+1. `1/close`
+2. `volume/adv20`
+3. `ts_corr(close, open, 10)`
+4. `open`
+5. `(high + low)/2 - close`
+6. `vwap < close ? high : low`
+7. `Rank(adv20)`
+8. `Min(0.5*(open+close), vwap)`
+9. `Max(0.5*(high+low), vwap)`
+10. `1/ts_stddev(returns, 22)`
+11. `ts_sum(sharesout, 5)`
+12. `ts_covariance(vwap, returns, 22)`
+13. `1/Abs(0.5*(open+close) - vwap)	`
+14. `ts_corr(vwap, ts_delay(close, 1), 5)`
+15. `ts_delta(close, 5)`
+16. `ts_decay_linear(sharesout*vwap, 5)`
+17. `ts_decay_exp_window(close, 5, factor=0.25)`
+18. `ts_product(volume/sharesout, 5)`
+19. `Tail(close/vwap, lower=0.9, upper=1.1, newval=1.0)`
+20. `Sign(close-vwap)`
+21. `SignedPower(close-open, 0.5)`
+22. `Pasteurize(1/(close-open))`
+23. `Log(high/low)`
+24. `group_neutralize(volume*vwap, market)`
+25. `Scale(close^0.5)`
+26. `Ts_Min(open, 22)`
+27. `Ts_Max(close, 22)`
+28. `Ts_Rank(volume, 22)`
+29. `Ts_Skewness(returns, 11)`
+30. `Ts_Kurtosis(returns, 11)`
+31. `Ts_Moment(returns, 11, k=3)`
+32. `ts_count_nans((close-open)^0.5, 22)`
+33. `ts_corr(close, ts_step(1), 5)`
+34. `Last_Diff_Value(sales, lookback=125)`
+35. `group_rank(returns, industry)`
+36. `group_mean(returns, volume, subindustry)`
+37. `Ts_Regression(close, open, 20, lag =0, rettype= 2)`
+
+5, 10 (negated), 15 (negated), 20 (negated), 32, and 34 (negated) are all good!
