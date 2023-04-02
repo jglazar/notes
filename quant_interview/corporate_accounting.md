@@ -300,6 +300,7 @@ Cash flows from investing
     * Drives growth in revenue/operating income
   * Investments in non-operating assets -- -financial assets, 
   -non-operating assets, +divestitures of securities
+  * Optimistic companies should be investing more
 
 Cash flows from financing
   * Net cash from/to debt -- +debt raised, -debt repaid
@@ -313,6 +314,17 @@ Cash flows can predict free cash flow to equity = possible dividend
   * Start with cash flows from operations
   * Add investments in operating assets (see Investing above)
   * Add net case from/to debt (see Financing above)
+
+Definitions (correct?)
+  * Non-cash working capital -- accounts receivable, inventories, 
+  accounts payable, unearned revenue 
+  * Operating assets -- cap ex, sale of property/plants/equipment, 
+  cash acquisitions, divestitures, sale (purchase) of intangible 
+  assets
+  * Non-operating assets -- investments in marketable and equity 
+  securities, net decrease (increase) in loans sold, other investing 
+  activities
+  * Buybacks -- issuance and repurchase of common stock
 
 ### Problems
 
@@ -331,5 +343,178 @@ stock or destroyed. What shows up under financing?
   * Negative operations, negative investing, positive financing
 
 ### Examples
+
+Peloton -- young company
+  * Negative operating / investing CF
+  * Financing CF positive via issuing stock
+  * Stock-based compensation is big part of CF
+
+Netflix -- growth company
+  * Negative operating CF due to large content spend
+  * Little investing activities
+  * Using debt in financing CF
+
+Coca Cola -- mature company
+  * Stock-based compensation is small part of CF
+  * Lots of operation-related and non-op-related investments
+  * Debt payment and issuances are close 
+
+Toyota -- aging company
+  * Deferred income taxes
+  * Dividends
+
+Special sector-specific line items
+  * Not super relevant for CF statement
+  * Oil has lots of depreciation, so CF can be positive
+  * Financial services have opaque CF statements, many line items
+  * Pharma hides RnD expenses, little other investing activities.
+
+### Problems
+
+1. Estimate change in operating CF from changes in non-cash working 
+capital for Navistar, Nordstrom, and Google
+  * Changes in accounts receivable, inventories, accounts payable, 
+  unearned revenue yields -6, 210, and -1662, compared to total 
+  operating CF of 522, 1236, and 55337. Navistar and Google 
+  have mostly cash, while Nordstrom deals with inventory/non-cash assets.
+2. Why add back stock-based compensation under operating CF?
+  * Because stock-based comp. is an accounting expense but not cash.
+3. Estimate investment in operating and non-operating assets based on 
+investing CF
+  * Operating assets = cap ex, sale of property, cash acquisitions, 
+  divestitures, and sale of intangible assets yields -234, -935, 
+  -26803 vs overall investing CFs of -194, -909, -23943. 
+  Most of each company's investing is capex
+4. Estimate change in total debt based on financing CF
+  * +188, +7, -276. Navistar and Nordstrom are taking on debt while 
+  Google is paying off debt.
+5. Estimate dividends and stock buybacks
+  * 5/0, 198/229, 0/27142. Google is taking big buybacks to pay back 
+  shareholders.
+
+## Accounting inconsistencies
+
+The market prices all these in, even if accountants don't.
+
+Taxes
+  * Marginal tax rate -- found in tax codes. Typically, 20-25%, but 
+  taxes are based on where the income is made (international)
+  * Effective tax rate -- found in accrual-based accounting sheets. 
+  Simply calculate taxes / taxable income. Typically lower than 
+  marginal tax rate due to tax deferral and avoidance.
+  * Cash tax rate -- taxes actually paid on taxable income.
+  * Deferred taxes -- difference between expensed and reported 
+  taxes.
+  * Can carry losses forwards or backwards to avoid taxes
+
+Stock-based compensation
+  * Got big in 1990s bc companies didn't have cash
+  * Ideally, aligns interests of employees w shareholders
+  * Can be in form of options to buy at fixed price later, or shares
+  * Should be considered a compensation expense and be valued at 
+  time granted
+  * Question: consider as non-cash expense (like depreciation)? 
+  Practitioners say yes, Damodoran says no bc it's basically cash.
+
+Leases are debt
+  * Accountants consider capital leases (effective ownership) and 
+  operating leases (ability to use) separately. Capital lease is treated 
+  as debt and operating lease is treated as operating expense.
+  * All leases considered debt, starting in 2019
+  * Convert leases to debt by calculating NPV of lease commitments 
+  using pre-tax cost of debt as discount rate. Pre-tax cost of 
+  debt is based on default risk.
+    * Also compute interest expenses (=NPV of lease * pre-tax cost 
+	of debt) and depreciation of item (computed using life of lease 
+	and some depreciation method). 
+  * Similar examples include purchase commitments (for manufacturing 
+  firms), content commitments (streaming/media companies), player 
+  contracts (sports teams)
+
+RnD is cap ex (investment for the future)
+  * Currently considered an expense because benefits are uncertain
+  * However, other cap ex is also uncertain (new factory, e.g.)
+  * This takes the asset of RnD off the balance sheet!
+  * To capitalize RnD: 
+    1. Estimate amortizable life (how long to pay off)
+	2. Collect RnD expenses as far back as amortizable life
+	3. Estimate amortized and unamortized RnD for each year.
+	4. Add back current year's RnD, subtract out amortization of past 
+	years' RnD to each years earnings
+	5. Show umamortized RnD as asset, which increases book equity
+  * Similar examples include advertising, recruiting, training, 
+  exploration (for oil, e.g.), and customer acquisition
+
+### Problems
+
+1. Why are effective tax rates lower than marginal tax rates?
+  * International taxes, tax deferral strategies, differences b/t 
+  tax books and reporting books, and operating loss carry forwards
+2. The primary reason RnD is treated as an operating expense rather 
+than a capital expense is:
+  * that RnD benefits are uncertain
+3. When converting leases to debt:
+  * Discount contractual lease commitments in future years back to 
+  today, using the pre-tax cost of debt as the discount rate
+4. When companies use options to compensate employees, earnings are: 
+  * Lowered in the period of the grant by the estimated value of the 
+  options at the time of the grant
+5. Restricted stock cannot be claimed by employees until vested. The 
+share count: 
+  * Is increased at the time of the grant, weighted by chance of vesting
+
+### Examples
+
+Taxes
+  * Wide range of effective tax rates among companies
+  * Older companies have effective tax ~ marginal tax
+  * Negative taxes from tax credits from gov't
+  * Deferred taxes aren't real, but projections into the future
+
+Non-debt commitments
+  * Nordstrom lease payments are treated as 5-year annuity, then 
+  discounted at 4.7% (from interest rates and risk of default)
+  * Added to balance sheet in operating lease liabilites (under 
+  current liabilities) and non-current operating lease liabilities 
+  (under long-term debt)
+  * This increases debt, but is counterbalanced by counter-asset 
+  which depreciates
+  * Formerly, the lease was considered an operating expense. Now 
+  you add back to operating expenses (undo) and remove depreciation.
+  * Taxes and net income do not change because one tax-deductible 
+  expense (operating lease) is replaced with interest and depreciation 
+  of equivalent value
+
+Non-physical capital expenses
+  * Use 2-10 years as amortizable life. 2 years for small tech, 3-5 
+  years for hardware, 10 years for pharma
+  * See video for spreadsheet walkthrough
+
+Stock-based compensation
+  * Netflix gave away lots of valuable options
+  * Should be considered grants-in-kind, not non-cash expense
+
+### Problems
+
+1. Estimate change in pre-tax operating income if RnD is capitalized, 
+assuming it takes 3 years to pay off
+  * This year's RnD - total cumulative amortization = +8687 
+2. Estimate change in book value of equity if RnD is capitalized, 
+assuming it takes 3 years to pay off
+  * Total unamortized portion over past 3 years = +45839
+3. Estimate the debt value of the lease, assuming 25% tax rate, 
+3% cost of debt, 8% cost of equity, and 7% cost of capital.
+  * Discount all lease commitments back to present with 3% value, 
+  then sum to +2,337
+4. What is the effect of capitalizing the lease on operating income?
+  * Lease expense from prior 12 months - depreciation of asset = 374 - 
+  2337/10 = +140
+5. What is the effect of capitalizing the lease on interest expense?
+  * PV of lease commitments * pre-tax cost of debt = 2337 * 0.03 = 
+  70.1
+
+## Financial ratios
+
+Ratios enable comparisons across companies, industries, and time
 
 
