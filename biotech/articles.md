@@ -247,3 +247,52 @@ Monopoly
   * Rare, but can own specific modalities/diseases/distribution channels
   * Should become easier as biotech enters consumer markets
   * Regenxbio monopolized AAV gene therapies
+
+## Seven powers in life sciences
+
+Link [here](https://axial.substack.com/p/seven-powers-in-life-sciences-271)
+
+Scale economies
+  * Create more consumer surplus by decreasing fixed cost per user
+  * E.g., Walmart supplier deals, Netflix lowering price for content, 
+  Intel manufacturing deals, Amazon distribution costs
+  * Biotech e.g., Twist, Resilience
+
+Network economies
+  * Product improves as new users join
+  * Gives pricing power to owner and raises barrier to entry for 
+  competitors
+  * E.g., social networks
+  * Biotech e.g., Benchling, BenchSci
+
+Counter-positioning
+  * Opposing an incumbent
+  * Bias or fear could delay the incumbent's action
+  * E.g., Five Guys vs McDonalds, Vanguard vs active investing
+  * Biotech e.g., Adimab, Color
+
+Switching costs
+  * Customer costs of switching products. Financial, procedural, and 
+  relational.
+  * Useful for keeping customers but not bringing in new ones
+  * E.g., Microsoft OS
+  * Biotech e.g., Veeva
+
+Branding
+  * Appealing to a past track record
+  * Reinforces buying over decades
+  * E.g., Coca Cola, Tiffany, Chanel
+  * Biotech e.g., 23andMe
+
+Cornered resources
+  * Access to scarce resource, like invention, trade secrets, license, 
+  regulatory exemption, talent
+  * E.g., Pixar, Genentech
+  * Biotech e.g., Genentech
+
+Process power
+  * Institutional knowledge creating better production
+  * E.g., Toyota, Danaher
+  * Biotech e.g., BridgeBio, Recursion, AbCellera
+
+
