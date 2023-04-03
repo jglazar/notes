@@ -126,8 +126,7 @@ Cents-per-share: 0.13 (min) - 0.31 (Q1) - 0.40 (median) - 0.51 (Q3) - 2.0 (max)
 82. `(min(rank(decay_linear(delta(open, 1.46063), 14.8717)),Ts_Rank(decay_linear(correlation(IndNeutralize(volume, IndClass.sector), ((open * 0.634196) +(open * (1 - 0.634196))), 17.4842), 6.92131), 13.4283)) * -1)`
 83. `((rank(delay(((high - low) / (sum(close, 5) / 5)), 2)) * rank(rank(volume))) / (((high -low) / (sum(close, 5) / 5)) / (vwap - close)))`
 84. `SignedPower(Ts_Rank((vwap - ts_max(vwap, 15.3217)), 20.7127), delta(close,4.96796))`
-85. `(rank(correlation(((high * 0.876703) + (close * (1 - 0.876703))), adv30,
-9.61331))^rank(correlation(Ts_Rank(((high + low) / 2), 3.70596), Ts_Rank(volume,7.11408)))`
+85. `(rank(correlation(((high * 0.876703) + (close * (1 - 0.876703))), adv30,9.61331))^rank(correlation(Ts_Rank(((high + low) / 2), 3.70596), Ts_Rank(volume,7.11408)))`
 86. `((Ts_Rank(correlation(close, sum(adv20, 14.7444), 6.00049), 20.4195) < rank(((open+ close) - (vwap + open)))) * -1)`
 87. `(max(rank(decay_linear(delta(((close * 0.369701) + (vwap * (1 - 0.369701))),1.91233), 2.65461)), Ts_Rank(decay_linear(abs(correlation(IndNeutralize(adv81,IndClass.industry), close, 13.4132)), 4.89768), 14.4535)) * -1)`
 88. `min(rank(decay_linear(((rank(open) + rank(low)) - (rank(high) + rank(close))),8.06882)), Ts_Rank(decay_linear(correlation(Ts_Rank(close, 8.44728), Ts_Rank(adv60,20.6966), 8.01266), 6.65053), 2.61957))`
@@ -154,17 +153,41 @@ help performance
 
 ## WorldQuant website
 
-Rules
-  * Daily score is capped at 2000, which can be achieved with 1 or 2 alphas.
+### Rules
+
+Daily score is capped at 2000, which can be achieved with 1 or 2 alphas.
   * Score depends on quantity (more alphas submitted is better) and avg. alpha quality
-    * Smaller universe, lower self-correlation, higher fitness, longer delay (d1 vs. d0), 
-    * Score is normalized across all users with >= 1 alpha submitted that day. 
-  * Bronze over 1000, Silver over 5000, Gold over 10000
+  * Smaller universe, lower self-correlation, higher fitness, longer delay (d1 vs. d0), 
+  * Score is normalized across all users with >= 1 alpha submitted that day. 
+
+IQC uses Merged PnL from all team members and all alphas
+  * Equal weighting across submitted alphas
+  * Considers Sharpe, returns/drawdown, and turnover
+  * ❗️ Check before/after score in Performance Comparison tab before 
+  submitting
+  * Stage 1 only considers in-sample. Stage 2 considers out-of-sample.
+  * Delay 0 alpha contributions are divided by 3 in final score
+
+Bronze over 1000, Silver over 5000, Gold over 10000
   * Silver and Gold get access to special training and videos
   * Scores over 10000 are eligible for interview invite
-  * Reported turnover = average daily turnover. 
-    * Daily turnover = percentage of portfolio bought/sold b/t today and yesterday, 
-    by dollar value 
+
+Reported turnover = average daily turnover. 
+  * Daily turnover = percentage of portfolio bought/sold b/t today and yesterday, 
+  by dollar value 
+
+Self-correlation is calculated by PnL graph, not alpha weights
+  * Self correlation uses a 2-year window. Inner correlation uses the intersect 
+  of the alpha's PnL time periods.
+  * Alphas with high self-correlation can still be submitted if Sharpe is improved 
+  by at least 10%
+
+Sub-universe Sharpe threshold scales with sub-universe size
+
+In-sample is 7 years ago to 2 years ago, updated daily. The past year is used 
+for scoring and testing.
+
+### Settings and data
 
 Groups include market, sector, industry, and subindustry
 
@@ -234,12 +257,17 @@ Neutralization
   * Earnings is like fundamentals -- neutralize by industry
   * Sector/Market/Industry are macroeconomic -- neutralize macro groups (not subindustries) 
 
-Try ideas on TOP3000 (can be illiquid) vs TOP1000 vs TOP200 (liquid)
-  * Incorporate weighting (e.g. by market cap or volume) to trade low liquidity 
-  stocks less frequently.
-
-Short term predictions -- use price–volume data or news. 
-Long term predictions -- use fundamental, analyst, or news data
+Favor diversity -- low correlation is more important than a minor 
+increase in performance
+  * Submit both delay-1 and delay-0 alphas
+  * Explore both USA and China -- alphas are totally uncorrelated!
+  * Try ideas on TOP3000 (can be illiquid) vs TOP1000 vs TOP200 (liquid)
+    * Incorporate weighting (e.g. by market cap or volume) to trade 
+    low liquidity stocks less frequently.
+  * Consider short-term (price-volume, news) and long-term (fundamental, 
+  analyst, news)
+  * Use diverse operators
+  * Overfitting can reduce OS score
 
 Increase returns:
   * Increase turnover — more trading, potentially higher returns.
@@ -251,7 +279,8 @@ Increase returns:
 
 Popular ideas
   * Mean reversion
-  * Technical indicators -- RSI, stochastic oscillator, MACD
+  * Technical indicators
+    * RSI, stochastic oscillator, MACD, money flow index, Bollinger Bands
   * Accruals and cashflow
     * High accrual (change in net operating assets) is bad
     * `-delta(assets_curr - (liabilities_curr - debt_st), 60)`
@@ -259,6 +288,15 @@ Popular ideas
     * `- (assets / delay(assets, 250) – 1)`
   * Inventory turnover
     * `sales / inventory`
+  * Price movement and technical indicators
+  * Volatility measures -- historical, implied, intraday, vol index
+  * Volume's interaction with price
+  * Short-term and long-term trends
+
+Check resources like SSRN, Seeking Alpha, Wilmott, Epchan, 
+AuTraSy. Read books like Active Portfolio Management by Grinold 
+and Kahn.
+  * Check Brain Tips series in Community forum
 
 ### Listed alphas
 
@@ -301,3 +339,13 @@ Popular ideas
 37. `Ts_Regression(close, open, 20, lag =0, rettype= 2)`
 
 5, 10 (negated), 15 (negated), 20 (negated), 32, and 34 (negated) are all good!
+
+Other ideas from website / emails / videos 
+  * `sales / assets` measures efficiency at generating revenue. Try 
+  `rank(sales/assets)` with Subindustry neutralization in TOP3000.
+  * Decreasing debt is good. `rank(-ts_delta(debt,90))` with Sector 
+  neutralization for TOP3000 
+  * Take difference in close prices between yesterday and today, hoping 
+  for reversion. `-ts_delta(close, 1)`
+  * Price reversion works well during high volatility or volume. 
+  `-rank(ts_delta(close, 2)) * rank(volume / ts_sum(volume, 30) / 30)`
