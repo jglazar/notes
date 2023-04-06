@@ -150,3 +150,51 @@ Come up with ideas by reading descriptions of datasets
   * E.g., Fundamental data might indicate value. Use ratios.
 
 Reduce self-correlation by working with diverse datasets
+
+## Fundamental datasets
+
+Data comes from balance sheet, income statement, and cash flow statement
+  * Income statement shows basic earnings and costs
+  * Balance sheet shows stockholders' equity (book value)
+  * CF statement shows reinvestments into company and liquidity
+  * Updated quarterly, depending on exchange requirements
+  * Helps understand business and future prospects
+
+Creates financial portrait, identifies intrinsic value, helps recommendations
+  * Insight into business decisions
+  * Pay attention to key value drivers like CF and EPS
+  * Cross-sectional comparisons and time-series analysis
+    * Use financial ratios
+  * Price-volume + fundamental is best
+    * Combine based on financial or economic ideas
+
+Use time-series ops and ratios using PV data to increase turnover
+
+Use `keep` and `tradewhen` to reduce turnover
+
+Examples
+  * `ts_rank(equity / cap, 20)` -- like book/market ratio
+    * TOP3000, neutralization industry, decay 5, truncation 0.1
+    * 1.6 Sharpe, 25% turnover, 0.87 fitness, 7% returns
+    * Try operators other than `ts_rank`, use groups
+  * `-ts_zscore(enterprise_value / ebitda, 63)` -- short rising valuation
+    * TOP3000, neutralization industry, decay 5, truncation 0.01
+    * 1.7 Sharpe, 15% turnover, 1.08 fitness, 7% returns 
+
+Model data has predicted fundamental, price, and ratio data from proprietary
+datasets
+  * Includes daily, quarterly, and annual frequency data
+
+Examples
+  * `ts_rank(mdf_oey, 250)` -- long increasing operating earnings yield
+    * TOP3000, neutralization industry, decay 0, truncation 0.01
+    * 1.9 Sharpe, 15% turnover, 1.14 fitness, 5.5% returns
+  * `group_zscore( ts_zscore(mdf_gry, 20), sector )` -- long increasing growth
+    rate and dividend yield
+    * TOP3000, neutralization industry, decay 0, truncation 0.1
+    * 1.9 Sharpe, 33% turnover, 0.86 fitness, 7% returns
+    * Reduce turnover by increasing decay
+
+Check out Financial Ratio video, "The Power of Firm Fundamentals in Explaining
+Stock Returns" (abstract ID 3090626), "Earnings and Price Momentum" (abstract ID
+342581)
