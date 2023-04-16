@@ -52,6 +52,14 @@ rows one at a time.
 P-231 Power of 2 recursion checks if `x==1`, then if `x%2==0` proceed to halve. 
   * Don't forget to check for `x<=0`, for which the answer is False
 
+P-1232 Check if Line requires check for vertical line (divide by zero). Can also
+use triangle rule to see if every group of 3 (consecutive) points has zero area
+  * `1/2 * det(A_ij), A_i =[[x_i, x_j], [y_i, y_j]]`, where typically `j = i+1`
+  * Shoelace formula gets sum of overlapping dets `det(A_12) + det(A_23) + ... + 
+  det(A_n1) = det([[x1,x2,...,xn,x1],[y1,y2,...,yn,y1]]) = det(transpose)`
+    * Shoelace formula reduces `2n` columns to `n` columns
+  * Very useful for calculating area of polygon with `n` points
+
 ## Divide and Conquer
 
 1. Divide `sub_problems = divide(p)`
@@ -164,25 +172,27 @@ Useful for constraint satisfaction problems
 
 Similar to DFS
 
-E.g., traverse trie to find word -- if current node has wrong letter, then
-backtrack and move to next candidate. If it has correct letter, continue
-downwards
-
-E.g., Number of ways to place N queens on NxN chess board -- iterate over rows 
-and cols, placing queen if not under attack. Remove queen if bad solution.
-  * `def f(row, count): for col in range(n): if not-attacked: place-queen and if 
-    bottom then increment count, else count = f(row+1, count); remove-queen; 
-    return count`
-  * `remove-queen` peels back queens for next iteration
-
 General framework:
-  * define `Problem` and `Solution` objects 
-  * `f` maps one Problem to one Solution
-    * `def f(p): if find_solution(p): output(p); return; else for pl in ps: if
-      is_valid(pl): place(pl), f(pl), remove(pl)
-    return merge([ f(pl) for pl in divide(p) ])`
+  * define `Candidate` object and global solution variable
+  * `f` handles `Candidate` and returns nothing, altering global variable along
+    the way
+    * `def f(c): if at_end(c): output(c); return; else for cl in cs: if
+      is_valid(cl): place(cl), f(cl), remove(cl)
   * Each recursion is next step closer to end. Each iteration within recursion 
   is at same spot 
   * Backtracking should happen within iteration
-  * `is_valid` prunes search zones, like `not-attacked` for N-queens
+  * `is_valid` prunes search zones, like `not_attacked` for N-queens
   * `place` and `remove` are symmetric
+
+Traverse trie to find word -- if current node has wrong letter, then
+backtrack and move to next candidate. If it has correct letter, continue
+downwards
+
+Number of ways to place N queens on NxN chess board -- iterate over rows 
+and cols, placing queen if not under attack. Remove queen if bad solution.
+  * `Candidate` need not be full `(x,y)` coord bc we need exactly 1 queen per
+    row
+  * `def f(row, count): for col in range(n): if not_attacked: place_queen and if 
+    bottom then increment count, else count = f(row+1, count); remove_queen; 
+    return count`
+  * `remove_queen` peels back queens for next iteration
