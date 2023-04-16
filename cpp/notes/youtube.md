@@ -92,3 +92,22 @@ Avoid preprocessor `#DEFINE` -- use `static const` as private member instead
 If unable to hide type defn, use namespace
 
 Use friends to access data/services from singletons
+
+## The Cherno -- arrays
+
+Multidimensional arrays are contiguous pointers to heap-allocated memory, which
+is useless bc heap allocations are randomly placed!
+  * Use contiguous array with staggered access instead -- `arr[x + width*y]`
+
+`std::array` is small template that can perform bounds checking and has built-in
+size parameter with no overhead
+
+## The Cherno -- strings
+
+Small strings are optimized on stack instead of heap with C++17
+  * Anything under 15 characters, but is implementation-dependent
+
+Use `std::string_view` instead of `std::string` as function argument to prevent
+needless copying (even if passing in `char *`!).
+  * Can also use `const std::string&` as argument instead, but that will still
+    create copy if you pass in a `char *` (C-style character array)
