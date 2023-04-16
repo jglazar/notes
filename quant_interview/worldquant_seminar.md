@@ -198,3 +198,49 @@ Examples
 Check out Financial Ratio video, "The Power of Firm Fundamentals in Explaining
 Stock Returns" (abstract ID 3090626), "Earnings and Price Momentum" (abstract ID
 342581)
+
+## Creating submittable alphas
+
+Added 19 alpha examples to Documentation page
+
+Upload profile pic so that leaderboard looks more engaging
+
+Same idea, different data field -- try all possible combos
+  * `ts_rank(operating_income/cap, 252)` and 
+  `ts_rank(mdf_oey, 252)` on TOP3000 with neutralization 
+  subindustry, 0 decay, 0.08 truncation, 1 delay
+  * Search through all data sets
+
+Same idea, different operator
+  * `ts_rank(mdf_oey, 252)` and `ts_quantile(mdf_oey, 252)`
+  * Could tack on cross-sectional groupwise rank before 
+  taking time-series rank, e.g.
+
+Toggle settings, esp. decay and neutralization
+  * `ts_av_diff(mdf_nps, 500)` with neutralization market or 
+  subindustry, TOP3000, decay 0, truncation 0.08, delay 1
+  * Subindustry generally performs well
+
+News data -- financial reports, analyst recommendations, 
+company products, legal events
+  * Impact can range days to quarters
+  * Combine with stock price data
+  * Must take `vec_avg` or similar
+  * 3 trading sessions -- pre-trading (4-9:30), main trading 
+  (9:30-4), post-trading (4-8)
+    * News normally released pre- or post-trading, which causes 
+    jumps during main trading
+    * Delay is a significant factor for news data -- try 0
+  * `rank( ts_sum( vec_avg(nws12_afterhsz_sl), 60 ) ) > 0.5 ? 
+  1 : rank( -ts_delta(close, 2) )*1` on TOP3000 with 
+  neutralization subindustry, decay 3, and truncation 0.01
+  * Turnover is usually high
+
+Sentiment data -- aggregated buzz/mood from news sites, 
+social media, and forums
+  * Helps businesses understand consumer views
+  * Must take `vec_avg` or similar
+  * `-ts_regression(returns, ts_delay(snt_buzz_ret, 1), 120)` 
+  on TOP3000 with neutralization subindustry, decay 15, 
+  max weight 0.1. `snt_buzz_ret` uses magnitude of buzz to 
+  predict returns.
