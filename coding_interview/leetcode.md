@@ -39,7 +39,7 @@ each list, a `current` pointer, and a `dummy_head` for safety
   * Recursion compares two nodes, then edits the min node's `next` field 
   via `min_node.next = f(min_node.next, max_node)` and finally `return min_node`
 
-### Math
+## Math
 
 P-50 Power has simple `O(n)` iteration/recursion, but you can get `O(log n)` 
 time by halving the exponent if even, and subtracting one if odd.
@@ -173,22 +173,25 @@ Useful for constraint satisfaction problems
 Similar to DFS
 
 General framework:
-  * define `Candidate` object and global solution variable
+  * define `Candidate` object, global current solution variable, and global
+    solutions vector or counter
   * `f` handles `Candidate` and returns nothing, altering global variable along
     the way
-    * `def f(c): if at_end(c): output(c); return; else for cl in cs: if
-      is_valid(cl): place(cl), f(cl), remove(cl)
+    * `def f(c): if at_end(c): output(c); return; else for cl in possible_next(c): 
+    if is_valid(cl): place(cl), f(cl), remove(cl)`
   * Each recursion is next step closer to end. Each iteration within recursion 
   is at same spot 
   * Backtracking should happen within iteration
   * `is_valid` prunes search zones, like `not_attacked` for N-queens
   * `place` and `remove` are symmetric
 
+### Examples
+
 Traverse trie to find word -- if current node has wrong letter, then
 backtrack and move to next candidate. If it has correct letter, continue
 downwards
 
-Number of ways to place N queens on NxN chess board -- iterate over rows 
+P-52 Number of ways to place N queens on NxN chess board -- iterate over rows 
 and cols, placing queen if not under attack. Remove queen if bad solution.
   * `Candidate` need not be full `(x,y)` coord bc we need exactly 1 queen per
     row
@@ -196,3 +199,66 @@ and cols, placing queen if not under attack. Remove queen if bad solution.
     bottom then increment count, else count = f(row+1, count); remove_queen; 
     return count`
   * `remove_queen` peels back queens for next iteration
+
+P-37 Sudoku solve
+  * `Candidate` is `(x,y,n)`
+  * Keep track of board, empty squares, and finished state
+  * Use standard template for `f(c)` 
+  * `is_valid` checks row and column and box
+  * `place` pops from `empties` and edits board
+  * `remove` appends empty spot back to `empties` and updates board
+  * `possible_next` takes (not pops!) from end of `empties` and constructs 9
+    possible numbers for that coord
+  * `at_end` checks if `empties` is empty
+  * `output` sets `finished` flag to `True` 
+
+P-77 Combinations
+  * Easiest solution is 2 pointers
+  * One backtracking-ish answer has lists as `Candidate`, which obviates
+    `current_list` variable and `place`, `remove`, and `is_valid` functions
+  * True backtracking has one integer as `Candidate`
+  * `is_valid` checks if committee is empty or if `Candidate > committee[-1]`
+  * `place` appends Candidate to committee, `remove` pops if not empty
+  * `possible_next` is every int from 1 to n
+  * `output` appends committee to list. Don't erase committee! Use
+    `committee.copy()`!
+  * `at_end` checks if `len(committee) == k`
+
+P-22 Generate Parentheses
+  * `is_valid`: `(` just checks if count exceeds n, `)` checks if count exceeds
+    n and if there are at least as many matching `(` in string already
+  * `place` appends paren to string
+  * `possible_next` is just `["(",")"]`
+  * `output` appends string to list. 
+  * `at_end` checks if `len(string) == 2n`
+
+P-78 Subsets
+  * `Candidate` is `(value, idx, active)` tuple
+  * `is_valid`: pass
+  * `place/remove` adds/pops value to list if Candidate is active
+  * `possible_next` is just next value in nums, either active or inactive
+  * `output` appends (copy of) list to solutions list. 
+  * `at_end` checks if `idx == len(nums)-1`
+
+P-78 can also be solved by converting each binary number to a string with length
+`len(nums)`, then interpreted as keep/skip
+  * Another solution has nested iteration: `solns = [[]]; for n in nums:
+    solns += [[n] + r for r in solns]`
+ 
+
+## Unfold recursion to iteration
+
+Helps prevent recursion stack overflow
+  * Tail recursion optimization can help, but is not guaranteed
+
+Recursion adds function call overhead and can duplicate calculations
+
+Iteration is often much faster
+
+Initialize stack or queue, push elements on, then iterate while stack/queue
+isn't empty
+
+P-100 Same Tree 
+  * `deq = deque([(p, q),]); while deq: p, q = deq.popleft(); if not check(p,
+    q): return False; if p: deq.append((p.left, q.left)), deq.append((p.right, 
+    q.right)); after entire while loop return True`
