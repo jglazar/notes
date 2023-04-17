@@ -245,6 +245,16 @@ P-78 can also be solved by converting each binary number to a string with length
   * Another solution has nested iteration: `solns = [[]]; for n in nums:
     solns += [[n] + r for r in solns]`
  
+P-39 and P-40 Combination Sum is straightforward
+  * `Candidate` is `(value, idx, active)` tuple
+  * `is_valid`: check if `sum(current) <= target`
+  * `place/remove` adds/pops value to list if Candidate is active
+  * (P-39) `possible_next` is next value with count up to `target//val`
+  * (P-40) `possible_next `is next value with count up to `ctr[val]`, where 
+  `ctr` is a Counter object and we iterate through `list(set(nums))` to 
+  avoid duplicates
+  * `output` appends (copy of) list to solutions list if `sum(current)==target`
+  * `at_end` checks if `idx == len(nums)-1`
 
 ## Unfold recursion to iteration
 
@@ -262,3 +272,46 @@ P-100 Same Tree
   * `deq = deque([(p, q),]); while deq: p, q = deq.popleft(); if not check(p,
     q): return False; if p: deq.append((p.left, q.left)), deq.append((p.right, 
     q.right)); after entire while loop return True`
+
+## Heaps
+
+Heap is one way to implement the Priority Queue abstract data type, which
+provides `O(1)` access to largest element 
+  * Provides `O(log N)` insertion or deletion of any element
+  * Other structures like array or linked list offer `O(1)` for one operation
+    and `O(N)` for the other
+
+Heap is a complete binary tree where the each node value >= values of children
+  * Complete tree is filled top-bottom and left-right on each row
+
+Insertion -- put new element in next slot to ensure complete tree criterion,
+then swap upwards as-needed
+
+Deletion -- replace desired node with last node in complete tree, then swap up
+or down as needed
+  * Usually only done on max element
+
+Replacement -- replace node with new element and sift down. Avoid needless 
+sift-up in extraction + insertion
+  * Usually only done on max element
+
+Cannot implement raw tree because we need to know where parents sit. Use 
+underlying array where indexing starts at 1
+  * `idx_parent = idx_current // 2`
+  * `idx_left = idx_current * 2`
+  * `idx_right = idx_current * 2 + 1`
+  * Can store last element's idx in idx 0 for fixed-size arrays
+
+### Implementation
+
+Keep heap and last index
+
+Add value v to heap h -- `h.append(v); idx = last; parent = idx//2; 
+while(h[idx] > h[parent] and idx > 1): swap(idx, parent); idx = parent;
+parent = idx//2`
+            
+Delete top element -- `save_top = h[1]; h[1] = h[last]; last -= 1; idx=1; 
+while(idx <= last//2): l = idx*2, r = idx*2+1, 
+if (h[idx] < h[l]) or (h[idx] < h[r]): 
+if h[l] > h[r]: swap(idx, left), idx = left else swap(idx, right), idx = right; 
+else: break; return save_top`
