@@ -298,6 +298,8 @@ AuTraSy. Read books like Active Portfolio Management by Grinold
 and Kahn.
   * Check Brain Tips series in Community forum
 
+Need to check all alphas on USA D0, USA D1, CHN D0, CHN D1 -- free points!
+
 ### Listed alphas
 
 1. `1/close`
@@ -349,3 +351,42 @@ Other ideas from website / emails / videos
   for reversion. `-ts_delta(close, 1)`
   * Price reversion works well during high volatility or volume. 
   `-rank(ts_delta(close, 2)) * rank(volume / ts_sum(volume, 30) / 30)`
+
+New beginner alphas
+1. `signal = abs(ts_mean(close,20)/ts_mean(close,60)-1); -signal*sign(returns)`
+  * TOP3000, decay 5, neutralization Market
+  * Try `trade_when` to reduce turnover
+2. `rank(mdf_rds)
+  * TOP3000, decay 0, neutralization sector
+  * Try different neutralization
+3. `fam_roe_rank * rank(sales/assets)`
+  * TOP3000, decay 0, neutralization industry
+  * Try different neutralization
+4. `-group_rank(ts_av_diff(mdf_pec,480),subindustry)`
+  * TOP3000, decay 0, neutralization none
+  * Try `vector_neut(x,y)` to neutralize to one-year Information ratio.
+5. `sum_vol = ts_sum(vec_sum(scl12_alltype_buzzvec), 5);`, `significance = 
+vec_norm (scl12_alltype_sentvec) / vec_count(scl12_alltype_sentvec);`, 
+`sent_vol = -ts_rank(sum_vol, 60);`, `sent_sig = ts_max(significance, 10);`, 
+`sent_vol * group_rank(sent_sig, sector)`
+  * TOP200, decay 0, neutralization none
+  * Try different simulation settings
+6. `zscore(ts_ir(cashflow_op/debt_st,1250))`
+  * TOP3000, decay 10, neutralization subindustry
+  * Try comparing ratio only for companies with positive cashflow from ops
+7. `ts_av_diff(mdf_nps,500)`
+  * TOP3000, decay 5, neutralization market
+  * Try different neutralization
+8. `pcr_oi_all`
+  * TOP200, decay 5, neutralization market
+  * Try different universe, increase weight with high average volume 
+9. `ts_av_diff(mdf_eg3, 250) * ts_corr(mdf_eg3, mdf_sg3, 250)`
+  * TOP200, decay 0, neutralization subindustry
+  * Try expanding lookback period
+10. `market_ret = ts_product(1+group_mean(returns,1,market),250)-1;` 
+`rfr = vec_avg(fnd6_newqeventv110_optrfrq);`, 
+`expected_return = rfr + beta_last_360_days_spy * (market_ret-rfr);`
+`actual_return = ts_product(returns+1,250)-1;`, 
+`actual_return - expected_return`
+  * TOP1000, decay 5, neutralization subindustry
+  * Try different simulation settings
