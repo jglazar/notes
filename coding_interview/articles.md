@@ -224,3 +224,90 @@ Nested functions copy in and use local version of outer variables
   * Use `nonlocal` to modify outer variable 
 
 Class methods always require `self` as first argument
+
+## 14 Patterns
+
+Link [here](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
+
+1. Sliding window 
+  * Perform operation on window which can grow, shrink, or stay constant
+  * Start from 1st element and shift right, adjusting window length
+  * 🕵️ Look for linear data structure, longest/shortest substring/subarray, find
+    specific value
+  * 📖 Longest subarray with all 1s, max sum subarray of size k, longest
+    substring with k distinct characters, string anagrams
+2. 2 pointers
+  * Iterate through data structure unitl one or both pointers hits condition
+  * With only one pointer, you need to repeatedly look back for `O(N^2)` time
+  * 🕵️ Look for pairs/triplets/subarray, data is sorted, multiple comparisons, 
+  fulfilling constraints
+  * 📖 Squaring a sorted array, triplets summing to zero, comparing strings
+    containing backspaces
+3. Fast and slow pointers
+  * Useful for cyclic linear data structures -- two pointers are guaranteed to
+    meet
+  * 2 pointer method doesn't work on singly linked lists, but fast/slow does
+  * 🕵️ Look for loops, require position of element or length of data structure
+  * 📖 Linked list cycle, palindrome linked list, cycle in circular array
+4. Merge intervals
+  * Useful for finding or merging overlapping intervals
+  * 🕵️ Look for producing list with mutually exclusive intervals, overlapping
+    intervals
+  * 📖 Intervals intersection, max CPU load
+5. Cyclic sort
+  * Iterate over array: if current is at wrong index, then swap to place
+    correctly
+  * 🕵️ Look for sorted array with numbers in a given range, find
+    missing/smallest/duplicate number in sorted/rotated array
+  * 📖 Find the missing number, find smallest missing positive number
+6. In-place reversal of linked list
+  * Point to head and previous, then advance in lock-step along list
+  * 📖 Reverse sublist, reverse every k-element sublist
+7. Tree BFS
+  * Pop root from queue, visit, the push kids onto queue
+  * 🕵️ Look for tree traversal level-by-level
+  * 📖 Binary tree level-order traversal, zigzag traversal
+8. Tree DFS
+  * curr-left-right (pre-order), left-curr-right (in-order), left-right-curr
+    (post-order)
+  * Make recursive call for each child
+  * 🕵️ Look for searching where node is closer to leaf
+  * 📖 Sum of path numbers, all paths for a sum
+9. 2 Heaps
+  * Useful for finding smallest element of one part and biggest of another
+  * Store first half in max-heap and second half in min-heap; median is
+    calculated from top element of each heap
+  * 🕵️ Look for scheduling, finding smallest/largest/median element of set,
+    binary trees
+  * 📖 Find median of number stream
+10. Subsets
+  * Start with empty set, then add `l[0]` to all sets to create new sets, then 
+  add `l[1]` to all sets to create new sets, then ...
+  * 🕵️ Look for combinations/permutations
+  * 📖 Subsets with duplicates, string permutations by changing case
+11. Modified binary search
+  * Useful for sorted arraysG
+  * `m = s + (s+e)//2; if key==l[m] then return; if key<l[m] then e = m-1 else e
+    = m + 1`
+  * 📖 Order-agnostic binary search, search in sorted infinite array
+12. Top/bottom/frequent k elements
+  * Find top k numbers: insert 1st k elements into min-heap, then iterate 
+  through the rest of the elements. Pop out root and heap-insert new element if 
+  new element > root
+  * 🕵️ Look for sorting an array to find an exact element
+  * 📖 Top k numbers, top k frequent numbers
+13. K-way merge
+  * Given k sorted arrays, use heap to perform sorted traversal of all elements
+  * Push smallest element of each array into min-heap, then pop overall min and
+    heap-insert next element from that array
+  * 🕵️ Look for sorted arrays/lists/matrix, merging sorted lists, finding
+    smallest element in sorted list
+  * 📖 Merge k sorted lists, k pairs with largest sums
+14. Topological sort
+  * Find linear order of elements with dependencies
+  * Store graph as adjacency list using hashmap; use keep count of in-degrees
+    with hashmap; 0-in-degree nodes are sources and are store in queue; for each
+    source: add to sorted list, get all kids, decrement kids' in-degree, add any
+    kids with 0-in-degree to sources list
+  * 🕵️ Look for acyclic directed graphs, updated objects in sorted order
+  * 📖 Task scheduling, min height of tree
