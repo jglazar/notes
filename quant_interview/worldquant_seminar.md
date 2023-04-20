@@ -244,3 +244,20 @@ social media, and forums
   on TOP3000 with neutralization subindustry, decay 15, 
   max weight 0.1. `snt_buzz_ret` uses magnitude of buzz to 
   predict returns.
+
+## Q and A
+
+Check out articles on the forum
+  * Seven Tips for Creating Delay 0 Alphas
+  * 6 ways to evaluate a dataset
+
+Hired 6 interns and 5 full-time from last tournament
+
+Getting started with China region -- price limit system prevents negating as a
+strategy
+  * CHN has high in-sample performance
+
+Only a subset of alphas work well for delay-1 and delay-0
+
+Truncation 0.01 for TOP3000
+  * Use `rank` to prevent overweighting
