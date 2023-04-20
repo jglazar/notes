@@ -356,7 +356,7 @@ New beginner alphas
 1. `signal = abs(ts_mean(close,20)/ts_mean(close,60)-1); -signal*sign(returns)`
   * TOP3000, decay 5, neutralization Market
   * Try `trade_when` to reduce turnover
-2. `rank(mdf_rds)
+2. `rank(mdf_rds)`
   * TOP3000, decay 0, neutralization sector
   * Try different neutralization
 3. `fam_roe_rank * rank(sales/assets)`
@@ -390,3 +390,36 @@ vec_norm (scl12_alltype_sentvec) / vec_count(scl12_alltype_sentvec);`,
 `actual_return - expected_return`
   * TOP1000, decay 5, neutralization subindustry
   * Try different simulation settings
+11. `group_rank(fam_est_eps_rank, sector)`
+  * TOP3000, decay 0, neutralization subindustry
+  * Try different group
+12. `-group_rank(ts_av_diff(mdf_pbk, 5), subindustry)`
+  * TOP3000, decay 20, neutralization market
+  * Try creating custom subgroups of `rank(mdf_pbk)` using `bucket` operator
+  * Try using `group_normalize()`
+13. `trade_when(days_from_last_change(fam_earn_surp_pct)==0, fam_earn_surp_pct *
+    -returns, -1)` 
+  * TOP3000, decay 0, neutralization market
+  * Try smoothing
+14. `zscore(cash_st/debt_st)` 
+  * TOP500, decay 0, neutralization subindustry
+  * Try comparing against peers rather than whole market
+15. `percent = ts_rank(vec_stddev(nws12_prez_result2),50);`, 
+`-ts_rank(ts_decay_linear(percent, 150), 50)`
+  * TOP3000, decay 20, neutralization market
+  * Try `trade_when` to lower turnover
+16. `-rank(ebit/capex)`
+  * TOP3000, decay 0, neutralization sector
+  * Try different neutralization
+17. `-ts_rank(retained_earnings, 250)`
+  * TOP3000, decay 10, neutralization sector
+  * Try different neutralization 
+18. `sent_vol = vec_sum(scl12_alltype_buzzvec);`, 
+`trade_when(rank(sent_vol)>0.95, -zscore(scl12_buzz)*sent_vol, -1)`
+  * TOP3000, decay 0, neutralization subindustry
+  * Try smoothing
+19. `a = ts_sum(open>close, 20) / ts_sum(open<close, 20);`, 
+`b = ts_sum(open>close, 250) / ts_sum(open<close, 250);`
+`rank(a/b)`
+  * TOP3000, decay 20, neutralization subindustry
+  * Try introducing price fluctuations
