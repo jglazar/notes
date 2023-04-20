@@ -287,7 +287,7 @@ Link [here](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-quest
   * 📖 Subsets with duplicates, string permutations by changing case
 11. Modified binary search
   * Useful for sorted arraysG
-  * `m = s + (s+e)//2; if key==l[m] then return; if key<l[m] then e = m-1 else e
+  * `m = s + (s+e)//2; if key==l[m] then return; if key<l[m] then e = m-1 else s
     = m + 1`
   * 📖 Order-agnostic binary search, search in sorted infinite array
 12. Top/bottom/frequent k elements
