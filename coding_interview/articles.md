@@ -311,3 +311,59 @@ Link [here](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-quest
     kids with 0-in-degree to sources list
   * 🕵️ Look for acyclic directed graphs, updated objects in sorted order
   * 📖 Task scheduling, min height of tree
+
+## Concurrency
+
+Link [here](https://hackernoon.com/top-5-concurrency-interview-questions-for-software-engineers-x48i30qu)
+
+Mutex provides one-at-a-time access to resource. 
+
+Semaphore provides k-at-a-time access. Also allows signaling between threads
+
+Best practices
+  * Minimize sharing mutable data to prevent safety issues (data races) and 
+  performance hit from lock.
+    * Immutable data is always thread-safe
+  * Minimize waiting 
+
+Deadlocks/livelocks can occur when using mutexes or semaphores
+
+### Exercises
+
+1.  ReadWrite lock -- many readers, one writer
+  * Define APIs exposed by class -- acquireReadLock, releaseReadLock, 
+  acquireWriteLock, releaseWriteLock
+  * Cannot have any readers while writer works. Can have multiple readers.
+  * ❌ Don't place acquisition and release of mutex across separate methods.
+    Could have writer die, leaving deadlock
+  * ❗️ Don't let writer wait forever while new readers come in -- allow writer
+    to lock reader mutex
+2. Dining philosophers -- 5 people, 5 forks (all stationary)
+  * Each person needs the left and right fork to eat
+  * ❗️ Avoid circular wait condition -- impose order on condition variables 
+  and pick lower fork
+  * ❗️ Avoid starvation -- could cycle between 2 states, neither of which allow
+    one person to eat
+3. Uber -- Can have 4A, 4B, or 2A2B rideshares
+  * Ride requestors are threads. Each thread calls `seated()` then one calls 
+  `drive()`
+  * Create `seatA()` and `seatB()` methods
+  * Create `AWaiting` and `BWaiting` semaphores
+  * Count A and B separately, with lock/mutex to increment
+4. Async to sync 
+  * Make `ASyncExecutor.execute(fct)` block
+  * Create notification/singaling mechanism like semaphore, or condition 
+  variable + mutex
+  * Extend a new `SyncExecutor` and override `execute()` method, invoking
+    `super()` as needed
+  * ❗️ Async and sync code could try to access unusable shared resource
+    (deadlock) -- set up signaling to tell main thread to continue on
+5. Barber shop 
+  * Barber sleeps if no customers, customer leaves if shop full, customer wakes
+    barber if needed
+  * Maintain count of waiting customers, semaphore for waiting status, signaling
+    for waking barber
+  * ❗️ Deadlock could occur if barber and new customer check each others' status
+    simultaneously
+  * ❗️ Starvation could occur if customers are served out-of-order -- use a
+    queue
