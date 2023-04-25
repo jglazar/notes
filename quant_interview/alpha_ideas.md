@@ -300,7 +300,7 @@ and Kahn.
 
 Need to check all alphas on USA D0, USA D1, CHN D0, CHN D1 -- free points!
 
-### Listed alphas
+## WorldQuant listed alphas
 
 1. `1/close`
 2. `volume/adv20`
@@ -352,7 +352,8 @@ Other ideas from website / emails / videos
   * Price reversion works well during high volatility or volume. 
   `-rank(ts_delta(close, 2)) * rank(volume / ts_sum(volume, 30) / 30)`
 
-New beginner alphas
+## WorldQuant beginner alphas 
+
 1. `signal = abs(ts_mean(close,20)/ts_mean(close,60)-1); -signal*sign(returns)`
   * TOP3000, decay 5, neutralization Market
   * Try `trade_when` to reduce turnover
@@ -424,7 +425,7 @@ vec_norm (scl12_alltype_sentvec) / vec_count(scl12_alltype_sentvec);`,
   * TOP3000, decay 20, neutralization subindustry
   * Try introducing price fluctuations
 
-## Website videos
+## WorldQuant videos
 
 1. `ts_rank(-debt/equity, 240)`
 2. `group_neutralize(rank(-ts_delta(debt, 60)/assets), sector)` 
