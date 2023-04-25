@@ -423,3 +423,48 @@ vec_norm (scl12_alltype_sentvec) / vec_count(scl12_alltype_sentvec);`,
 `rank(a/b)`
   * TOP3000, decay 20, neutralization subindustry
   * Try introducing price fluctuations
+
+## Website videos
+
+1. `ts_rank(-debt/equity, 240)`
+2. `group_neutralize(rank(-ts_delta(debt, 60)/assets), sector)` 
+  * Improve by considering leverage and liquidity
+3. `rank(ts_zscore(inventory_turnover,240))` 
+  * Improve by considering earnings and COGS
+4. `sales_ps > last_diff_value(sales_ps, 5) ? 1 : rank(-ts_delta(close, 5))`
+  * Improve by adding conditional for `sales_ps` magnitude and replacing `1`
+    with expression
+5. `rank(ts_rank(cogs/ppent, 240)) * (1 + rank(ts_rank(inventory_turnover, 240)))` 
+  * Improve by adding other fundamental ratios like profitability and adding
+    technical indicators for entry and exit
+6. `rank(ts_rank(est_eps/close, 40))` 
+  * Improve by adding other analyst estimates like est. sales/share
+7. `-rank(ts_delta(close/est_eps, 5))`
+  * Improve by adding dispersion in est. EPS and volume data
+8. `est_eps > last_diff_value(est_epsr, 5) ? 1 : rank(-ts_delta(close, 5))`
+  * Use `eps` instead of `est_epsr`
+  * Improve by adding sentiment, adding filter for negative revision, and
+    replacing `1` with expression
+9. `0.5 - rank(ts_rank(inventory/(assets-goodwill), 60)) *
+   rank(ts_rank(inventory_turnover, 120))`
+  * Improve by adding cash flow/correlating cash flow with inventory, add
+    analyst data on liquidity and profitability
+10. `ts_rank(snt_social_volume/rel_num_cust, 60)`
+  * Improve by specifying sentiment direction
+11. `group_rank(argmin(rel_ret_cust/rel_num_comp, 15), subindustry)`
+  * Improve by including stock returns of competitors
+12. `rank(ts_rank(snt_social_volume, 60)) > 0.6 ?
+    group_rank((sum(snt_social_value, 10)/10)/ts_max(snt_social_value, 60),
+    subindustry) : 0`
+  * Improve by replacing `0` with expression and adding other sentiment data
+13. `rank(((high+low)/2 - close) / (high-low)) * rank(ts_rank(snt_social_volume,
+    40))`
+  * Improve by using `trade_when` on volatility or volume to reduce turnover,
+    and add sentiment direction
+14. `group_rank(snt_bullish/snt_bearish, market) * ts_rank(snt_social_volume,
+    254)`
+  * Improve by seeing if high sentiment volume correlates with high trading
+    volume, and include social media sentiment data
+15. `y = snt_bullish-snt_bearish; rank(-(y-ts_min(y, 10))/(ts_max(y, 10) -
+    ts_min(y, 10))) * (1 + rank(snt_social_volume))`
+  * Improve by using price volume data to indicate reversion
