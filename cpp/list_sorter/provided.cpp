@@ -111,6 +111,8 @@ int main() {
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
 
+#include <tuple>
+
 bool cmp(const Data* x, const Data* y)
 {
     return std::tie(x->lastName, x->firstName, x->ssn) < 
