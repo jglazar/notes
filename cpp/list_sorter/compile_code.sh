@@ -3,14 +3,11 @@
 #g++ --std=c++11 -O0 debug.cpp -o listsorter
 
 # compile with options
-g++ --std=c++11 -O0 \
--finline \
--fif-conversion \
--fif-conversion2 \
--finline-functions-called-once \
--fipa-pure-const \
--fomit-frame-pointer \
+# -fomit-frame-pointer does great, but I don't think there's a way to manually
+# add the functionality into the code 
+g++ --std=c++11 \
 debug.cpp -o listsorter
+#-fomit-frame-pointer \
 
 # test compile with debugging
 #g++ --std=c++11 -O0 -ggdb debug.cpp -o listsorter

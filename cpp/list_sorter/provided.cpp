@@ -111,30 +111,55 @@ int main() {
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
 
-#include <tuple>
+// it's not against the rules to use preprocessor directives
+// provides slight speedup
+#pragma GCC optimize("Ofast")
+#include <map>
+// tuple only needed for std::tie in cmp
+//#include <tuple>
 
 bool cmp(const Data* x, const Data* y)
 {
-    return std::tie(x->lastName, x->firstName, x->ssn) < 
-           std::tie(y->lastName, y->firstName, y->ssn);
+    // std::tie provides simple but slow way to compare multiple values
+    //return std::tie(x->lastName, x->firstName, x->ssn) < 
+    //       std::tie(y->lastName, y->firstName, y->ssn);
+    // faster to do inelegant if statements
+    if (x->lastName < y->lastName) {return true;}
+    if (x->lastName > y->lastName) {return false;}
+    if (x->firstName < y->firstName) {return true;}
+    if (x->firstName > y->firstName) {return false;}
+    if (x->ssn < y->ssn) {return true;}
+    return false;
 }
 
 void sortDataList(list<Data *> &l)
 {
-    l.sort(cmp);
+    // basic l.sort(cmp) gets the job done
+    //l.sort(cmp);
+    // but we can do better with bucket-sort
+    // note: this will work poorly for case T4
+    std::map<char, std::vector<Data*>> buckets {
+        {'A',{}}, {'B',{}}, {'C',{}}, {'D',{}}, {'E',{}},
+        {'F',{}}, {'G',{}}, {'H',{}}, {'I',{}}, {'J',{}},
+        {'K',{}}, {'L',{}}, {'M',{}}, {'N',{}}, {'O',{}},
+        {'P',{}}, {'Q',{}}, {'R',{}}, {'S',{}}, {'T',{}},
+        {'U',{}}, {'V',{}}, {'W',{}}, {'X',{}}, {'Y',{}},
+        {'Z',{}}
+    };
+    for (auto& data : l)
+    {
+        buckets[data->lastName[0]].push_back(data);
+    }
+    l.clear();
+    for (auto& bucket : buckets)
+    {
+        std::sort(bucket.second.begin(), bucket.second.end(), cmp);
+    }
+    for (auto& bucket : buckets)
+    {
+        for (auto& data : bucket.second)
+        {
+            l.push_back(data);
+        }
+    }
 }
-
-
-/*
-These are my own notes!!
-- u wanna put a check that figures out if the dataset is T1,T2,T3,T4
-- Apply different strategies for each
-- ex.) dataset = T4 if first and last (and maybe even middle) people are same names
-- ex.) dataset = T1 if number of values (first line) is 100,000 +/- 1% 
-- Don't make any dynamic allocated things --> make things in statically sized global arrays
-      --> can make it plenty big to handle biggest possible case
-- To beat his time, need to do stuff globally that u can precompute
-- The baseline time = l.sort = grade of C
-- Output must be correct
-*/
-

@@ -108,22 +108,80 @@ int main() {
 // YOU MAY NOT CHANGE OR ADD ANY CODE ABOVE HERE !!!
 // -------------------------------------------------
 
+// You may add global variables, functions, and/or
+// class defintions here if you wish.
+
+// try to copy-paste the list::merge() function and modify it to be faster
 /*
-These are my own notes!!
-- u wanna put a check that figures out if the dataset is T1,T2,T3,T4
-- Apply different strategies for each
-- ex.) dataset = T4 if first and last (and maybe even middle) people are same names
-- ex.) dataset = T1 if number of values (first line) is 100,000 +/- 1% 
-- Don't make any dynamic allocated things --> make things in statically sized global arrays
-      --> can make it plenty big to handle biggest possible case
-- To beat his time, need to do stuff globally that u can precompute
-- The baseline time = l.sort = grade of C
-- Output must be correct
+void merge(list<Data*>& a, list<Data*>&& x)                                                                                     
+{                                                                                                                                 
+    if (&a == std::__addressof(x)) {return;}
+    list<Data*>::iterator first1 = a.begin();                                                                                                    
+    list<Data*>::iterator last1 = a.end();                                                                                                       
+    list<Data*>::iterator first2 = x.begin();                                                                                                
+    list<Data*>::iterator last2 = x.end();                                                                                                   
+    const size_t orig_size = x.size();                                                                                          
+    while (first1 != last1 && first2 != last2)
+    {
+        if (cmp(*first2, *first1))                                                                                             
+        {
+            list<Data*>::iterator next = first2;
+            _M_transfer(first1, first2, ++next);
+            first2 = next;
+        }
+        else { ++first1; }
+    }
+    if (first2 != last2) { M_transfer(last1, first2, last2); }
+    a._M_inc_size(x._M_get_size());                                                                                           
+    x._M_set_size(0);                                                                                                             
+}
 */
 
+// try to copy-paste the list::sort() function and modify it to be faster
 /*
-void sortDataList(list<Data *> &l)
+    list<Data*> carry;
+    list<Data*> tmp[32];
+    list<Data*>* fill = tmp;
+    list<Data*>* counter;
+    do
+    {
+        carry.splice(carry.begin(), l, l.begin());
+	    for(counter = tmp; counter != fill && !counter->empty(); ++counter)
+        {
+            counter->merge(carry, cmp);
+            //merge(counter, std::move(carry));
+	        carry.swap(*counter);
+        }
+	    carry.swap(*counter);
+		if (counter == fill) ++fill;
+    }
+	while ( !l.empty() );
+
+	for (counter = tmp + 1; counter != fill; ++counter)
+        counter->merge(*(counter - 1), cmp);
+        //merge(counter, std::move(*(counter - 1)));
+	l.swap( *(fill - 1) );
+*/
+
+#pragma GCC optimize("Ofast")
+//#include <tuple>
+#include <map>
+
+bool cmp (const Data* x, const Data* y)
 {
+//    return std::tie(x->lastName, x->firstName, x->ssn) < 
+//           std::tie(y->lastName, y->firstName, y->ssn);
+    if (x->lastName < y->lastName) {return true;}
+    if (x->lastName > y->lastName) {return false;}
+    if (x->firstName < y->firstName) {return true;}
+    if (x->firstName > y->firstName) {return false;}
+    if (x->ssn < y->ssn) {return true;}
+    return false;
+}
+
+void sortDataList(list<Data *> &l) 
+{
+    //l.sort(cmp);
     std::map<char, std::vector<Data*>> buckets {
         {'A',{}}, {'B',{}}, {'C',{}}, {'D',{}}, {'E',{}},
         {'F',{}}, {'G',{}}, {'H',{}}, {'I',{}}, {'J',{}},
@@ -148,86 +206,4 @@ void sortDataList(list<Data *> &l)
             l.push_back(data);
         }
     }
-}
-*/
-// You may add global variables, functions, and/or
-// class defintions here if you wish.
-
-#include <tuple>
-
-__attribute__((always_inline))
-inline bool cmp (const Data* x, const Data* y)
-{
-    return std::tie(x->lastName, x->firstName, x->ssn) < 
-           std::tie(y->lastName, y->firstName, y->ssn);
-}
-
-// or auto& x
-// replace this-> with a.  
-/*
-void merge(auto& a, auto&& x)                                                                                     
-{                                                                                                                                 
-    // _GLIBCXX_RESOLVE_LIB_DEFECTS                                                                                                     
-    // 300. list::merge() specification incomplete                                                                                      
-    if (this != std::__addressof(__x))                                                                                                  
-      {                                                                                                                                 
-        _M_check_equal_allocators(__x);                                                                                                 
-                                                                                                                                        
-        iterator __first1 = begin();                                                                                                    
-        iterator __last1 = end();                                                                                                       
-        iterator __first2 = __x.begin();                                                                                                
-        iterator __last2 = __x.end();                                                                                                   
-        const size_t __orig_size = __x.size();                                                                                          
-        __try                                                                                                                           
-          {                                                                                                                             
-        while (__first1 != __last1 && __first2 != __last2)                                                                              
-          if (cmp(*__first2, *__first1))                                                                                             
-            {                                                                                                                           
-              iterator __next = __first2;                                                                                               
-              _M_transfer(__first1, __first2, ++__next);                                                                                
-              __first2 = __next;                                                                                                        
-            }                                                                                                                           
-          else                                                                                                                          
-            ++__first1;                                                                                                                 
-        if (__first2 != __last2)                                                                                                        
-          _M_transfer(__last1, __first2, __last2);                                                                                      
-                                                                                                                                        
-        this->_M_inc_size(__x._M_get_size());                                                                                           
-        __x._M_set_size(0);                                                                                                             
-          }                                                                                                                             
-        __catch(...)                                                                                                                    
-          {                                                                                                                             
-        const size_t __dist = std::distance(__first2, __last2);                                                                         
-        this->_M_inc_size(__orig_size - __dist);                                                                                        
-        __x._M_set_size(__dist);                                                                                                        
-        __throw_exception_again;                                                                                                        
-          }                                                                                                                             
-      }                                                                                                                                 
-}  
-*/
-
-void sortDataList(list<Data *> &l)
-{
-    //l.sort(cmp);
-
-    list<Data*> carry;
-    list<Data*> tmp[32];
-    list<Data*> * fill = tmp;
-    list<Data*> * counter;
-    do
-    {
-        carry.splice(carry.begin(), l, l.begin());
-	    for(counter = tmp; counter != fill && !counter->empty(); ++counter)
-        {
-            counter->merge(carry, cmp);
-	        carry.swap(*counter);
-        }
-	    carry.swap(*counter);
-		if (counter == fill) ++fill;
-    }
-	while ( !l.empty() );
-
-	for (counter = tmp + 1; counter != fill; ++counter)
-        counter->merge(*(counter - 1), cmp);
-	l.swap( *(fill - 1) );
 }
