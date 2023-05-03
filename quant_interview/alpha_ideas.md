@@ -469,3 +469,63 @@ vec_norm (scl12_alltype_sentvec) / vec_count(scl12_alltype_sentvec);`,
 15. `y = snt_bullish-snt_bearish; rank(-(y-ts_min(y, 10))/(ts_max(y, 10) -
     ts_min(y, 10))) * (1 + rank(snt_social_volume))`
   * Improve by using price volume data to indicate reversion
+
+## Finding alphas book
+
+1. `-ts_delta(close, 5) / ts_delay(close, 5)`
+  * Try neutralize industry, `rank(...)`, 3-day decay
+2. `std(returns)`
+  * Try `clamp(...)`, `hump(...)`, and smoothing to reduce turnover
+3. `log(volume)`
+4. `days_until_earnings_announcement < N ? 1 : 0`
+5. Use ratios like `earnings/revenue`
+  * Don't put earnings in denominator due to div-by-0 issues
+6. Buy before earnings announcements
+7. Buy `net_income > 0`, increasing net income over total assets, and
+   increasing gross margin
+8. Buy cash from operations > 0, cash from operations > net income
+9. `net_income / total_assets > industry median`
+10. `cash_flow / total_assets > industry median`
+12. `net income variance < industry median`
+13. `gross income variance < industry median`
+14. `rnd_expenses / total_assets > industry median`
+15. `capex / total_assets > industry median`
+16. `advertising_expenses / total_assets > industry median`
+17. decreasing inventory per unit sales
+18. increasing accounts receivable per unit sales
+19. increasing sales minus change in gross margin
+20. decreasing admin expenses per unit sales
+21. improving tax rate
+22. sales per employee
+23. net sales < free cash flow
+24. high book to price
+25. low sales growth?
+26. high cash flow from operations to price ratio
+27. equity issuance < industry average over 2 years
+28. long if sentiment > 70, short if < 30
+  * Consider adjusting magnitude with `novelty`
+  * Adjust further with `novelty * relevance`
+  * Scale with prior returns using `novelty * relevance * category_score`
+29. short companies with lots of news
+30. momentum for 2 days after earnings, then reverse for next 5 days
+31. `ts_rank(-debt/equity, 240)`
+32. `ts_rank(log(tweets+1), 20) - 0.5`
+33. negate options volatility skew -- `-ts_delta(implied volatility slope)`
+34. high volatility spread (call-implied volatility - put-implied volatility)
+35. `-option_volume / equity_volume`
+  * Stronger when short sale cost is high and option leverage is low
+36. negate change in aggregate put open-interest
+  * `open interest of call / open interest of put`
+37. Heed recommendations of analysts
+38. Buy if price target > current price
+39. Buy if earnings beat estimates
+40. Track change in earnings estimate for upcoming year
+41. Sentiment of questions during earnings calls
+42. `short_term analyst coverage / long-term analyst coverage`
+43. invest in spin-offs and their parents
+44. `(second-to-last-interval-close - last-interval-close) * std(close)`
+45. Buy small stocks within index, but sell large stocks within index
+46. Buy sector ETFs trading above moving average
+47. Sell in May, buy in November
+48. Follow commitment of traders reports for commodities
+49. Go long if market is risk-on (VIX is low)
