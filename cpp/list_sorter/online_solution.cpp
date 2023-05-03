@@ -81,7 +81,7 @@ void sortDataList(list<Data *> &);
 // The main function calls routines to get the data, sort the data,
 // and output the data. The sort is timed according to CPU time.
 int main() {
-  string filename = "sample1.txt";
+  string filename = "sample2.txt";
   // cout << "Enter name of input file: ";
   // cin >> filename;
   list<Data *> theList;

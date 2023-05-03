@@ -1,0 +1,17 @@
+all timings are done on sample2.txt and are measured in seconds
+
+std::tie cmp and l.sort(cmp) -- 5.00
+std::tie cmp and l.sort(cmp) with #pragma GCC optimize("Ofast") -- 3.09
+
+if-statement cmp and l.sort(cmp) -- 2.39
+if-statement cmp and l.sort(cmp) with #pragma GCC optimize("Ofast") -- 2.32
+
+std::tie cmp and bucket sort -- 4.54
+std::tie cmp and bucket sort with #pragma GCC optimize("Ofast") -- 2.58
+
+if-statement cmp and bucket sort -- 1.77
+if-statement cmp and bucket sort with #pragma GCC optimize("Ofast") -- 1.68
+
+solution found online here -- https://github.com/jacobkoziej/cu-ece264/blob/master/p2/p2.cc
+this uses prefix tries, which is an advanced data structure
+time -- 0.38
