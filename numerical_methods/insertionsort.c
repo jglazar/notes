@@ -7,6 +7,7 @@
 #include <stdio.h>
 #define ARRSIZE 10
 
+
 void print(int *a)
 {
     for (int i = 0; i < ARRSIZE; i++)
@@ -16,7 +17,9 @@ void print(int *a)
     printf("\n");
 }
 
-void insertionsort(int *a)
+
+// sort using integers to track place
+void i_insertionsort(int *a)
 {
     int curr_val, j;
 
@@ -33,11 +36,33 @@ void insertionsort(int *a)
     }
 }
 
+
+// sort using pointers to track place
+// pointers have issues with falling off the beginning
+void p_insertionsort(int *const a)
+{
+    int curr_val, *i, *j;
+
+    // start from 1
+    for (i = a+1; i < a+ARRSIZE; ++i)
+    {
+        curr_val = *i;
+        // do a shift on every iteration
+        // BUG: falling off beginning is undefined (esp. when checking j>=a)
+        for (j = i-1; j >= a && curr_val < *j; --j)
+        {
+            *(j+1) = *j;
+        }
+        *++j = curr_val;
+    }
+}
+
+
 int main()
 {
     int a[ARRSIZE] = {3, 2, 5, 4, 7, 6, 9, 10, 1, 8};
     print(a);
-    insertionsort(a);
+    i_insertionsort(a);
     print(a);
     return 0;
 }
