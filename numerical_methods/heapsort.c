@@ -6,59 +6,96 @@
 
 #include <stdio.h>
 
-#define HSIZE 10
-#define SWAP(T, i, j) { T TMP = *i; *i = *j; *j = TMP; }
-#define LEFT(i) (2*i)
-#define RIGHT(i) (2*i+1)
-#define PARENT(i) (i/2)
+#define SWAP(T, pa, pb) { T TMP = *pa; *pa = *pb; *pb = TMP; }
+#define MAXIDX(i, j, a) (a[i] > a[j] ? i : j)
+#define LEFTCHILD(i) (2*i + 1)
+//#define MAX(pa, pb) { *(pa) > *(pb) ? (pa) : (pb); }
+//#define RIGHT(i) (2*i + 2)
+//#define PARENT(i) ((i-1)/2)
 
-static int a[HSIZE] = {0, 3, 2, 5, 4, 7, 6, 9, 8, 1};
-
-void print_arr()
+void print_arr(int *a, int size)
 {
-    for (int i = 0; i < HSIZE; i++)
-    {
-        printf("%d ", a[i]);
-    }
+    int *end = a + size;
+    for (; a < end; ++a) { printf("%d ", *a); }
     printf("\n");
 }
 
-// sift-down a[l] to maintain heap
-// l and r determine the “left” and “right” range of the sift-down.
-void sift_down(const int l, const int r, )
+// return max child, 
+// only child below max_sift_idx,
+// or -1 if neither child below cut
+int max_child(int curr, int max_sift_idx, int *a)
 {
-    if (j > r) { return; }
-    int j = RIGHT(l), jold = l;
-    while (j <= r)
-    {
-        if (j < r && a[j] < a[j+1]) { ++j; } // set j to better child
-        if (a[j] <= a[l]) { break; } // found proper level
-        a[jold] = a[j];
-        jold = j;
-        j=2*j+1; 
-    } 
-    a[jold]=a[l];
+    int l, r;
+    if ((l = LEFTCHILD(curr)) > max_sift_idx) { return -1; }
+    if ((r = l+1) > max_sift_idx) { return l; } 
+    return MAXIDX(l, r, a);
 }
 
-// indexing starts at zero for this one
-void heapsort()
+// sift value down until greater than both children
+// stops if children are out-of-bounds (beyond max_sift_idx)
+void sift_down(int curr, int max_sift_idx, int *a)
 {
-    // i = left range of the sift-down (element to be sifted)
-    // decremented in hiring (heap creation) phase.
-    int i;
-    for (i = HSIZE/2 - 1; i >= 0; --i)
+    int child = max_child(curr, max_sift_idx, a);
+    if ((child < 0) || (a[child] <= a[curr])) { return; }
+    SWAP(int, &a[curr], &a[child])
+    sift_down(child, max_sift_idx, a);
+}
+
+// start with leaf parents, then sift each down to create heap
+// this uses Floyd's algorithm which magically uses O(N) time
+void create_max_heap(int *a, int size)
+{
+    for (int l = size/2 - 1; l >= 0; --l)
     {
-        sift_down(i, HSIZE - 1);
-    }
-    // right range of the sift-down 
-    // decremented in retirement-and-promotion (heap selection) phase.
-    for (i = HSIZE - 1; i > 0; i--)
-    {
-        // Clear space at end array, then retire top of the heap into it.
-        SWAP(int, &a[0], &a[i]); 
-        sift_down(0,i-1); 
+        sift_down(l, size-1, a);
     }
 }
+
+// move top of heap (max value) to end
+// then sift down to next-to-last position
+void place_max_at_end(int *a, int size)
+{
+    for (int r = size - 1; r > 0; r--)
+    {
+        SWAP(int, &a[0], &a[r]); 
+        sift_down(0, r-1, a); 
+    }
+}
+
+void heapsort(int *a, int size)
+{
+    create_max_heap(a, size);
+    place_max_at_end(a, size);
+}
+
+int main()
+{
+    int a[] = {0, 3, 2, 5, 4, 7, 6, 9, 8, 1};
+    int size = sizeof(a) / sizeof(a[0]);
+    print_arr(a, size);
+    heapsort(a, size);
+    print_arr(a, size);
+    return 0;
+}
+
+// sift-down a[l] to maintain heap
+// l and r determine the left-right range of the sift-down.
+/*
+void sift_down(const int l, const int r)
+{
+    int child = LEFT(l), curr_idx = l, val = a[l];
+    while (child <= r)
+    {
+        if (child < r && a[child] < a[child+1]) { ++child; } // set j to better child
+        if (a[child] <= val) { break; } // found proper level
+        a[curr_idx] = a[child];
+        curr_idx = child;
+        child = LEFT(child);
+    } 
+    a[curr_idx]=val;
+}
+*/
+
 
 /*
 typedef struct Phase
@@ -148,11 +185,3 @@ void heapsort()
     }
 }
 */
-
-int main()
-{
-    print_arr();
-    heapsort();
-    print_arr();
-    return 0;
-}
