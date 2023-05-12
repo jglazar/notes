@@ -27,12 +27,56 @@ octets...
 ## Root finding
 
 (Almost) always used bracketed search!
+  * Ensure that the function switches sign within the bracket
 
-* No derivative -- Brent's method
+* No derivative -- Brent's method or Ridder's method
 * Can compute derivative -- Newton-Raphson with bounds
+* Can compute second derivative -- Halley's method
 * Polynomial -- Laguerre's method
 * Multidimensional -- Newton-Raphson, with great 1st guess
 
+Bisection is easy, guaranteed to converge, has linear convergence (sig figs are
+earned linearly -- one function call = 1 sig fig)
+  * Bisection works better for discontinuous functions and continuous functions
+    with sharp 2nd-deriv change near root.
+
+Secant and False Position methods assume linearity to redraw boundaries
+  * Secant moves left and right bounds in tandem, keeping most recent estimate
+  * False position keeps bounds s.t. `f(a) * f(b) < 0`
+  * Superlinear convergence
+
+Ridder's method has quadratic convergence, but 2 function calls, so sqrt(2)
+convergence. Works better overall if exponential factors used.
+
+Brent's method mixes bisection with inverse quadratic interpolation
+
+Newton-Raphson expands function as 1st-order Taylor approx., then takes next
+guess as the zero-crossing
+  * `f(x+d) = 0 = f(x) + f'(x)*d --> d = -f(x) / f'(x) --> x2 = x1 + d`
+  * Terrible when 1st-deriv vanishes
+  * Can enter cycles
+  * Quadratic convergence -- 1 function call = 2 sig figs
+  * Useful for polishing up known roots 
+  * Using numerical derivative (rather than analytical) requires 2 function
+    calls, reducing convergence to sqrt(2). Also tough to pick `dx`. Can get
+    only linear speedup if `dx` too big (s.t. `f'(x)` doesn't change). Use
+    Brent's method instead.
+  * Best is to mix Newton-Raphson with bisection search -- do bisection step if
+    NR goes out of bounds or doesn't reduce bracket size sufficiently
+
+Halley's method uses `x2 = x1 + -f(x1) / (f'(x1) (1 - (f(x1)f''(x1)) / (2
+f'(x1)^2) ))`
+  * Converges cubically -- each function call triples sig figs
+  * Can implement when near root by bracketing denominator b/t 0.8 and 1.2
+
+Polynomial hack: use eigenvalue finder on companion matrix (see text)
+
+Newton-Raphson is only real option for multidimensional
+  * `F(x+d) = 0 = F(x) + J*d` then use LU decomp to solve for d. `x2 = x1 + d`.
+    J is Jacobian matrix
+  * Cannot apply minimization to `H = F1(x)^2 + F2(y)^2 + ...`. Will likely get
+    stuck in local minimum
+
+## Minimization
+
 ## Random numbers
-
-
