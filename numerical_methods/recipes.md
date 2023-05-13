@@ -2,6 +2,27 @@
 
 ## Linear algebra
 
+### QR decomposition
+
+Q is orthogonal and R is upper-triangular s.t. `QRx = b --> Rx = Q^T b` is easy
+to solve via backsubstitution
+
+Build using successive Householder reflections 
+  * Requires 2x number of ops as LU decomp
+
+* (+) Useful for constructing orthogonal bases and solving least-squares
+* (-) But SVD is better at those anyway
+* (+) `O(N^2)` matrix factorization update when solving closely related systems
+  * Uses Jacobi rotations
+
+### Lower than `O(N^3)` inversion
+
+Partition matrix into 2x2 supermatrix, then note trick to reduce 8
+multiplications down to 7 by introducing many more adds/subs.
+
+Recursive Strassen method gives `O(N^log2(7))` time complexity. Pays off after
+`N > 100`
+
 ## Sorting
 
 In order from bad to good:
@@ -78,5 +99,19 @@ Newton-Raphson is only real option for multidimensional
     stuck in local minimum
 
 ## Minimization
+
+### Dynamic programming
+
+Problem has stages each containing a set of states. Cost to traverse graph. 
+Similar to backtracking but with costs.
+
+Bellman/Dijkstra/Viterbi algorithm: one sweep, labeling each node with cost of
+best path to that node.
+  * Can read off optimal path at the end.
+
+Main trick is minimizing number of states at each stage. Only want states with
+finite cost. Can use hash memory.
+
+Examples: Parenthesizing matrix multiplication, DNA sequence alignment
 
 ## Random numbers
