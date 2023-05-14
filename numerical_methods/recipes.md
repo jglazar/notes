@@ -2,6 +2,20 @@
 
 ## Linear algebra
 
+### Cholesky decomposition
+
+2x faster than other methods for solving linear eqns involving symmetric
+positive-definite matrix
+  * Positive-definite: `v A v > 0` for all vectors `v`, or, all eigenvalues are
+    positive
+
+Similar to LU decomp, but finds `L L^T = A`. Like a square root.
+
+`N^3 / 6` operations and `N` square roots.
+
+* (+) No pivoting -- numerically stable
+* (+) Failure simply indicates matrix was not positive definite
+
 ### QR decomposition
 
 Q is orthogonal and R is upper-triangular s.t. `QRx = b --> Rx = Q^T b` is easy
@@ -10,6 +24,7 @@ to solve via backsubstitution
 Build using successive Householder reflections 
   * Requires 2x number of ops as LU decomp
 
+* (+) Faster than Jacobi method for diagonalizing real symmetric matrices
 * (+) Useful for constructing orthogonal bases and solving least-squares
 * (-) But SVD is better at those anyway
 * (+) `O(N^2)` matrix factorization update when solving closely related systems
@@ -22,6 +37,8 @@ multiplications down to 7 by introducing many more adds/subs.
 
 Recursive Strassen method gives `O(N^log2(7))` time complexity. Pays off after
 `N > 100`
+
+## Random numbers
 
 ## Sorting
 
@@ -98,9 +115,17 @@ Newton-Raphson is only real option for multidimensional
   * Cannot apply minimization to `H = F1(x)^2 + F2(y)^2 + ...`. Will likely get
     stuck in local minimum
 
-## Minimization
+## Optimization
 
-### Dynamic programming
+Interior point methods often beat simplex methods
+  * Traverse interior of feasible region
+  * Use primal-dual relationship and KKT condition
+  * Quite complicated, but default algorithm works well
+
+Simulated annealing is good general-purpose method, but authors aren't sure how
+good
+
+### Dynamic programming 
 
 Problem has stages each containing a set of states. Cost to traverse graph. 
 Similar to backtracking but with costs.
@@ -114,4 +139,80 @@ finite cost. Can use hash memory.
 
 Examples: Parenthesizing matrix multiplication, DNA sequence alignment
 
-## Random numbers
+## Modeling data
+
+MCMC is good when estimating/sampling posterior
+  * Requires detailed balance and ergodicity (and aperiodicity)
+  * Top eigenvalue of transition matrix is 1, 2nd eigenvalue determines
+    convergence speed
+  * Samples are complete -- can marginalize out unwanted data
+  * Picking transition distribution (moves) can be tricky
+    * E.g., 2 moves -- `k` fixed and `l` small, `k++` and `l` changed s.t. `l/k`
+      constant
+  * ✅ Use `log(p)` to prevent under/overflow during unnormalized probability
+    density (like `exp(-delta_e/T)`) calculations
+
+Gibbs sampler takes independent samples from each component variables'
+conditional pdf.
+  * (+) Yields big moves, unlike tiny moves from MCMC
+  * (-) Must know/calculate normalize conditional pdfs
+  * Works well for discrete variables, where normalization is quick. Numerical
+    integration for continuous variables is slow -- better to use MCMC.
+  * ❗️ Not the same as doing MCMC with moves one component at a time!
+
+## Geometry
+
+KD-trees hold points
+  * Takes `O(N log N)` time and `O(N)` space to construct
+  * Each box has 2 children, each partition uses 1 coord, coords are used
+    cyclically, and cuts are made s.t. children have equal numbers of points
+  * Children also have pointer to parent
+
+Benefits of KD-trees
+  * Find any point's nearest neighbor in `O(log N)` time 
+    * Comes in handy when repeating for many points
+  * Find `n` nearest neighbors in `O(log n log N)` time using heap
+
+Triangle area calculated with `1/2 A x B`, where `A` and `B` are vectors
+
+Random points on n-dimensional sphere
+  * Get n independent Gaussians. These make an n-dimensional vector that is
+    spherically symmetric bc multi-dim Gaussian factorizes to product of 
+    Gaussians. Then take `x = v / |v|`.
+    * Get point inside with uniform random radius 
+  * For `n = 2`: Rejection-sample point inside circle, then scale out to land on
+    perimeter with `x = v / |v|`
+  * For `n = 3`: Rejection-sample point inside circle, then use Marsalgia
+    formula
+  * For `n = 4`: Rejection-sample 2 points inside circle, then use special
+    formula
+
+Random n-dimensional rotation matrix
+  * Fill n x n matrix with random Gaussian samples, then apply QR-decomp to get
+    rotation matrix `Q`. Can get `det(Q) = 1` (proper rotation matrix) by
+    swapping any two rows
+  * For `n = 2`: Pick random `theta`, then fill rotation matrix with
+    `sin(theta)` and `cos(theta)`
+  * For `n = 2`: Get random point on unit circle, then set `cos(theta) = x` and
+    `sin(theta) = y`
+    * ✅ Avoids trig function calls
+  * For `n = 3`: Get random point on 4D hypersphere, then apply special formulas
+
+Delaunay triangulation best avoids small angles and long sides 
+  * Useful for 2D interpolations and convex hulls
+  * Find triangle containing point in `O(log N)` time
+  * Find all nearest neighbors in `O(N log N)` time
+  * Solve largest empty circle problem with one pass through triangles
+  * Minimum spanning tree is a subset of Delaunay edges -- use Kruksal's method
+    which gives `O(N log N)` time (greedy method guaranteed to find optimum!)
+
+Voronoi tesselation is dual graph of Delaunay triangulation
+  * Get point-point vectors, then draw perpendicular bisectors
+  * Voronoi vertices are circumcenters of Delaunay triangles
+  * Solve path farthest from obstacles by following Voronoi edges
+
+QO-trees partition the space into even 4ths (in 2D) or 8ths (in 3D)
+  * Useful for collision detection -- only check current box and its neighbors
+    * Only need to check current box and its ancestors when searching for
+      element intersecting point
+  * Generally gets time complexity of `O(N^1/2)` (in 2D) or `O(N^2/3)` (in 3D)
