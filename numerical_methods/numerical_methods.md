@@ -10,42 +10,6 @@ Divide and conquer is especially useful.
   * nCk = n-1Ck + n-1Ck-1
   * gcd(a, b) = gcd(a, b-a) because a = cx and b = dx
 
-## Dynamic programming (from Numerical Recipes book)
-
-Known sequence of choices with corresponding cost/benefit is represented 
-by stages, each with set of states. 
-  * Directed graph: nodes are states, edges are allowable choices with 
-  corresponding cost. Represent forbidden transitions as edge with infinite 
-  cost.
-  * If maximizing benefit, just say cost = -benefit and minimize cost.
-  * ✅ Try to minimize number of states at each stage. Stages need not be 
-  chronological. Consider hash memory to efficiently retrieve edges with 
-  finite cost.
-
-Also called Bellman, Dijkstra, or Viterbi algorithm (just like HMM decoding!).
-
-Main algorithm: forward sweep and label each node with cost of best way to 
-reach that node, then (optionally) backtrack to read off set of decisions 
-made along the way.
-
-Most powerful when many paths collapse to small number of states which 
-ignore their history (Markov property!)
-
-E.g., Multiply ABCDE matrices to minimize operations. Each stage is the 
-number of multiplications so far and the states are: ABCDE; (AB)CDE, 
-A(BC)DE, AB(CD)E, ABC(DE); (ABC)DE, (AB)(CD)E, (AB)C(DE), A(BCD)E, 
-A(BC)(DE), AB(CDE); (ABCD)E, (ABC)(DE), (AB)(CDE), A(BCDE); (ABCDE). Now 
-define cost between each set of states, then traverse with best cost so far.
-  * Don't need to consider exact breakdown of how state was reached. E.g., 
-  No need to consider A(B(CD)E) instead of A(BCDE).
-
-E.g., Find best-scoring match between two DNA sequences, where allowed edits 
-are deletion, insertion, and substitution. Form table with sequences along 
-columns and rows and null characters at beginning. Start in top-left corner. 
-Move down or right to insert gap in 1st or 2nd sequence, or diagonally to 
-either match (no penalty) or mismatch (with penalty). Moves in first row / 
-column are simply shifts, which could induce its own penalty.
-
 ## Object-oriented programming
 
 Inheritance -- create new classes from existing classes. 
