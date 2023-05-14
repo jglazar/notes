@@ -127,17 +127,30 @@ good
 
 ### Dynamic programming 
 
-Problem has stages each containing a set of states. Cost to traverse graph. 
-Similar to backtracking but with costs.
+Problem is sequence of stages each containing a set of states. Cost to traverse 
+graph. Similar to backtracking but with costs.
+  * Directed graph: nodes are states, edges are allowable choices with 
+  corresponding cost. Represent forbidden transitions as edge with infinite 
+  cost.
+  * ✅ Try to minimize number of states at each stage. Stages need not be 
+  chronological. Consider hash memory to efficiently retrieve edges with 
+  finite cost.
 
-Bellman/Dijkstra/Viterbi algorithm: one sweep, labeling each node with cost of
-best path to that node.
-  * Can read off optimal path at the end.
+Bellman/Dijkstra/Viterbi algorithm: forward sweep and label each node with cost
+of best way to reach that node, then (optionally) backtrack to read off set of
+decisions made along the way.
 
-Main trick is minimizing number of states at each stage. Only want states with
-finite cost. Can use hash memory.
+Main trick is minimizing paths to small number of states which ignore their
+history (Markov property). Can use hash memory.
 
-Examples: Parenthesizing matrix multiplication, DNA sequence alignment
+E.g., Multiply ABCDE matrices to minimize operations
+  * Each stage is the number of multiplications so far
+  * Don't need to consider exact breakdown of how state was reached. E.g., 
+  No need to consider A(B(CD)E) instead of A(BCDE).
+
+E.g., Find best-scoring match between two DNA sequences
+  * Allowed edits are deletion, insertion, and substitution. 
+  * Traverse table with sequences along columns and rows
 
 ## Modeling data
 
