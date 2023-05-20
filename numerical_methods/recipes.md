@@ -30,7 +30,7 @@ Build using successive Householder reflections
 * (+) `O(N^2)` matrix factorization update when solving closely related systems
   * Uses Jacobi rotations
 
-### Lower than `O(N^3)` inversion
+### Lower than `O(N^3)` multiplication and inversion
 
 Partition matrix into 2x2 supermatrix, then note trick to reduce 8
 multiplications down to 7 by introducing many more adds/subs.
