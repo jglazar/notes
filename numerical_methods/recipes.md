@@ -217,6 +217,104 @@ Recursive Strassen method gives `O(N^log2(7))` time complexity. Pays off after
 
 ## 7. Random numbers
 
+Want generator with period `>= 2^64`
+
+### Uniform distribution
+
+Easiest RNG is linear congruential generator: `Xnew = (a * Xold + c) % m`
+  * Period is `<= m`
+  * Can pick `m` as word size to avoid performing `%`
+    * There's also a performance trick with `m = wordsize + 1`, which has
+      benefit of avoiding major issues with low-order bits
+  * (-) Fills `m^1/k` hyperplanes when pulling `k` numbers at a time
+  * (-) Small bits are less random than big bits
+    * ❗️ Perform `(rand / m) * range` instead of `rand % range`
+
+Note that there's a bias of order `1/m` for large `range / m`, where lower
+numbers are more likely than numbers `>= m - range`
+  * E.g., `m = 10, range = 3` --> `0: 4/10, 1: 3/10, 2: 3/10`
+  * ✅ My (and Knuth's!) solution: re-sample if `rand <= floor(m/range) * range`
+    * Don't need re-sampling if `range % m == 0`
+    * I couldn't think of a simpler but still correct solution
+  * Bias also applies for multiplication method above
+
+LCG Tips
+  * Pick `m` as computer's word size (`2^16`, `2^32`, or `2^64`) to avoid `%`
+  * If `m` is power of 2, pick `a` s.t. `a % 8 == 5` to ensure all numbers are
+    visited
+  * If `m` is a power of 2, then low-order bits have maximum period of 2, 4,
+    8... -- only use high-order bits!
+  * If `m` is not a power of 2 (next lowest prime, usually) you need
+    double-width registers to perform arithmetic. Must avoid overflow!
+    * Provides much more randomness for low-order bits
+    * Performance trick exists for `m = wordsize + 1`
+  * Pick `a` between `0.01*m - 0.99*m` and have no bitwise pattern
+  * Pick `c` to have no common factors with `m`. `c = 1` or `c = a` work well
+  * Only generate `m / 1000` numbers before changing parameters (like `a`)
+  * See 1st edition for recommended values of `a, c, m`
+
+My favorite method -- fast and simple
+  * Set `c = 0` (called "MLCG" or "Lehmer RNG") to avoid addition
+  * Set `m = wordsize (typically 2^64)` to avoid modulo
+    * enforce with `uint64_t`
+  * Ensure max period (`= m/4`) is achieved by picking:
+    * X0 is relatively prime to `m` -- any odd number
+    * `a` is primitive element modulo `m` -- `a % 8 = 3 or 5`
+  * `a = 2585821657736338717`, `a = 7664345821815920749` recommended in 3rd ed.
+  * Can instead set `m = 2^31 - 1` (Mersenne prime) and `a = 48271 or 16807`
+  * Daniel Lemire uses `__uint128_t state; return (state *= 0xda942042e4dd58b5)
+    >> 64` (return type is `uint64_t`)
+    * Uses 128-bit state for `2^126` period. Passes Big Crush test.
+    * Very fast on x64 processor, but perhaps not as much on ARM
+
+Better way: keep array of random integers `rands`, then `x1 = rands[conv(x0)]`
+  * `conv(n)` converts `n` to index of `rands`, like `(int)(float(n) / m *
+    arrsize)` or (worse -- see above) `n % arrsize`
+  * `rands[x0]` is replaced with new random number
+  * `x1` becomes new index for grabbing `x2`...
+  * Removes sequential correlation and provides nearly infinite period
+  * Low-order bits are still suspicious, and only `m` unique values are still
+    available (beware of 1D MC integration with `> m` rng draws -- you'll get
+    duplicated points!)
+
+Portable, but slower: separate RNG for most significant portion, least
+significant portion, and shuffling
+  * Must avoid integer overflows, so `m` and `a` must be small
+
+Subtractive method also available (and quite fast)
+  * Updates array using Fibonacci-style recurrence
+
+64-bit XOR shift
+  * `x = x XOR (x>>a1); x = x XOR (x<<a2); x = x XOR (x>>a3); `
+  * Flipping << and >> produces opposite bit order
+  * Period of `2^64 - 1` (avoid self-propagating 0)
+  * XOR acts like matrix on vector of 0s and 1s. Matrix has 1s on main diagonal
+    and another diagonal above (for <<) or below (for >>)
+  * Require identity after period, no identity after number of steps = prime
+    factor of period
+  * See 3rd edition for recommended values of `a1, a2, a3`
+
+### Testing RNG
+
+* Marsaglia's Diehard battery of tests
+* Knuth's spectral test
+* Check if distribution can be described by uniform dist
+  * Look at the histogram
+  * Kolmogorov test to check empirical cdf vs. uniform cdf
+  * Chi-sq with k-1 d.o.f. for counts of each integer (or bin of integers).
+    `sum((obsi - expi)^2 / expi)`
+
+### Other distributions
+
+Can approximately generate `N(0,1)` by taking sum of 12 `U(0,1)`, then
+subtracting 6 (recall that variance of uniform is `(b-a)^2/12`)
+
+Check 3rd ed. for multivariate Normal
+
+### Monte Carlo integration
+
+Check 3rd ed. for advanced methods
+
 ## 8. Sorting
 
 In order from bad to good:
