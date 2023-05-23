@@ -219,69 +219,83 @@ Recursive Strassen method gives `O(N^log2(7))` time complexity. Pays off after
 
 Want generator with period `>= 2^64`
 
+Period is at most `m`, the largest possible input
+  * Pigeonhole principle: any state value must lead to one next value which
+    leads to...
+  * Beware of MC integration with `> m` rng draws -- duplicated points!
+
 ### Uniform distribution
 
 Easiest RNG is linear congruential generator: `Xnew = (a * Xold + c) % m`
-  * Period is `<= m`
   * Can pick `m` as word size to avoid performing `%`
-    * There's also a performance trick with `m = wordsize + 1`, which has
-      benefit of avoiding major issues with low-order bits
+    * There's also a more complicated performance trick with `m = wordsize + 1`,
+      which has benefit of avoiding major issues with low-order bits
   * (-) Fills `m^1/k` hyperplanes when pulling `k` numbers at a time
   * (-) Small bits are less random than big bits
-    * ❗️ Perform `(rand / m) * range` instead of `rand % range`
+    * If `m` is power of 2, then top bit has `2^(n-2)` period, next bit has
+      `2^(n-3)`... last bits are constant or simply flip
 
-Note that there's a bias of order `1/m` for large `range / m`, where lower
-numbers are more likely than numbers `>= m - range`
-  * E.g., `m = 10, range = 3` --> `0: 4/10, 1: 3/10, 2: 3/10`
-  * ✅ My (and Knuth's!) solution: re-sample if `rand <= floor(m/range) * range`
+Converting LCG to range
+  * ❗️ Avoid `rand % range` bc low bits are trash! 
+  * Simple solution: `(rand / m) * range` to use high bits
+  * There's a bias of order `1/m` for large `range / m`, where lower numbers are
+    more likely than higher numbers 
+    * E.g., `m = 10, range = 3` --> `0: 4/10, 1: 3/10, 2: 3/10`
+    * Simple solution: re-sample if `rand <= floor(m/range) * range`
     * Don't need re-sampling if `range % m == 0`
-    * I couldn't think of a simpler but still correct solution
-  * Bias also applies for multiplication method above
+    * See [here](https://www.pcg-random.org/posts/bounded-rands.html) for more
 
 LCG Tips
   * Pick `m` as computer's word size (`2^16`, `2^32`, or `2^64`) to avoid `%`
-  * If `m` is power of 2, pick `a` s.t. `a % 8 == 5` to ensure all numbers are
-    visited
-  * If `m` is a power of 2, then low-order bits have maximum period of 2, 4,
-    8... -- only use high-order bits!
+  * If `m` is power of 2, pick `a` s.t. `a % 8 == 5 or 3` to ensure all numbers
+    are visited (maximal period)
   * If `m` is not a power of 2 (next lowest prime, usually) you need
     double-width registers to perform arithmetic. Must avoid overflow!
+    * Can use [Schrage's method][SchrageMethod]
     * Provides much more randomness for low-order bits
-    * Performance trick exists for `m = wordsize + 1`
+    * Performance trick exists for `m = wordsize +/- 1`
   * Pick `a` between `0.01*m - 0.99*m` and have no bitwise pattern
   * Pick `c` to have no common factors with `m`. `c = 1` or `c = a` work well
-  * Only generate `m / 1000` numbers before changing parameters (like `a`)
+  * Only generate `m / 1000` (or `sqrt(m)`) numbers before changing parameters
+    (like `a`)
   * See 1st edition for recommended values of `a, c, m`
 
 My favorite method -- fast and simple
   * Set `c = 0` (called "MLCG" or "Lehmer RNG") to avoid addition
-  * Set `m = wordsize (typically 2^64)` to avoid modulo
-    * enforce with `uint64_t`
+  * Set `m = wordsize (2^64)` to avoid modulo -- enforce with `uint64_t`
   * Ensure max period (`= m/4`) is achieved by picking:
     * X0 is relatively prime to `m` -- any odd number
     * `a` is primitive element modulo `m` -- `a % 8 = 3 or 5`
-  * `a = 2585821657736338717`, `a = 7664345821815920749` recommended in 3rd ed.
-  * Can instead set `m = 2^31 - 1` (Mersenne prime) and `a = 48271 or 16807`
-  * Daniel Lemire uses `__uint128_t state; return (state *= 0xda942042e4dd58b5)
-    >> 64` (return type is `uint64_t`)
-    * Uses 128-bit state for `2^126` period. Passes Big Crush test.
-    * Very fast on x64 processor, but perhaps not as much on ARM
+  * Check out code/rng.c for implementation
+  * Check out [Daniel Lemire][LemireRNG] and comparison [here][MinimalStandard]
+  * Check out "Tables of LCGs of different sizes and good lattice structures"
+    paper by L'Ecuyer for more constants
 
-Better way: keep array of random integers `rands`, then `x1 = rands[conv(x0)]`
+My favorite range converter
+  * Biased, but large state (`2^128` or `2^64` depending on choice above) makes
+    error microscopic
+  * Fastest due to avoiding division/modulo -- see O'Neill bounds article
+  * See code/rng.c for implementation 
+  * Lemire's unbiased version is unbiased and also very fast
+
+Float conversion
+  * `(float)rand * 1.0f/(float)RAND_MAX` -- compile-time calculate factor
+  * Trick: cast rng to signed int, then multiply, then add 0.5
+    * See [this paper](https://www.doornik.com/research/randomdouble.pdf)
+
+Longer period: keep array `rands`, then `x1 = rands[conv(x0)]`
   * `conv(n)` converts `n` to index of `rands`, like `(int)(float(n) / m *
     arrsize)` or (worse -- see above) `n % arrsize`
   * `rands[x0]` is replaced with new random number
   * `x1` becomes new index for grabbing `x2`...
   * Removes sequential correlation and provides nearly infinite period
-  * Low-order bits are still suspicious, and only `m` unique values are still
-    available (beware of 1D MC integration with `> m` rng draws -- you'll get
-    duplicated points!)
+  * Low-order bits are still suspicious
 
 Portable, but slower: separate RNG for most significant portion, least
 significant portion, and shuffling
   * Must avoid integer overflows, so `m` and `a` must be small
 
-Subtractive method also available (and quite fast)
+Subtractive method (Knuth's) also available (and quite fast)
   * Updates array using Fibonacci-style recurrence
 
 64-bit XOR shift
@@ -294,10 +308,22 @@ Subtractive method also available (and quite fast)
     factor of period
   * See 3rd edition for recommended values of `a1, a2, a3`
 
+New Xoroshiro methods are fast, lightweight, and pass tests
+  * Here's [xoshiro256ss](https://prng.di.unimi.it/xoshiro256starstar.c)
+  * Has 4 `uint64_t` numbers as state
+  * Does XOR, rotation, and shift operations
+  * (-) Requires special initialization to avoid zero state
+
+[LemireRNG]: https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/ 
+[SchrageMethod]: https://en.wikipedia.org/wiki/Lehmer_random_number_generator#Schrage's_method
+[MinimalStandard]: https://www.pcg-random.org/posts/does-it-beat-the-minimal-standard.html
+
 ### Testing RNG
 
-* Marsaglia's Diehard battery of tests
-* Knuth's spectral test
+* Marsaglia's Diehard battery of tests (run in 15 seconds)
+  * Considered outdated
+* BigCrush battery of tests (run in 4 hours)
+* Knuth's spectral test -- checks for hyperplane/lattice structure
 * Check if distribution can be described by uniform dist
   * Look at the histogram
   * Kolmogorov test to check empirical cdf vs. uniform cdf
