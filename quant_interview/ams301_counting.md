@@ -123,6 +123,15 @@ to nCk for the kth element of the nth row (counting k and n from 0)
   * Addition rule of Pascal's triangle therefore requires that nCk = 
   n-1Ck + n-1Ck-1
 
+(not from Tucker book - see blue notebook) Reflection Principle
+  * Number of paths from `(a,p)` to `(b,q)` that touch x-axis are equal to
+    number of paths from `(a,-p) to `(b,q)`, by symmetry
+  * Ballot problem: what is the chance that A always has lead over B if there
+    are `a + b` total ballots counted?
+    * Prob of failure = Prob of starting w B + Prob of starting w A and touching
+      x-axis = `b / (a+b)` + `b / (a+b)` (by Reflection Principle)
+    * Prob of success = `1 - 2b / (a+b) = (a-b)`
+
 ## Generating functions
 
 Hot dog problem can be recast as finding coefficient of x^r in generating 
