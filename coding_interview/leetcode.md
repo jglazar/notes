@@ -2,8 +2,6 @@
 
 Good collection by topic [here](https://leetcode.com/discuss/study-guide/448285/List-of-questions-sorted-by-common-patterns.)
 
-General binary search template [here](https://leetcode.com/discuss/study-guide/786126/Python-Powerful-Ultimate-Binary-Search-Template.-Solved-many-problems)
-
 ## Recursion
 
 Some languages can optimize tail recursion calls s.t. further calls overwrite
@@ -135,6 +133,30 @@ Quick-sort has `O(N log N)` time complexity if median is selected every time.
 `O(N^2)` time if min or max is selected, in which case it's equivalent to
 insertion sort. `O(log N)` space due to recursion (no cost to build sublists?)
 
+Quick-select returns index `k` with `kth`-smallest number
+  * All elements to the left of `k` are smaller, but not sorted
+  * Runs in `O(N)` time bc `1 + 1/2 + 1/4 + 1/8 + ... = 2`
+  * Can be used to solve P-973 K Closest Points 
+
+Quick-select with Lomuto partition scheme (simpler, but slightly slower):
+  * Can select random element in `[lo, hi]` range, then swap that element
+    with hi, perform partition, and swap back to avoid `O(N^2)` worst case 
+  * Hoare's partition has two converging pointers
+
+```
+l = [...]
+def f(lo, hi, k):
+    while True:
+        if lo == hi: return lo
+        pivot_val = l[hi], cutoff = lo
+        for i in range(lo, hi):
+            if l[i] < pivot_val: 
+                swap(l[i], l[cutoff]), cutoff++
+        if k < cutoff: hi = cutoff − 1
+        if k > cutoff: lo = cutoff + 1
+        if k = cutoff: return k
+```
+
 ### Tips
 
 ⚠️  Some problems seem like DnC, but can more easily and efficiently be solved via
@@ -177,13 +199,20 @@ General framework:
     solutions vector or counter
   * `f` handles `Candidate` and returns nothing, altering global variable along
     the way
-    * `def f(c): if at_end(c): output(c); return; else for cl in possible_next(c): 
-    if is_valid(cl): place(cl), f(cl), remove(cl)`
   * Each recursion is next step closer to end. Each iteration within recursion 
   is at same spot 
   * Backtracking should happen within iteration
   * `is_valid` prunes search zones, like `not_attacked` for N-queens
   * `place` and `remove` are symmetric
+    
+```
+def f(c): 
+    if at_end(c): 
+        output(c), return
+    for cl in possible_next(c): 
+        if is_valid(cl): 
+            place(cl), f(cl), remove(cl)
+```
 
 ### Examples
 
@@ -269,9 +298,15 @@ Initialize stack or queue, push elements on, then iterate while stack/queue
 isn't empty
 
 P-100 Same Tree 
-  * `deq = deque([(p, q),]); while deq: p, q = deq.popleft(); if not check(p,
-    q): return False; if p: deq.append((p.left, q.left)), deq.append((p.right, 
-    q.right)); after entire while loop return True`
+
+```
+deq = deque([(p, q),])
+while deq: 
+    p, q = deq.popleft(); 
+    if not check(p, q): return False; 
+    if p: deq.append((p.left, q.left)), deq.append((p.right, q.right)); 
+return True
+```
 
 ## Heaps
 
@@ -302,16 +337,82 @@ underlying array where indexing starts at 1
   * `idx_right = idx_current * 2 + 1`
   * Can store last element's idx in idx 0 for fixed-size arrays
 
+Alternatively, start at index 0 and use:
+  * `idx_parent = (idx_current - 1) // 2`
+  * `idx_left = idx_current * 2 + 1`
+  * `idx_right = idx_current * 2 + 2`
+
 ### Implementation
 
 Keep heap and last index
 
-Add value v to heap h -- `h.append(v); idx = last; parent = idx//2; 
-while(h[idx] > h[parent] and idx > 1): swap(idx, parent); idx = parent;
-parent = idx//2`
+Add value v to heap h:
+
+```
+h.append(v)
+idx = last, parent = (idx-1)//2
+while(h[idx] > h[parent] and idx > 0): 
+    swap(idx, parent)
+    idx = parent
+    parent = (idx-1)//2
+```
             
-Delete top element -- `save_top = h[1]; h[1] = h[last]; last -= 1; idx=1; 
-while(idx <= last//2): l = idx*2, r = idx*2+1, 
-if (h[idx] < h[l]) or (h[idx] < h[r]): 
-if h[l] > h[r]: swap(idx, left), idx = left else swap(idx, right), idx = right; 
-else: break; return save_top`
+Delete top element:
+
+```
+save_top = h[0], h[0] = h[last], last -= 1, idx = 0; 
+while(idx <= (last-1)//2): 
+    l = idx*2+1, r = l+1
+    if (h[idx] < h[l]) or (h[idx] < h[r]): 
+        if (h[l] > h[r]): 
+            swap(idx, left), idx = left 
+        else: 
+            swap(idx, right), idx = right; 
+    else: 
+        break
+return save_top
+```
+
+### Examples
+
+Python `heapq` module only implements min heap -- must negate items to implement
+max heap
+
+P-973 K Closest Points requires overwriting `<` operator
+  * Can create custom class for items and define `__leq__(self, other)`
+  * Better: bundle items into tuple with first element as key value
+
+May be multiple ways to create heap
+  * P-973 can create k-depth heap and loop through N items to get `O(N log k)`
+  * Can instead heapify array, then pop off top k items for `O(N + k log N)`
+
+## Arrays and hashmaps
+
+Python `bisect` module has `insort(arr, val)` method to automatically do binary
+search then insertion. 
+  * Unfortunately, insertion still takes `O(N)` time
+  * Performs Insertion similar to `bisect.insort(arr, val)`:
+  
+P-1046 Last Stone Weight is best solved with heap, but Timsort every iteration
+could be quicker. Could also implement `bisect.insort` instead.
+
+General binary search template [here](https://leetcode.com/discuss/study-guide/786126/Python-Powerful-Ultimate-Binary-Search-Template.-Solved-many-problems)
+  * Gives `left` as index of minimal element that satisfies `condition`
+  * Problem may require giving `left +/- 1`
+  * I think `left == len(arr) - 1` doesn't tell if val should go left or right
+    * Maybe set `right` beyond end of array?
+
+```
+def binary_search(array) -> int:
+    def condition(value) -> bool:
+        pass
+    # Could be [0, n], [1, n], etc. Depends on problem
+    left, right = min(search_space), max(search_space) 
+    while left < right:
+        mid = left + (right - left) // 2
+        if condition(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
