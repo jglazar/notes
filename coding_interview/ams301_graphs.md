@@ -76,6 +76,11 @@ must have matching degrees (`set` of vertex degrees must match)
 ❗️ Sum of vertex degrees = 2 * num of edges
   * so, number of odd-degree vertices must be even
 
+Interval graphs represent overlaps of intervals, typically of unit length
+  * Can represent geographical overlap of animal territories 
+  * Can represent temporal overlap of time periods -- e.g., jewelry problem
+  * Can represent indifference between two choices -- rating +/- 1 unit
+
 ## Chapter 10 -- Graph games
 
 Progressively finite = two players take turns until one wins
