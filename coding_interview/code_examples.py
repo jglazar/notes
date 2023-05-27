@@ -76,7 +76,7 @@ class Node:
         self.right = None
 
 def split(root, value):
-    if (not root) or (not root.value):
+    if not root:
         return None, None
     if value < root.value:
         left, root.left = split(root.left, value)
@@ -107,7 +107,6 @@ def erase(root, value):
 # Skip list
 # Linked list with random extra links for probabilistic binary search
 # Provides simple alternative to balanced trees
-
 from random import random
 
 class Node():
@@ -141,76 +140,50 @@ class SkipList():
         return level
 
     def _locate_node(self, key):
-        """
-        :param key: Searched key,
-        :return: Tuple with searched node (or None if given key is not present)
-                 and list of nodes that refer (if key is present) of should refer to
-                 given node.
-        """
-        # Nodes with refer or should refer to output node
+        # must return list of nodes pointing to target to enable deletion
         update_vector = []
         node = self.head
         for i in reversed(range(self.level)):
-            # i < node.level - When node level is lesser than `i` decrement `i`.
-            # node.forward[i].key < key - Jumping to node with key value higher
-            #                             or equal to searched key would result
-            #                             in skipping searched key.
             while i < node.level and node.forward[i].key < key:
                 node = node.forward[i]
-            # Each leftmost node (relative to searched node) will potentially have to
-            # be updated.
             update_vector.append(node)
-        update_vector.reverse()  # Note that we were inserting values in reverse order.
-        # len(node.forward) != 0 - If current node doesn't contain any further
-        #                          references then searched key is not present.
-        # node.forward[0].key == key - Next node key should be equal to search key
-        #                              if key is present.
-        if len(node.forward) != 0 and node.forward[0].key == key:
+        update_vector.reverse()  
+        if len(node.forward) and node.forward[0].key == key:
             return node.forward[0], update_vector
-        else:
-            return None, update_vector
+        return None, update_vector
 
-    def delete(self, key: KT):
+    def delete(self, key):
         node, update_vector = self._locate_node(key)
-        if node is not None:
+        if node:
             for i, update_node in enumerate(update_vector):
-                # Remove or replace all references to removed node.
                 if update_node.level > i and update_node.forward[i].key == key:
                     if node.level > i:
                         update_node.forward[i] = node.forward[i]
                     else:
                         update_node.forward = update_node.forward[:i]
 
-    def insert(self, key: KT, value: VT):
+    def insert(self, key, value):
         node, update_vector = self._locate_node(key)
-        if node is not None:
+        if node:
             node.value = value
-        else:
-            level = self.random_level()
+            return
+        level = self.random_level()
+        if level > self.level:
+            for _ in range(self.level - 1, level):
+                update_vector.append(self.head)
+            self.level = level
+        new_node = Node(key, value)
+        for i, update_node in enumerate(update_vector[:level]):
+            if update_node.level > i:
+                new_node.forward.append(update_node.forward[i])
+            if update_node.level < i + 1:
+                update_node.forward.append(new_node)
+            else:
+                update_node.forward[i] = new_node
 
-            if level > self.level:
-                # After level increase we have to add additional nodes to head.
-                for _ in range(self.level - 1, level):
-                    update_vector.append(self.head)
-                self.level = level
-
-            new_node = Node(key, value)
-
-            for i, update_node in enumerate(update_vector[:level]):
-                # Change references to pass through new node.
-                if update_node.level > i:
-                    new_node.forward.append(update_node.forward[i])
-
-                if update_node.level < i + 1:
-                    update_node.forward.append(new_node)
-                else:
-                    update_node.forward[i] = new_node
-
-    def find(self, key: VT) -> VT | None:
+    def find(self, key):
         node, _ = self._locate_node(key)
-        if node is not None:
-            return node.value
-        return None
+        return node.value if node else None
 
 # Alternative implementation of skip list
 from random import randint, seed
@@ -231,17 +204,14 @@ class SkipList:
         return self.len
 
     def find(self, elem, update = None):
-        if update == None:
+        if not update:
             update = self.updateList(elem)
-        if len(update) > 0:
+        if len(update):
             item = update[0].next[0]
-            if item != None and item.elem == elem:
+            if item and item.elem == elem:
                 return item
         return None
     
-    def contains(self, elem, update = None):
-        return self.find(elem, update) != None
-
     def randomHeight(self):
         height = 1
         while randint(1, 2) != 1:
@@ -249,22 +219,19 @@ class SkipList:
         return height
 
     def updateList(self, elem):
-        update = [None]*self.maxHeight
+        update = [None] * self.maxHeight
         x = self.head
         for i in reversed(range(self.maxHeight)):
-            while x.next[i] != None and x.next[i].elem < elem:
+            while x.next[i] and x.next[i].elem < elem:
                 x = x.next[i]
             update[i] = x
         return update
         
     def insert(self, elem):
-
         _node = Node(self.randomHeight(), elem)
-
         self.maxHeight = max(self.maxHeight, len(_node.next))
         while len(self.head.next) < len(_node.next):
             self.head.next.append(None)
-
         update = self.updateList(elem)            
         if self.find(elem, update) == None:
             for i in range(len(_node.next)):
@@ -273,7 +240,6 @@ class SkipList:
             self.len += 1
 
     def remove(self, elem):
-
         update = self.updateList(elem)
         x = self.find(elem, update)
         if x != None:
@@ -283,14 +249,6 @@ class SkipList:
                     self.maxHeight -= 1
             self.len -= 1            
                 
-    def printList(self):
-        for i in range(len(self.head.next)-1, -1, -1):
-            x = self.head
-            while x.next[i] != None:
-                print x.next[i].elem,
-                x = x.next[i]
-            print ''
-
 # Also consider AA balancing trees, which are relatively simple
 class AaTreeSet:
 	def __init__(self, coll=None):
@@ -344,19 +302,13 @@ class AaTreeSet:
 			node = stack.pop()
 			yield node.value
 			node = node.right
-
-# For unit tests
-	def check_structure(self):
-		visited = set()
-		if self.root.check_structure(visited) != self.size or len(visited) != self.size:
-			raise AssertionError()
 	
 	class Node:
 		def __init__(self, val=None):
 			self.value = val
-			if val is None:  # For the singleton empty leaf node
+            if not val:  # sentinel leaf nodes
 				self.level = 0
-			else:  # Normal non-leaf nodes
+			else: 
 				self.level = 1
 				self.left  = AaTreeSet.Node.EMPTY_LEAF
 				self.right = AaTreeSet.Node.EMPTY_LEAF
