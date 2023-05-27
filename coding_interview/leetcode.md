@@ -13,7 +13,7 @@ Arrays and Hashing
   * 🟩 P-217 Contains Duplicate ☑️
   * 🟩 P-242 Valid Anagram ☑️
   * 🟩 P-1 Two Sum ☑️
-  * 🟨 P-49 Group Anagrams
+  * 🟨 P-49 Group Anagrams ☑️
   * 🟨 P-347 Top K Frequent Elements
   * 🟨 P-238 Product of Array Except Self ☑️
   * 🟨 LOCKED Encode/Decode Strings
@@ -35,7 +35,7 @@ Stack
 
 Binary Search
   * 🟨 P-153 Find Mimimum in Rotated Sorted Array ☑️
-  * 🟨 P-33 Search in Rotated Sorted Array
+  * 🟨 P-33 Search in Rotated Sorted Array ☑️
 
 Linked List
   * 🟩 P-206 Reverse Linked List ☑️
@@ -516,6 +516,8 @@ General binary search template [here](https://leetcode.com/discuss/study-guide/7
     * `condition(idx)` function -- gives excuse to throw out right half of list
     * Left and right bounds -- could be [0, n], [1, n], etc.
     * Return value -- could be `left +/- 1`
+  * Note: `left + (right-left)//2` helps avoid integer overflows, which aren't a
+    problem in Python
 
 Binary search problems
   * Find place to insert: 
@@ -540,7 +542,7 @@ def binary_search(search_space) -> int:
         pass
     left, right = # min(search_space), max(search_space) 
     while left < right:
-        mid = left + (right - left) // 2
+        mid = (left + right) // 2
         if condition(mid):
             right = mid
         else:
