@@ -2,6 +2,120 @@
 
 Good collection by topic [here](https://leetcode.com/discuss/study-guide/448285/List-of-questions-sorted-by-common-patterns.)
 
+[14 Patterns](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
+
+## Blind 75
+
+I was doing Neetcode 150, but there's some real duds (P-355 Design Twitter, P-4
+Median of 2 Sorted Arrays)
+
+Arrays and Hashing
+  * 🟩 P-217 Contains Duplicate ☑️
+  * 🟩 P-242 Valid Anagram ☑️
+  * 🟩 P-1 Two Sum ☑️
+  * 🟨 P-49 Group Anagrams
+  * 🟨 P-347 Top K Frequent Elements
+  * 🟨 P-238 Product of Array Except Self ☑️
+  * 🟨 LOCKED Encode/Decode Strings
+  * 🟨 P-128 Longest Consecutive Sequence
+
+Two Pointers
+  * 🟩 P-125 Valid Palindrome ☑️
+  * 🟨 P-15 3-Sum
+  * 🟨 P-11 Container with Most Water
+
+Sliding Window
+  * 🟩 P-121 Best Time to Buy/Sell Stock ☑️
+  * 🟨 P-3 Longest Substring without Repeats
+  * 🟨 P-424 Longest Repeating Character Replacement
+  * 🟥 P-76 Minimum Window Substring
+
+Stack
+  * 🟩 P-20 Valid Parentheses ☑️
+
+Binary Search
+  * 🟨 P-153 Find Mimimum in Rotated Sorted Array ☑️
+  * 🟨 P-33 Search in Rotated Sorted Array
+
+Linked List
+  * 🟩 P-206 Reverse Linked List ☑️
+  * 🟩 P-21 Merge Two Sorted Lists ☑️
+  * 🟨 P-143 Reorder List 
+  * 🟨 P-19 Remove Nth Node From End ☑️
+  * 🟩 P-141 Linked List Cycle
+  * 🟥 P-23 Merge K Sorted Lists
+
+Trees
+  * 🟩 P-226 Invert Binary Tree
+  * 🟩 P-104 Maximum Depth of Binary Tree ☑️
+  * 🟩 P-100 Same Tree ☑️ 
+  * 🟩 P-572 Subtree of Another Tree
+  * 🟨 P-235 Lowest Common Ancestor of BST
+  * 🟨 P-102 Binary Tree Level Order Traversal ☑️
+  * 🟨 P-98 Validate Binary Search Tree ☑️
+  * 🟨 P-230 Kth Smallest Element in a BST
+  * 🟨 P-105 Construct Binary Tree from Preorder and Inorder Traversal
+  * 🟥 P-124 Binary Tree Maximum Path Sum
+  * 🟥 P-297 Serialize and Deserialize Binary Tree
+
+Tries
+  * 🟨 P-208 Implement Trie
+  * 🟨 P-211 Add and Search Word
+  * 🟥 P-212 Word Search II
+
+Heap
+  * 🟥 P-295 Find Median from Data Stream ☑️
+
+Backtracking
+  * 🟨 P-39 Combination Sum ☑️
+  * 🟨 P-79 Word Search ☑️
+
+Graphs
+  * 🟨 P-200 Number of Islands
+  * 🟨 P-133 Clone Graph
+  * 🟨 P-417 Pacific Atlantic Water Flow
+  * 🟨 P-207 Course Schedule
+  * 🟨 LOCKED Number of Connected Components in an Undirected Graph
+  * 🟨 LOCKED Graph Valid Tree
+  * 🟥 LOCKED Alien Dictionary 
+
+Dynamic Programming
+  * 🟩 P-70 Climbing Stairs ☑️
+  * 🟨 P-198 House Robber ☑️
+  * 🟨 P-213 House Robber II
+  * 🟨 P-5 Longest Palindromic Substring
+  * 🟨 P-647 Palindromic Substrings
+  * 🟨 P-91 Decode Ways
+  * 🟨 P-322 Coin Change ☑️
+  * 🟨 P-152 Maximum Product Subarray
+  * 🟨 P-139 Word Break
+  * 🟨 P-300 Longest Increasing Subsequence ☑️
+  * 🟨 P-62 Unique Paths
+  * 🟨 P-1143 Unique Paths
+
+Greedy
+  * 🟨 P-53 Maximum Subarray ☑️
+  * 🟨 P-55 Jump Game ☑️
+
+Intervals
+  * 🟨 P-57 Insert Interval
+  * 🟨 P-56 Merge Intervals
+  * 🟨 P-435 Nonoverlapping Intervals
+  * 🟩 LOCKED Meeting Rooms
+  * 🟨 LOCKED Meeting Rooms 2
+
+Math
+  * 🟨 P-48 Rotate Image ☑️
+  * 🟨 P-54 Spiral Matrix
+  * 🟨 P-73 Set Matrix Zeros
+
+Bit Manipulation
+  * 🟩 P-191 Number of 1 Bits ☑️
+  * 🟩 P-338 Counting Bits
+  * 🟩 P-190 Reverse Bits
+  * 🟩 P-268 Missing Number ☑️
+  * 🟨 P-371 Sum of Two Integers
+
 ## Recursion
 
 Some languages can optimize tail recursion calls s.t. further calls overwrite
@@ -397,17 +511,34 @@ P-1046 Last Stone Weight is best solved with heap, but Timsort every iteration
 could be quicker. Could also implement `bisect.insort` instead.
 
 General binary search template [here](https://leetcode.com/discuss/study-guide/786126/Python-Powerful-Ultimate-Binary-Search-Template.-Solved-many-problems)
-  * Gives `left` as index of minimal element that satisfies `condition`
-  * Problem may require giving `left +/- 1`
-  * I think `left == len(arr) - 1` doesn't tell if val should go left or right
-    * Maybe set `right` beyond end of array?
+  * Returns `left` as index of minimal element that satisfies `condition`
+  * You set:
+    * `condition(idx)` function -- gives excuse to throw out right half of list
+    * Left and right bounds -- could be [0, n], [1, n], etc.
+    * Return value -- could be `left +/- 1`
+
+Binary search problems
+  * Find place to insert: 
+    * `condition(idx): return arr[idx] > target`
+    * `left, right = 0, len(arr)`
+    * `return left`
+  * P-704 Binary Search:
+    * `condition(idx): return arr[idx] > target`
+    * `left, right = 0, len(arr)`
+    * `return -1 if (left==len(arr) or arr[left]!=target) else left`
+  * P-153 Minimum in Rotated Array
+    * ❗️ Check for order, not disorder! `condition` gives excuse to throw out
+      boring region
+    * ❗️ Need to edit `condition` to take in `mid` AND `right`
+    * `condition(idx_l, idx_r): return arr[idx_l] < arr[idx_r]`
+    * `left, right = 0, len(arr)-1`
+    * `return nums[left]`
 
 ```
-def binary_search(array) -> int:
-    def condition(value) -> bool:
+def binary_search(search_space) -> int:
+    def condition(idx) -> bool:
         pass
-    # Could be [0, n], [1, n], etc. Depends on problem
-    left, right = min(search_space), max(search_space) 
+    left, right = # min(search_space), max(search_space) 
     while left < right:
         mid = left + (right - left) // 2
         if condition(mid):
