@@ -14,15 +14,15 @@ Arrays and Hashing
   * 🟩 P-242 Valid Anagram ☑️
   * 🟩 P-1 Two Sum ☑️
   * 🟨 P-49 Group Anagrams ☑️
-  * 🟨 P-347 Top K Frequent Elements
+  * 🟨 P-347 Top K Frequent Elements ☑️
   * 🟨 P-238 Product of Array Except Self ☑️
   * 🟨 LOCKED Encode/Decode Strings
-  * 🟨 P-128 Longest Consecutive Sequence
+  * 🟨 P-128 Longest Consecutive Sequence ☑️
 
 Two Pointers
   * 🟩 P-125 Valid Palindrome ☑️
-  * 🟨 P-15 3-Sum
-  * 🟨 P-11 Container with Most Water
+  * 🟨 P-15 3-Sum ☑️
+  * 🟨 P-11 Container with Most Water ☑️
 
 Sliding Window
   * 🟩 P-121 Best Time to Buy/Sell Stock ☑️
@@ -34,7 +34,7 @@ Stack
   * 🟩 P-20 Valid Parentheses ☑️
 
 Binary Search
-  * 🟨 P-153 Find Mimimum in Rotated Sorted Array ☑️
+  * 🟨 P-153 Find Minimum in Rotated Sorted Array ☑️
   * 🟨 P-33 Search in Rotated Sorted Array ☑️
 
 Linked List
@@ -549,3 +549,34 @@ def binary_search(search_space) -> int:
             left = mid + 1
     return left
 ```
+
+## Union find
+
+Useful for Kruskal's minimum spanning tree algorithm, e.g.
+
+```
+parents = {v:v for v in elements}
+def find(v):
+    while v != parents[v]:
+        v = parents[v]
+    return v
+def compress():
+    for v in parents:
+        parents[v] = find(v)
+def find_with_path_compression(i):
+    # correct all intermediaries to point directly to set leader
+    if v != parents[v]:
+        parents[v] = find(v)
+    return v
+def union(a, b):
+    parent_a, parent_b = find(a), find(b)
+    parents[parent_b] = parent_a
+```
+
+Can be used for P-128 Longest Consecutive Sequence
+  * Each element is linked to next element in map, if it exists
+    * `for v in parents: if v+1 in parents: union(v,v+1)`
+    * `return 1 + max( p-v for v,p in parents.items() )`
+    * Need to track size of set to avoid TLE
+  * Alternative: check if `x-1 in set`, then walk. Length of walk is `last -
+    first`, which is then used to update `best_so_far`
