@@ -26,9 +26,9 @@ Two Pointers
 
 Sliding Window
   * 🟩 P-121 Best Time to Buy/Sell Stock ☑️
-  * 🟨 P-3 Longest Substring without Repeats
-  * 🟨 P-424 Longest Repeating Character Replacement
-  * 🟥 P-76 Minimum Window Substring
+  * 🟨 P-3 Longest Substring without Repeats ☑️
+  * 🟨 P-424 Longest Repeating Character Replacement ☑️
+  * 🟥 P-76 Minimum Window Substring ☑️
 
 Stack
   * 🟩 P-20 Valid Parentheses ☑️
@@ -115,6 +115,101 @@ Bit Manipulation
   * 🟩 P-190 Reverse Bits
   * 🟩 P-268 Missing Number ☑️
   * 🟨 P-371 Sum of Two Integers
+
+## Arrays and hashing
+
+### 2-pointers
+
+You define:
+  * `pick_left(l, r)` -- indicates when to increment `left`
+  * `score(l, r)` -- e.g., width of window
+  * If searching, halt search when item found
+
+```
+def pick_left(l, r):
+    pass
+def score(l, r):
+    pass
+left, right = 0, len(height)-1
+best = score(left, right)
+while left < right:
+    if pick_left(left, right):
+        left += 1
+    else:
+        right -= 1
+    best = max(best, score(left, right))
+return best
+
+```
+
+P-11 Water Container
+  * `pick_left(l, r): return height[l] <= height[r]`
+  * `score(l, r): return min(height[l], height[r]) * (r - l)`
+
+P-15 3-Sum can be solved via hashing or 2-pointer trick
+  * Hashing: Create hashmap, then do `O(N^2)` check over all pairs to find last
+    remaining element
+  * 2-pointers: Sort list, then do `O(N^2)` check down list with 2-pointers
+    * `pick_left(l, r): return arr[l] + arr[r] < target`
+    * If `pick_left(l, r)`, then decrementing `r` will never enable the correct
+      answer -- increment `l` instead. Vice versa for `r`
+
+### Sliding window
+
+You can normally make a simplifying greedy assumption to avoid backtracking the
+`right` pointer, which incurs a `O(N^2)` cost
+
+You define:
+  * `invalid(w)` -- indicates when to increment `left`
+  * Structure to use for `window` -- `set`, `Counter`, even just `tuple`
+    * Also, update functions for adding/removing items from `window`
+  * `score(l, r)` -- e.g., width of window, unique elements in `window`
+
+```
+def invalid(w):
+    pass
+def score(l, r):
+    pass
+window = set(arr[0])  # could instead be Counter, tuple, dict, etc
+left = right = 0
+best = score(left, right) 
+while right < len(arr) - 1:
+    right += 1
+    window.add(s[right])
+    while invalid(window) and left < right:
+        window.remove(s[left]) 
+        left += 1
+    best = max(best, score(left, right))
+return best
+```
+
+P-121 Buy Stock 
+  * `invalid(w): return prices[w[0]] > prices[w[1]]`
+  * Use `(left, right)` tuple for window
+  * `score(l, r): return prices[right] - prices[left]`
+
+P-3 Longest Nonrepeat Substring
+  * `invalid(w): return w.total() - w.most_common(1)[0][1] > 1`
+  * Use `Counter` object with counts for each char in string
+    * Add: `window[s[idx]] += 1`, Remove: `window[s[idx]] -= 1`
+  * `score(l, r) return right - left + 1`
+
+P-424 Longest Repeating Character Replacement
+  * `invalid(w): return w.total() - w.most_common(1)[0][1] > k`
+  * Use `Counter` object with counts for each char in string
+    * Add: `window[s[idx]] += 1`, Remove: `window[s[idx]] -= 1`
+  * `score(l, r) return right - left + 1`
+
+P-76 Minimum Window Substring
+  * This problem inverts the others -- `invalid` is true at beginning and we
+    seek the smallest valid solution
+  * `invalid(w): return any( w[v] - ref[v] < 0 for v in ref )` 
+    * Likely can make quicker by additionally considering new characters
+      added/removed
+  * Use `Counter` object with counts for each char in string
+    * Add: `window[s[idx]] += 1`, Remove: `window[s[idx]] -= 1`
+  * Track `best_l` and `best_r` instead of copying substring
+  * Change to `while not invalid(window)` and put `best_l/r` update inside loop
 
 ## Recursion
 
@@ -554,29 +649,68 @@ def binary_search(search_space) -> int:
 
 Useful for Kruskal's minimum spanning tree algorithm, e.g.
 
+Runtimes
+  * `simple_find` has `O(N)` worst case, since it crawls up the tree
+  * `union` operations have `O(u log N)`, where `u` is number of `union`s called
+  * `compress_find` has `O(f + f log N)`, where `f` is number of `find`s called
+  * Combining `compress_find` and `rank_union` or `size_union` gives `O(u)`
+    union time!
+
+❗️ `find` must return `parents[v]` instead of `v` because intermediate steps
+must all return forward answer, not themselves!
+
 ```
 parents = {v:v for v in elements}
-def find(v):
+ranks   = {v:0 for v in elements}
+sizes   = {v:1 for v in elements}
+def simple_find(v):
     while v != parents[v]:
         v = parents[v]
-    return v
-def compress():
-    for v in parents:
-        parents[v] = find(v)
-def find_with_path_compression(i):
+    return parents[v]
+
+def simple_union(a, b):
+    parent_a, parent_b = find(a), find(b)
+    parents[parent_a] = parent_b
+
+def compress_find(i):
     # correct all intermediaries to point directly to set leader
     if v != parents[v]:
         parents[v] = find(v)
-    return v
-def union(a, b):
+    return parents[v]
+
+def rank_union(a, b):
     parent_a, parent_b = find(a), find(b)
-    parents[parent_b] = parent_a
+    if parent_a == parent_b:
+        return
+    if ranks[parent_a] > ranks[parent_b]:
+        parents[parent_b] = parent_a
+    elif ranks[parent_b] > ranks[parent_a]:
+        parents[parent_a] = parent[b]
+    else:
+        ranks[parent_b] += 1
+        parents[parent_a] = parent_b
+        
+def size_union(a, b):
+    parent_a, parent_b = find(a), find(b)
+    if parent_a == parent_b:
+        return
+    if sizes[parent_a] > sizes[parent_b]:
+        parents[parent_b] = parent_a
+        sizes[parent_a] += sizes[parent_b]
+    else:
+        parents[parent_a] = parent_b
+        sizes[parent_b] += sizes[parent_a]
+
+def compress():
+    for v in parents:
+        parents[v] = find(v)
 ```
 
 Can be used for P-128 Longest Consecutive Sequence
   * Each element is linked to next element in map, if it exists
     * `for v in parents: if v+1 in parents: union(v,v+1)`
+    * Then compress to make sure each item points to highest parent
     * `return 1 + max( p-v for v,p in parents.items() )`
-    * Need to track size of set to avoid TLE
+    * Better runtime but 2x memory: track sizes and `return max(sizes.values())`
   * Alternative: check if `x-1 in set`, then walk. Length of walk is `last -
     first`, which is then used to update `best_so_far`
