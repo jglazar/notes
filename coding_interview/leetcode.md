@@ -118,6 +118,58 @@ Bit Manipulation
 
 ## Arrays and hashing
 
+### Filling in solution
+
+Run through array(s), filling in `result` array as you go
+  * Sometimes easier to go back to front to avoid shifts
+  * ❗️ Don't forget array bounds checks within code blocks
+  * Fast/slow pointer methods are useful for filling in 1st `k` elements
+    * Fast = read, slow = write
+ 
+P-1089 Duplicate Zeros has two solutions
+  * Go front to back, adding extra zero to `res` and incrementing again 
+  if `arr[p] == 0`
+    * `O(N)` time and `O(N)` space
+  * Count total zeros then decrement from back, placing elements `p + 
+  zeros` ahead if possible. Decrement `zeros` and place extra 0 when 
+  `arr[p] == 0`
+    * `O(N)` time and `O(1)` space!
+
+P-977 Squares of Sorted Array has no simple in-place solution
+  * Square each element, then run 2 pointers from front and back to fill 
+  solution array based on bigger element. Finally, flip array.
+  
+P-88 Merge Sorted Array goes backwards and fills in elements `m+n+1` ahead
+
+Fast/slow pointers is great for deleting elements
+ * `should_write` -- indicates when to pause `fast` pointer to write
+ * `return slow` gives number of valid elements at beginning of `arr`
+
+```
+def should_write(l, r):
+    pass
+slow = fast = 0
+while fast < len(arr):
+    if should_write(slow, fast):
+        arr[slow] = arr[fast]
+        slow += 1
+    fast += 1
+return slow
+```
+
+Easy problems: 
+  * P-27 Remove Element
+    * `should_write(l, r): return arr[r] != val`
+  * P-26 Remove Duplicates from Sorted Array
+    * `slow = fast = 1` because 1st element is trivially valid
+    * `should_write(l, r): return arr[l-1] != arr[r]`
+  * P-283 Move Zeros
+    * `should_write(l, r): return arr[r] != val`
+    * `arr[slow], arr[fast] = arr[fast], arr[slow]`
+  * P-905 Sort Array by Parity
+    * `should_write(l, r): return arr[r] % 2 == 0`
+    * `arr[slow], arr[fast] = arr[fast], arr[slow]`
+
 ### 2-pointers
 
 You define:
@@ -211,6 +263,16 @@ P-76 Minimum Window Substring
   * Track `best_l` and `best_r` instead of copying substring
   * Change to `while not invalid(window)` and put `best_l/r` update inside loop
 
+### Hashing
+
+❗️ Watch out for 0 -- checking for `a * val in hash` will be trivially `True`
+
+Useful for making time-space tradeoff, esp. to avoid sorting
+  * Watch out for bounded input space
+
+P-1051 Height Checker has all heights 1 - 100. Use a dict to store counts, 
+then iterate through dict in order to avoid sorting
+
 ## Recursion
 
 Some languages can optimize tail recursion calls s.t. further calls overwrite
@@ -266,6 +328,9 @@ use triangle rule to see if every group of 3 (consecutive) points has zero area
   det(A_n1) = det([[x1,x2,...,xn,x1],[y1,y2,...,yn,y1]]) = det(transpose)`
     * Shoelace formula reduces `2n` columns to `n` columns
   * Very useful for calculating area of polygon with `n` points
+
+Use `(int(math.log10(x)) + 1)` to get number of digits for `x >= 1`. Faster and 
+less memory than `len(str(x))`.
 
 ## Divide and Conquer
 
