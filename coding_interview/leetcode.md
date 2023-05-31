@@ -265,7 +265,7 @@ P-76 Minimum Window Substring
 
 ### Hashing
 
-❗️ Watch out for 0 -- checking for `a * val in hash` will be trivially `True`
+Watch out for 0 -- checking for `a * val in hash` will be trivially `True`
 
 Useful for making time-space tradeoff, esp. to avoid sorting
   * Watch out for bounded input space
@@ -312,6 +312,11 @@ each list, a `current` pointer, and a `dummy_head` for safety
 
 P-50 Power has simple `O(n)` iteration/recursion, but you can get `O(log n)` 
 time by halving the exponent if even, and subtracting one if odd.
+  * Still incurs `O(log n)` space for stack!
+  * Naive doubling could increment through top half of powers, so it's `O(n)`
+  * `O(1)` space -- `res = 1.0; while p: if p%2!=0 res*=x; x*=x; p/=2`
+    * Doubling `res` directly only works if `p = 2^k`. This keeps power of 2
+      factors in `x` and extra parts in `res`
 
 P-779 Kth Symbol has brute force `O(2^n)` recursion solution, building up 
 rows one at a time. 
@@ -674,6 +679,7 @@ General binary search template [here](https://leetcode.com/discuss/study-guide/7
   * Returns `left` as index of minimal element that satisfies `condition`
   * You set:
     * `condition(idx)` function -- gives excuse to throw out right half of list
+      * Generally, will be `arr[idx] >= target`
     * Left and right bounds -- could be [0, n], [1, n], etc.
     * Return value -- could be `left +/- 1`
   * Note: `left + (right-left)//2` helps avoid integer overflows, which aren't a
@@ -689,9 +695,9 @@ Binary search problems
     * `left, right = 0, len(arr)`
     * `return -1 if (left==len(arr) or arr[left]!=target) else left`
   * P-153 Minimum in Rotated Array
-    * ❗️ Check for order, not disorder! `condition` gives excuse to throw out
+    * Check for order, not disorder! `condition` gives excuse to throw out
       boring region
-    * ❗️ Need to edit `condition` to take in `mid` AND `right`
+    * Need to edit `condition` to take in `mid` AND `right`
     * `condition(idx_l, idx_r): return arr[idx_l] < arr[idx_r]`
     * `left, right = 0, len(arr)-1`
     * `return nums[left]`
