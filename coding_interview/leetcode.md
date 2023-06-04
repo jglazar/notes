@@ -695,9 +695,9 @@ Binary search problems
     * `left, right = 0, len(arr)`
     * `return -1 if (left==len(arr) or arr[left]!=target) else left`
   * P-153 Minimum in Rotated Array
-    * Check for order, not disorder! `condition` gives excuse to throw out
+    * ❗️ Check for order, not disorder! `condition` gives excuse to throw out
       boring region
-    * Need to edit `condition` to take in `mid` AND `right`
+    * ❗️ Need to edit `condition` to take in `mid` AND `right`
     * `condition(idx_l, idx_r): return arr[idx_l] < arr[idx_r]`
     * `left, right = 0, len(arr)-1`
     * `return nums[left]`
