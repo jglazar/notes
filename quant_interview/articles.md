@@ -52,3 +52,58 @@ Same as Catalan, but with A != B
 If no ties allowed, give A 1 vote then proceed with `n-1`, `a-1`, `b`
   * Good probability is `a/n * (a-b)/a = (a-b)/n = (n(1-p) - np) / n = 1 - 2p`
     * `a/n` is probability of getting first vote as A
+
+## 10 important papers
+
+Optimal execution of portfolio transactions, Almgren and Chriss, 2000
+  * Formal algorithm for executing and measuring execution performance
+  * Share prices vary by:
+    * Exogenous forces -- random market vol independent of our order
+    * Endogenous forces -- impact from our order. magnitude is inverse of
+      liquidity. can be temporary or normalized (permanent)
+  * Algorithm minimizes transaction cost and endogenous volatility risk
+
+Long-run evolution of energy prices, Pindyck, 1999
+  * Raw material prices have quadratic trend from 1916 to 1996, with minimum
+    around 1920
+  * Price is tied to marginal cost of extraction and estimated reserves
+
+Closed-form GARCH option valuation model, Heston and Nandi, 1997
+  * Values spot assets with GARCH model for its variance
+  * GARCH is a time-series model, which makes sense for both mean and variance
+
+Portfolio selection, Markovitz, 1952
+  * Introduced diversification
+  * For given expected return, there's an optimal portfolio minimizing risk (and
+    vice versa)
+  * Want to reduce correlation (diversify) to lower risk
+
+A new interpretation of information rate, Kelly, 1956
+  * Introduced the Kelly Criterion for bet sizing to maximize geometric growth
+
+Capital asset prices: a theory of mkt. eq. under cond. of risk, Sharpe, 1964
+  * Introduced beta and CAPM to calculate return from risk
+  * The only efficient portfolio is the market portfolio, assuming all
+    information is known equally and is instantly processed
+  * Only reasonable portfolio is mix of market and risk-free asset like T-bills
+
+Incorporating signals into optimal trading, Lehalle, 2017
+  * Markov signal for optimal trading of assets with O-U drift process
+  * Order book imbalance predicts future price movements and is mean-reverting
+
+Efficient capital markets: a review of theory and empirical work, Fama, 1970
+  * Introduces EMH
+  * 3 types of efficiency:
+    * Weak -- prices contain info from historical prices. technical analysis is
+      useless
+    * Semi-strong -- prices also contain other public info. fundamental analysis
+      is useless. this is most realistic
+    * Strong -- prices also contain private info. note: practically impossible. 
+
+Pricing of options and corporate liabilities, Black and Scholes, 1973
+  * Introduced Black-Scholes model for options using heat-transfer physics
+
+Does the stock market overreact?, Bondt and Thaler, 1985
+  * Statistically significant evidence of non-efficient markets
+  * Historical prices aren't correctly priced-in
+
