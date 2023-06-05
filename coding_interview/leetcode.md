@@ -718,8 +718,6 @@ def binary_search(search_space) -> int:
 
 ## Union find
 
-Useful for Kruskal's minimum spanning tree algorithm, e.g.
-
 Runtimes
   * `simple_find` has `O(N)` worst case, since it crawls up the tree
   * `union` operations have `O(u log N)`, where `u` is number of `union`s called
@@ -785,3 +783,10 @@ Can be used for P-128 Longest Consecutive Sequence
     * Better runtime but 2x memory: track sizes and `return max(sizes.values())`
   * Alternative: check if `x-1 in set`, then walk. Length of walk is `last -
     first`, which is then used to update `best_so_far`
+
+Kruskal's algorithm for generating a minimum spanning tree
+  * Sort edges by weight low to high
+    * Rate-limiting step with `O(E log E) = O(E log V)` (bc `E = V^2` at worst)
+  * Set up union-find with each vertex as it's own parent
+  * For each edge, if `find(edge[0]) != find(edge[1])` then `union(edge[0],
+    edge[1])` and add edge to tree
