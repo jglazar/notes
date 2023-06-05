@@ -367,3 +367,38 @@ Deadlocks/livelocks can occur when using mutexes or semaphores
     simultaneously
   * ❗️ Starvation could occur if customers are served out-of-order -- use a
     queue
+
+## Bucket sort
+
+1. Initialize empty buckets
+2. Scatter elements into buckets
+3. Sort non-empty buckets
+  * Insertion sort works well if number of elements per bucket is small
+  * Could recursively call bucket sort here
+4. Gather elements from buckets in order
+
+Works best for uniformly distributed elements. Clustering hurts performance.
+
+Radix sort works recursively
+  * Runs in `O(N k)` time, where `k` is length of max integer
+  * Can make efficient parallelizable version, like merge sort
+  * Most-significant digit sorting is useful for strings or fixed-length ints
+    * Scatter each element into bucket based on first digit
+    * Recursively sort into smaller buckets based on next digit, stopping when
+      a bucket has 1 element
+    * Flatten buckets out to get final sorted collection
+  * For least-significant digit (more common):
+    * Scatter each element into bucket based on last digit
+    * Flatten out buckets to overwrite array, then recurse on next digit
+
+```
+def radix_sort(arr):  # by least-significant digit
+    bins = [[] for _ in range(10)]
+    biggest_int = max(len(str(x)) for x in arr)
+    for i in range(biggest_int):
+        for x in arr:
+            digit = (x // 10**i) % 10
+            bins[digit].append(x)
+        arr = [x for s in bins for x in s]
+        bins = [[] for _ in range(10)]
+```
