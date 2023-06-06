@@ -189,3 +189,47 @@ Alignment
   * Add `memalign(64, size)` or `aligned_alloc(64, size)` for dynamic arrays
   * `__assume_aligned(a, 64)` or `#pragma vector aligned` assumes function 
   arguments are aligned
+
+## Algorithmica vector intrinsics
+
+Check `/proc/cpuinfo` for `flags` section with supported vectorization types
+  * Can also check WikiChip
+  * Can also use `__builtin_cpu_supports("avx2")` in GCC
+
+Include `<bits/stdc++.h>` and `<x86intrin.h>` (or x86 64)
+
+Tell the compiler that the architecture supports vectorization with `#pragma GCC
+target ("avx2")` within file or `-march=...` flag while compiling
+
+Special types have format `__mxxxs`, where `xxx` is bit size (128, 256, or 512)
+and `s` is type (blank for float, d for double, i for int)
+  * Can convert between types
+
+Intrinsics are functions with format `_mmxxx_action_type`
+  * `_mmxxx_loadu_pd(double*)` loads a double into an xxx-wide register
+  * `_mmxxx_add_pd(__mxxxd, __mxxxd)` adds two `__mxxxd` vectors
+  * `_mmxxx_storeu_pd(double*, __mxxxd)` writes vector into array starting at
+    pointer
+  * `_mm_add_epi16` adds two 128-bit vectors of 16-bit shorts
+  * `_mmxxx_acos_pd` calculates elementwise arc-cosine
+  * `_mmxxx_broadcast_sd` copies double from memory to vector
+  * `_mmxxx_ceil_pd` rounds up vector of doubles
+  * `_mmxxx_cmpeq_epi32` compares x pairs of 32-bit ints and returns mask
+  * `_mmxxx_blendv_ps` picks elements from two vectors according to mask
+
+Check out the Intel Intrinsics Guide for good details and performance
+
+If array size is different from block size, then pad out array or terminate loop
+early and finish rest by hand
+
+GCC has its own vectorization style that is architecture-independent
+  * Can convert between GCC-style and Intel-style
+  * `typedef int v8si __attribute__ ((vector_size(32)));` packs vector of 8 ints
+    into a 256-bit (32-byte) register
+  * Can simply call `c = a + b` or `a *= 2` without intrinsic functions
+
+External libraries have nice interfaces -- Highway, Expressive Vector Engine,
+Vector Class Library, and xsimd
+
+Easiest is to enable auto-vectorization with `__restrict__` keywords for
+pointers or `#pragma GCC ivdep` before for-loops
