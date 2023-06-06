@@ -402,3 +402,61 @@ def radix_sort(arr):  # by least-significant digit
         arr = [x for s in bins for x in s]
         bins = [[] for _ in range(10)]
 ```
+
+## Bit manipulation tricks
+
+Unsigned integers can be seen as bitsets, with the operations:
+  * Union -- `a | b`
+  * Intersect -- `a & b`
+  * Subtract -- `a & ~b`
+  * Negate -- `~a`
+  * Set member -- `a |= 1<<bit`
+  * Clear member -- `a &= ~(1<<bit)`
+  * Check member -- `(a & 1<<bit) != 0`
+  * Check leftmost member -- `a & -a`, `a & ~(a-1)`, `a ^ (a & (a-1))`
+  * Remove leftmost member -- `a & (a-1)`
+
+Get all 1s with `~0`
+
+Count number of 1s -- `cnt = 0; while a: a &= (a-1); cnt++; return cnt`
+
+Check if power of 4 -- `!(a & (a-1)) && (a & 0x55555555)`
+
+XOR removes even amounts of copies, or saves distinct bits
+
+Sum of 2 ints -- `def f(a,b): return b == 0 ? a : f(a^b, (a & b) << 1)`
+
+Missing number -- `tmp = 0; for i in range(len(arr)): tmp ^= i; tmp ^= arr[i];
+tmp ^= len(arr); return tmp`
+
+OR keeps as many 1s as possible
+
+Find largest power of 2 less than a -- `a |= (a >> 1); a |= (a >> 2); a |= (a >>
+4); ... a |= (a >> 16); return (a + 1) >> 1;`
+
+Reverse bits for unsigned int -- mask = 1, tmp = 0; for i in range(32): ret <<=
+1, if (mask & a) then tmp |= 1, mask <<= 1; return tmp;
+
+AND selects certain bits
+
+Reverse bits for integer -- uses bunch of magic numbers
+
+Bitwise AND for all numbers in range -- `tmp = 0; while (a != b): m >>= 1, n >>=
+1, ++tmp; return a << tmp;`
+
+Get repeated 10-letter substrings -- long solution
+
+Find the element appearing more than `len(arr) // 2` times -- long solution
+
+Find the element appearing once rather than thrice -- `tmp1, tmp2, tmp3 = 0; for
+i in range(len(arr)): tmp1 = (tmp2 & ~tmp3 & ~arr[i]) | (~tmp2 & tmp3 & arr[i]),
+tmp3 = (~tmp2 & tmp3 & ~arr[i]) | (~tmp2 & ~tmp3 & arr[i]), tmp2 = tmp1; return
+tmp2 | tmp3;`
+
+Find max product of word lengths where each word has unique letters -- long
+solution
+
+Bits represent sets. Subsets must be stricly lower in value than supersets
+
+Get all subsets -- `res = []; for i in range(1<<len(arr)): for j in
+range(len(arr)): if ((1 << j) & i) then res.append(arr[j]); return res;`
