@@ -160,6 +160,37 @@ Equilibration isn't guaranteed, but check for
 
 ## Static properties
 
+Pressure is typically calculated using Irving-Kirkwood equation ("pressure
+virial")
+  * `P = 1/V ( sum(m * v^2) + sum_pairs(f * r) )` considers energy moving 
+  across space and interactions through space
+  * `P_ab = -1/V < sum(mi uia uib) + sum_pairs(rija Fijb) >`
+
+Mean square force gives information on share of repulsive potential
+  * One atom -- `<F0^2> = <sum((del U(r0))^2)>`
+  * All atoms has similar formula, but considering PBC
+
+Calculate thermodynamic property w.r.t. changes by:
+  * Tracking changes across different simulations
+  * Evaluating derivatives analytically via statistical mechanics
+    * Typically less accurate due to roundoff errors (?)
+  * E.g., `C = dU/dT = 1/(kB T^2) Var[U]`
+  * Similar for adiabatic compressibility `k = -1/V dV/dP` and thermal pressure
+    coefficient `gamma = dP/dT`
+
+Entropic properties require calculations beyond time-averaging MD
+  * Thermodynamic integration casts entropy change as integral of `U` and `T`.
+    Just perform multiple simulations to approximate integral 
+  * Test particle method estimates chemical potential, but fails at high density
+  * Coupling parameters redefine `U` as `U(r, lambda)`. `lambda_0` is typically
+    ideal gas model. Systematically vary `lambda` to calculate entropy
+
+Static structure is evaluated with radial distribution function `g(r)`
+  * `density * g(r) = 2/N sum_pair(delta(r - rij))`
+  * `density / (N-1) g(r) V(r, dr)` is prob. that atom lies within shell
+  * Ideal gas has `g(r) = 1`. Low-density gas has `g(r) = exp(-U(r)/(kB*T))` 
+  * RDF can be used to identify phases near fluid-solid boundaries
+
 ## Dynamic properties
 
 ## Non-equilibrium MD
