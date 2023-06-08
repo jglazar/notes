@@ -1,4 +1,4 @@
-# Software design by ArjanCodes
+# Software design by ArjanCodes and others
 
 ## Design guide
 
@@ -248,4 +248,62 @@ Can assign class some member vars which hold attributes.
 Functional approach uses decorators to tag different attributes, rather than 
 multiple inheritance (right?)
 
+## SOLID design principles
 
+Single-responsibility principle
+  * A class should have 1 reason to change. It should do 1 job
+  * E.g., don't perform validation AND display -- those should be 2 classes
+
+Open-closed principle
+  * Entities like classes, modules, and functions should be open for extension
+    (what the entity can do) but closed for modification (source code)
+  * E.g., adding a new element directly to an array is bad. Create an
+    ElementAdder entity that handles abstractly.
+
+Liskov substitution principle
+  * Superclass objects should be substitutable for subclass objects
+  * E.g., Setting separate width and height for `Rectangle` class breaks for
+    `Square` subclass. So don't make `Square` a subclass of `Rectangle`!
+
+Interface segregation principle
+  * A client shouldn't be forced to implement an interface it never uses
+  * E.g., 2D shapes don't have `calculate_volume()` method. Create two
+    superclasses instead, one for 2D shapes and one for 3D shapes
+
+Dependency inversion principle
+  * High-level modules shouldn't import anything from low-level modules
+  * Abstractions should be independent of details
+  * In other words, classes should depend on abstract interfaces, not the
+    innards of concrete classes
+  * E.g., writing a `Store` class with explicit methods handling Stripe
+    payments. Create an abstract `Payments` class to handle payments instead
+
+## Writing Python tests
+
+Simplifying unit tests often highlights ways to simplify source code
+  * Many interactions within a method make it hard to test
+
+`pytest` auto-detects and executes tests in project `tests` directory
+  * `pytest --cov` creates HTML report on method coverage
+
+Start with tests for simple or important classes
+
+Use `assert` to test simple (almost obvious) truths
+  * E.g., `item = LineItem('paper', 100, 2); assert item.total == 200;`
+  * Check for defaults. E.g., `item = LineItem(); assert item.total == 0`
+
+Catch correctly-raised error by using `with pytest.raises(ErrorType): ...`
+
+`pytest.MonkeyPatch` mocks input and overrides attributes
+  * E.g., `def f(monkeypatch): inputs = [a, b, c];
+    monkeypatch.setattr("builtins.input", lambda x: inputs.pop(0))`
+  * Better -- make mock objects
+  * Alternative -- use `pytest.fixture` to create standard testing objects 
+
+Be sure that you:
+  * Don't add API keys to source code, even in tests
+    * Put them in separate `.env` file and import them as environment variables
+      with `dotenv.load_dotenv` method
+  * Don't upload API keys or `.env` files to GitHub
+  * Don't hard code dates and expect them to always be in the future
+  * Test the main functionality of a function, not the functions called therein
