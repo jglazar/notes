@@ -261,3 +261,48 @@ Only a subset of alphas work well for delay-1 and delay-0
 
 Truncation 0.01 for TOP3000
   * Use `rank` to prevent overweighting
+
+## Consultant/Researcher Q and A
+
+Hosted by Nicole Goldstein
+
+You-Lin Wu was finance undergrad in Taiwan. Now researcher
+  * Used Brain to do free research and apply theories learned in practice
+  * Won Taiwan regional round to compete in Singapore
+  * Day-to-day: similar to IQC, but with more tools and data
+  * Tips: important to review alphas and think about improvements
+  * Advice: submit many alphas
+
+Yash Zanwar was undergrad in India. Now researcher
+  * Learned Brain over time, then competed in IQC with friends
+  * Won India regional round to compete in Singapore (with You-Lin!)
+  * Day-to-day: research, platform improvements, community engagement
+  * Tips: Ideas can come from anywhere, like news. Try different topics
+  * Advice: attention to detail. Show good performance for many settings
+
+Jayden Lee started as consultant, then intern, now researcher
+  * Only made it to Round 2, not into next rounds
+  * Tips: avoid overfitting. Use few parameters. Diversify alpha pool
+  * Alpha idea: long low-beta, short high-beta (overrated). Calculate beta with
+    CAPM model -- check Data Explorer for more
+  * Advice: avoid overfitting bc you invest in future, not past 
+
+Yu-Xiang (Simon) Mao was comp sci undergrad. Did internship and consultant, now
+researcher
+  * Placed 2nd in Taiwan regional round
+  * See alpha creation as a game. Try anything
+  * Advice: have an original alpha for the presentation
+
+Ishan Shandilya found quant finance as undergrad major
+  * Checked out Brain platform, then did internship.
+  * Quant finance is secretive and uncollaborative. Brain enables interaction
+  * Advice: quality through simplicity
+
+Aditya Chaturvedi had bad grades, then found WorldQuant competition
+  * Got internship, then consultant position. Now researcher
+  * Background in materials science!
+  * Advice: consistency in alpha submission. Try every day!
+
+Data Explorer has tag for alpha generation -- can just use that data!
+
+Re-use alphas from Round 1 in Round 2
