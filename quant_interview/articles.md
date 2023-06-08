@@ -107,3 +107,7 @@ Does the stock market overreact?, Bondt and Thaler, 1985
   * Statistically significant evidence of non-efficient markets
   * Historical prices aren't correctly priced-in
 
+## Markov Processes
+
+Check out [Random Services](randomservices.org/random/markov/index.html) for a
+great course
