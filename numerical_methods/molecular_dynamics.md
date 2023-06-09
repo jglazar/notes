@@ -1,5 +1,7 @@
 # Molecular dynamics
 
+Notes from NanoHub tutorial
+
 ## Forces
 
 Potential energy has 2 contributions
@@ -193,4 +195,49 @@ Static structure is evaluated with radial distribution function `g(r)`
 
 ## Dynamic properties
 
+`C(t) = 1/tau * integral from 0 to tau (a(t0) b(t0 + t) dt0) = <a(t0) b(t+t0)>`
+  * Correlation function is invariant under shift of `t0`
+  * Static correlation function -- `t0 = 0`. Should factorize to `<a><b>` as `t
+    -> infinity`
+  * Autocorrelation function must have zero slope at `t = 0`
+
+Velocity and stress autocorrelation functions are useful for mechanical
+properties
+  * Derivative of stress autocorrelation near `t = 0` gives shear modulus
+
+Transport coefficients can be calculated by:
+  * Einstein relations, which take time derivative of correlation function
+  * Green-Kubo relations, which integrate correlation function over time
+  * Flux = -resistance coefficient x gradient -- think diffusion
+  * E.g., `Var[X(t) - X(0)] = 2Dt` for large times compared to atomic collisions
+  * Similarly, `D = integral from 0 to infinity (1/(3N) sum(VACF))` and
+    `viscosity = integral from 0 to infinity (density/(3 N kB T) sum(stress
+    ACF))`
+
 ## Non-equilibrium MD
+
+Improves efficiency of transport coefficient calculations
+  * Time correlation functions are error-prone because fluctuations are small
+  * NEMD imposes large fluctuation, from which we can measure response
+  * Need large perturbations (bigger than experiments)
+  * Hard to extrapolate to low perturbation characteristics
+
+Direct measurement uses boundaries where particles have external momentum
+  * Can also heat walls and let heat seep into bulk
+
+Modified dynamics perturb equations of motion
+  * New Hamiltonian `Hnew = H + A F`, where `A` is coupling matrix
+  * Constant perturbation -- response proportional to time-integrated
+    correlation functions
+  * Pulse perturbation -- response proportional to correlation functions
+  * Oscillation perturbation -- response proportional to real and imaginary
+    parts of Fourier-Laplace transformed correlation functions
+
+Calculate viscosity and thermal conductivity with:
+  * Couette flow -- shear top wall, keep bottom wall stationary
+  * Poiseuille flow -- keep both walls stationary and push bulk
+
+Other perturbations
+  * Expand/contract to get diagonal components of stress tensor 
+  * Induce energy flux to get thermal conductivity 
+  * Tag particles to track diffusion coefficients
