@@ -107,7 +107,7 @@ local project workflow:
 
 * `git push origin <branch-name>`  --  offer to merge branch with origin's main  
 
-*pull requests are requests to merge your repo's branch with another repo's branch  
+* pull requests are requests to merge your repo's branch with another repo's branch  
   * keep title concise  
   * address what, why, and how in body  
   * ensure branch has clear commits  
