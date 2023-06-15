@@ -6,16 +6,22 @@
 
 Regions include United States (USA) and China (CHN)
 
-Universe -- Subset of region based on liquidity; smaller universes are more liquid
+Universe -- Subset of stocks ranked by liquidity. Smaller = more liquid
   * Includes TOP3000, TOP2000, TOP1000, TOP500, TOP200
 
-Decay -- Sets input data equal to a linearly decreasing weighted average of that data over the past selected number of days
+Decay -- Linearly decays data over specified number of days. Helps smooth signal
 
-Delay -- Delay=1 alphas trade in the morning using data from yesterday; Delay=0 alphas trade in the evening using data from today
+Delay -- Data delay
+  * Delay = 1 alphas trade in the morning using data from yesterday
+  * Delay = 0 alphas trade in the evening using data from today
+  * Delay 0 alphas perform better, so they have harder submission requirements
 
-Truncation -- Maximum daily weight of each instrument
+Truncation -- Maximum daily weight of each stock. Helps avoid over-weighting one
+company
 
-Neutralization -- Adjust alpha weights such that they sum to zero within each group of the selected type
+Neutralization -- Adjust alpha weights to sum to zero within each group of the
+selected type
+  * Includes Market, Sector, Industry, Subindustry, or None
 
 ### Alpha performance metrics
 
