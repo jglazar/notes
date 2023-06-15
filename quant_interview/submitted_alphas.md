@@ -109,7 +109,7 @@ oey_growth = ts_rank(mdf_oey, 63);
 oey_growth - group_mean(oey_growth, 1, subindustry)
 ```
 
-USA, TOP1000, Decay 9, Delay 0, Truncation 0.1, Neutralization Subindustry	
+USA, TOP1000, Decay 9, Delay 0, Truncation 0.1, Neutralization Subindustry\
 Sharpe 2.03, Turnover 14.25%, Fitness 1.58, Returns 8.67%, Drawdown 3.96%, Margin 12.17‱
 ```
 rank( ts_rank( fnd6_epsfx /close, 40) )
