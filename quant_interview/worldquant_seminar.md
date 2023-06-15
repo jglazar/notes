@@ -259,6 +259,31 @@ strategy
 
 Only a subset of alphas work well for delay-1 and delay-0
 
+Use high-frequency data like price/volume, news, sentiment, and option data for
+delay-0 alphas. Trade on liquid universe.
+
+`zscore(vwap / close) * (1 - rank(high / low))`
+  * Neutralization market, truncation 0.01, decay 15, TOP1000, delay 0
+  * Improve with more liquid universe 
+
+`zscore(implied_volatility_call_720 - implied_volatility_put_720)`
+  * Neutralization market, truncation 0.01, decay 3, TOP3000, delay 0
+  * Improve with historical volatility, trading volume, and open interest
+
+`-ts_corr(ts_rank(volume, 10), ts_rank(vwap, 10), 20)`
+  * Neutralization subindustry, truncation 0.1, decay 3, TOP3000 China, delay 0
+  * Improve by reducing noise when correlation is below threshold
+  * China price reversion is typical in short-term trending markets
+
+`when = ts_arg_max(volume, 5) == 0; trade_when(when, -rank(ts_delta(close, 3)),
+-1)`
+  * Neutralization subindustry, truncation 0.1, decay 3, TOP3000 China, delay 1
+  * Improve by exiting when stock hits Chinese price limit (10%)
+
+`rank(ts_delta(retained_earnings / sharesout, 90))`
+  * Neutralization subindustry, truncation 0.01, decay 5, TOP3000 China, delay 1
+  * Improve by lowering number of days in `ts_delta`
+
 Truncation 0.01 for TOP3000
   * Use `rank` to prevent overweighting
 
@@ -306,3 +331,79 @@ Aditya Chaturvedi had bad grades, then found WorldQuant competition
 Data Explorer has tag for alpha generation -- can just use that data!
 
 Re-use alphas from Round 1 in Round 2
+
+## Options, Vector operators, and China markets
+
+Vector data has multiple points per day (better called a tensor, IMO)
+
+Stocks only specify direction and use current price. Options specify direction,
+time, and price
+
+Underlying property (call response)(put response)
+  * Price+-, strike-+, expiry++, volatility++, risk-free rate+-, dividends-+
+
+IV-vs-strike graph forms a smile
+
+`ts_delay(call_breakeven_10, 7) / close`
+  * Improve with other call or breakeven fields. Count frequency of close
+    reaching breakeven
+  * `a = above; trade_when(ts_arg_max(pcr_vol_10, 7) < 1, a, -1)`
+  * Neutralization industry, truncation 0.03, decay 0, TOP3000
+
+`ts_decay_linear(ts_delta(implied_volatility_call_60, 25) > 0, 20)`
+  * Improve with `vector_neut()` operator
+  * `a = above; vector_neut(a, (cap))`
+  * Neutralization subindustry, truncation 0.03, decay 0, TOP3000
+  * Check [paper](https://papers.ssrn.com/sol3/paper.cfm?abstract_id=2008902)
+    * Big increase in call (put) IV over past month have high (low) returns
+
+`vector_neut()` gets `a - (a*b)b` (orthogonal component to `b`) -- neutralizes
+alpha vector over another risk factor
+
+`-mdl175_volatility` -- new data field for China
+  * Neutralization market, truncation 0.1, decay 3, TOP3000 China
+  * Improve by reducing exposure to volatile stocks during high volumes
+  * Can also upweigh stocks with high revenues for the past year
+  * `rank(-mdl175_volatility * log(volume)) * (1 + group_rank(mdl175_revenuettm,
+    sector))`
+  * `vector_neut(above, ts_mean(mdl175_02amvt, 240))`
+  * `group_vector_neut(above, ts_mean(mdl175_02amvt, 240), sector)`
+
+`buzz = ts_backfill(-vec_sum(scl12_alltype_buzzvec), 20); ts_av_diff(buzz, 60)`
+  * Neutralization industry/subindustry, truncation 0.08, decay 15, TOP3000
+
+`ts_backfill(-vec_avg(nws12_afterhsz_maxupamt), 20)`
+  * Neutralization industry, truncation 0.01, decay 10, TOP1000
+  * Improve by neutralizing w.r.t. momentum. Set no neutralization and decay 0
+  * `a = above; neut_a = vector_neut(a, ts_mean(returns, 250)); decay_a =
+    ts_decay_exp_window(neut_a, 20, factor=0.4); group_neutralize(decay_a,
+    densify((industry+1)*10 + exchange))`
+
+`avg_ret = power(ts_product(returns+1, 5), 1/5); comp_avg =
+power(ts_product(rel_ret_comp+1, 5), 1/5); a = zscore(comp_avg / avg_ret);
+when = ts_rank(ts_std_dev(returns, 60), 126) > 0.55; trade_when(when, a, -1)`
+  * Neutralization subindustry, truncation 0.01, decay 3, TOP3000
+  * Geometric mean works much better than arithmetic mean for financial data
+    * Can numerically stabilize with `exp(1/N sum(log(x)))`
+  * Improve by neutralizing w.r.t. momentum
+  * `vector_neut(above, ts_mean(returns, 120))`
+
+`rank(-(mdf_pbk - ts_max(mdf_pbk, 10)))`
+  * Neutralization subindustry, truncation 0.01, decay 3, TOP3000
+  * Improve by reducing turnover
+  * `rank(ts_sum(vec_avg(nws12_afterhsz_s1), 60)) > 0.5 ? 1 : above`
+    * Moving negative sign outside the `rank()` operator is bad here
+  * Improve further with `pv13` model groupings
+  * `group_neutralize(above, densify(pv13_r2_min20_3000_sector))`
+
+Check out Data Explorer for farming ideas -- simulate data field with high usage
+
+China tips
+  * Use `group_rank` instead of `rank`
+  * Use our own risk factors for vector neutralization. Use `group_vector_neut`!
+
+Low coverage is OK -- e.g., data on TOP1000 will only have 33% coverage
+
+Translate math into alpha expressions -- change is `ts_delta` or `ts_zscore`,
+dependence is `ts_corr` or `ts_regression`, prediction is `ts_regression(...
+rettype=3)`
