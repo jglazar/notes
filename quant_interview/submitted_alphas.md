@@ -161,8 +161,7 @@ USA, TOP3000, Decay 30, Delay 1, Truncation 0.01, Neutralization Subindustry\
 Sharpe 1.84, Turnover 8.99%, Fitness 1.08, Returns 4.29%, Drawdown 1.93%, Margin 9.55‱
 ```
 avg_news = vec_avg(nws12_afterhsz_sl);
-rank(ts_sum(avg_news, 60)) > 0.5 
-    ? 1
+rank(ts_sum(avg_news, 60)) > 0.5 ? 1 : rank(-ts_delta(close, 2))
 ```
 
 USA, TOP3000, Decay 0, Delay 1, Truncation 0.08, Neutralization Subindustry\
