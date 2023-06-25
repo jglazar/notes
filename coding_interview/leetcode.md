@@ -744,7 +744,7 @@ def simple_union(a, b):
 def compress_find(i):
     # correct all intermediaries to point directly to set leader
     if v != parents[v]:
-        parents[v] = find(v)
+        v = parents[v] = find(v)
     return parents[v]
 
 def rank_union(a, b):
