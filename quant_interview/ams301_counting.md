@@ -213,24 +213,27 @@ So an = a(n-1) + a(n-1) + (a(n-1) - a(n-3)) = 3 * a(n-1) - a(n-3).
   1 without any issues, but 2 has 012 issue. Subtract off explicit 012 
   to correct.
   * Must be careful of accidentally completing sequence! Tacking on 
-  xxxx0 or xxxx1 is fine, but xxx02 or xxx22 runs into 012 issue!
+  xxxx0 or xxxx1 is fine, but xxx12 or xxx22 runs into 012 issue!
 
 Probability of HH in sequence of length n -- 1/2 chance of T then 
 any p(n-1), 1/2 chance of H and then require T then any p(n-2). So 
 pn = 1/2 p(n-1) + 1/4 p(n-2) gives recurrence.
   * Same as finding 1 - p(HH) in Markov chain with states start, T, H, 
   and HH.
+    * Would set up `[1 0 0 0] * (transition matrix)^n`, incl. start state
 
 Conditioning is powerful!
 
-Probability of even number of heads in n flips -- p (1 - p(n-1)) + 
-(1-p) p(n-1) gives recurrence. Solution is 1/2 ( 1 + (1-2p)^n ).
+Probability of even number of heads in n flips -- p (1 - f(n-1)) + 
+(1-p) f(n-1) gives recurrence. Solution is 1/2 ( 1 + (1-2p)^n ).
 
 Expected number of flips until HHH -- use total expectation. 
 E(x) = E(x|T)P(T) + E(x|HT)P(HT) + E(x|HHT)P(HHT) + E(x|HHH)P(HHH) 
-= (x+1)/2 + (x+2)/4 + (x+3)/8 + (3)/8 --> x = 14. Could try to find 
-probability by counting fails with an = a(n-1) + a(n-2) + a(n-3) but 
-Tribonacci sequence is unwieldy in calculations.
+= (x+1)/2 + (x+2)/4 + (x+3)/8 + (3)/8 --> x = 14. 
+  * Could try to find probability by counting fails with an = a(n-1) + a(n-2) +
+    a(n-3) but Tribonacci sequence is unwieldy in calculations.
+  * Easier is setting up Markov Chain with start state, then solving system of
+    linear equations. Remember that `E[a] = P(a-b)E[b] + ... + 1`
 
 Gambler's ruin: pi = p p(i+1) + (1-p) p(i-1) --> set up recurrence and 
 solve by subbing pi = x^i or taking difference equations p2 - p1, p3 - p2 
@@ -245,6 +248,7 @@ Distributing items with 2-4 objects per box -- an,k = an-2,k-1 + an-3,k-1 +
 an-4, k-1. With 3 colors gives i+3-1Ci prefactor
 
 Placing parentheses -- an = sum from 1 to n-1 of ( ai * a(n-i) )
+  * This is Catalan's number -- see articles.md
 
 Ternary sequences with even number of 0s -- a(n-1) + a(n-1) + ( 3^(n-1) - 
 a(n-1) )
