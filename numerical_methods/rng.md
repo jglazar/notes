@@ -67,6 +67,9 @@ Float conversion
   * `(float)rand * 1.0f/(float)RAND_MAX` -- compile-time calculate factor
   * Trick: cast rng to signed int, then multiply, then add 0.5
     * See [this paper](https://www.doornik.com/research/randomdouble.pdf)
+  * Knuth's lagged Fibonacci generator with circular list of 55 values generates
+    floats directly.
+    * Warning: fails Diehard's birthday test
 
 Longer period: keep array `rands`, then `x1 = rands[conv(x0)]`
   * `conv(n)` converts `n` to index of `rands`, like `(int)(float(n) / m *
@@ -120,11 +123,104 @@ New Xoroshiro methods are fast, lightweight, and pass tests
 Can approximately generate `N(0,1)` by taking sum of 12 `U(0,1)`, then
 subtracting 6 (recall that variance of uniform is `(b-a)^2/12`)
 
-Check 3rd ed. for multivariate Normal
+Using calculus, `p(Y) = p(X) |dX/dY|` (like a Jacobian)
+  * p(X) is typically ignored since distribution is uniform (acts as 1)
+  * E.g., Cleverly setting `Y = -ln(X)` and `X ~ U(0,1)` yields `P(Y) =
+    1 * exp(-y)`. So we can sample X, then take `-ln(x)` to sample Y
+  * Generic solution is `Y(X) = inv(F(x))`, where `F` is cdf
+  * More generally, `p(Y1, Y2...) = p(X1, X2...) |J|`
+
+Box-Muller uses clever Y1 and Y2 functions to reproduce product of Gaussians
+  * `Y1 = sqrt(-2 ln X1) cos(2 pi X2)`, `Y2 = sqrt(-2 ln X1) sin(2 pi X2)`
+  * Like X1 is angle and X2 is radius
+  * Inverting and calculating Jacobian yields `P(Y1, Y2) = 1/2pi exp(-1/2 (y1^2
+    + y2^2))`
+  * Optimization: pick X1 and X2 inside unit circle (by rejection, e.g.). Then
+    `r^2 = x1^2 + x2^2`, `cos(2 pi x2) --> x1/r`, `sin(2 pi x2) --> x2/r`, and
+    `ln x1 --> ln r^2`
+  * Scale out with `Y = mu + sigma * Z` as needed
+
+Rayleigh distribution is `p(x) = x exp(-1/2 x^2)`
+  * Sample with `Y = sqrt(-2 ln X)` or `Y = sqrt(Z1^2 + Z2^2)`, Z ~ std Normal
+
+Rejection method samples uniformly in 2D space, then accepts if within target
+  * Can sample in uniform box, or in envelope function if possible
+  * Inversion-sample envelope pdf to get X, then get rng between 0 and envelope 
+  pdf's value at X and check if underneath target pdf. If so, accept X.
+
+Cauchy distribution is `(pi (1 + (x - x0))^2)^-1`
+  * CDF is `1/pi arctan(x) + 1/2`, so inverse is `tan(pi*y - pi/2)`. Inverse CDF
+    can be interpreted as `tan(random angle b/t -pi/2 and +pi/2)`
+  * Trick: generate random angle by getting x1, x2 in unit semicircle, then
+    return tangent of random angle with simple `x1/x2`. 
+  * Can similarly scale out with `Y = mu + sigma Z`
+
+Ratio of uniforms method uses powerful formulation of rejection sampling
+  * `p(x) dx = integral from 0 to p(x) of 1 dp dx = 2 integral from 0 to
+    sqrt(p(v/u)) 1 du dv`, where u and v are uniform in given region. Rejection
+    sample u and v, then return `u/v` for final sample
+  * Use simple outer and inner bounding regions for fastest performance
+
+Gamma distributions are sum of `alpha` exponential waiting times. Just sum up
+that many exponential samples then!
+  * There's also a clever ratio of uniforms sampling method
+
+Use floor function to simulate blocky histogram when sampling discrete dists
+  * Bisection searching a CDF table works well for small domains
+
+Multidimensional Normal
+  * Calculate Cholesky decomposition of covariance matrix. Then sample `Y = LX +
+    mu`, where X is a vector of independent randoms with variance 1 symmetric
+    about 0
+  * Can be turned around to get uncorrelated linear combinations of correlated
+    variables. Calculate `Y = inv(L) (X - mu)`
 
 ### Monte Carlo integration
 
-Check 3rd ed. for advanced methods
+`integral of f dV = V*<f> +/- V*sqrt(Var[f] / N)`
+  * If `f` is constant, then integral is exact!
+  * Including lots of 0 samples boosts variance, which is bad
+
+Can sample points outside of desired region. Just set those values to 0 (but
+still count them!)
+
+Change of variables is powerful means of variance reduction
+  * Redefine sampling variable bounds, use inversion method to sample from new
+    variable 
+  * E.g., If `f ~ exp(5x)`, then map `ds = exp(5x)dx --> s = 1/5 exp(5x)`. New
+    bounds are `(-1,1) --> (0.00135, 29.682)` and then sample `x = 1/5 ln(5s)`
+  * Try to capture part of integrand that varies most strongly, and sample that
+    part directly via inversion. Want integrand to be constant, ideally.
+
+Using quasi-random self-avoiding points can improve error scaling to `1/N`
+
+Latin hypercube sampling works well if one parameter dominates.
+
+Importance sampling uses biased sampling, rather than uniform
+  * `integral of f dV = integral of (f/g) g dV`
+  * Sample `f/g` with probability `g dV`. Easiest is `g = dG/dV`, with `G` = CDF
+  * Congregates points around high-density regions
+  * General formula: `integral of f dV = <f/g> +/- sqrt(Var[f/g] / N)`
+
+Stratified sampling adds estimates over disjoint regions
+  * `Var[f] = 1/2 (Var_a[f] + Var_b[f]) + 1/4 (E_a[f] - E_b[f])^2` (see parallel
+    axis theorem)
+  * Can generalize with different numbers of points in each subregion, optimally
+    in proportion to that region's std. dev.
+    * Yields `Var[<f>] = (sigma_a + sigma_b)^2 / 4N`
+  * Congregates points around high-variance regions
+  * Don't naively create `K^d` regions 
+
+Slightly informed importance sampling is often better than blind stratified
+sampling
+
+VEGAS algorithm iteratively improves independent weight functions for each
+dimension
+  * Performs best if target function is concentrated near axes
+  * Performs worst if target function is concentrated along `(0,0,0...) -
+    (1,1,1...)`
+
+Recursive stratified sampling does bisections along one dimension at a time.
 
 ## Sampling
 
