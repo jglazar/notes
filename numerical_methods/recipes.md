@@ -338,14 +338,27 @@ Golden Section search:
     total bracket reduction factor of 0.62, compared to 0.5 from bisection
     search. Gives linear convergence.
 
-TODO: Line methods...
+Naive multi-dimensional minimization loops along x, then y, then z...
+  * Requires tons of tiny steps to get anywhere if slope is tilted (curvature is
+    bigger along some directions more than others)
 
-Conjugate gradients:
+Steepest descent (with maximal step sizes) makes 90-degree zig-zag pattern,
+since next gradient is orthogonal to prior step.
+
+Conjugate gradients take smart non-interfering steps
   * Gradients give `N` information per evaluation. Need at least `N^2` info to
     find min
-  * Each step in steepest descent is orthogonal to last, which is
-    counterproductive
-  * TODO: to be continued...
+  * Conjugate set of vectors have all pairs `u A v = 0`. In our case, `A` is
+    Hessian matrix.
+    * Next step doesn't correct prior step at all
+  * This allows a single pass minimizing through all vectors
+  * Can perform type of Gram-Schmidt orthogonalization to get sequence of
+    orthogonal vectors `g` and conjugate vectors `h`. No Hessian needed!
+
+Variable metric methods build iterative approximation for inverse of Hessian
+  * DFP and BFGS are popular
+  * Want `x2 - x1 = inv(H) * -grad(x1)`
+  * Trick: approximate Cholesky decomposition matrix of Hessian
 
 Interior point methods often beat simplex methods
   * Traverse interior of feasible region
@@ -459,6 +472,7 @@ parameters
     remaining vectors
 
 After SVD:
+  * Parameter estimates are `sum(Ui * b / wi) * Vi`
   * Sq uncertainties for `mi` are `sum(1/wj^2 Vij^2)`, where `wi` is the singular value
     and `Vi` is the corresponding column of `V` -- each uncertainty is
     independent of the others!
@@ -469,6 +483,35 @@ After SVD:
 
 Only downside to SVD is extra `N * M` space to store design matrix, and slow
 speed
+
+### Nonlinear models
+
+Minimize chi-sq merit function iteratively
+
+We know the Hessian! Simply apply `delta_ai = c * sum(1/2 Hij delta_aj)`
+
+Levenberg-Marquardt method switches between inverse-Hessian and steepest descent
+  * Also dynamically sets the constant `c` above
+
+### Confidence intervals
+
+Ol' reliable: generate random synthetic datasets (with replacement), fit
+parameters to each, and report original fit +/- std dev across fits
+
+Generate confidence region in parameter space. You pick confidence level and
+region shape
+  * Good shape: region containing all parameter vectors s.t.
+    they are within constant-chi-sq difference from original fit. Pick
+    constant-chi-sq s.t. 95% of parameter vectors lie within region.
+
+Confidence region for parameter subset is simply projection of full region onto
+subspace. Never use raw intersection instead of projection!
+
+If residuals have Normal distribution:
+  * You can use `C = inv(X^T X)` to estimate parameter covariance matrix 
+
+Further, if you have a linear model or you have enough samples s.t. parameter
+uncertainties lie within linearized model's region
 
 ### Markov Chain Monte Carlo
 
