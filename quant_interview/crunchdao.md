@@ -4,6 +4,8 @@
 
 Submissions can take 30Gb RAM
 
+5 hours of runtime per week
+
 ## Data
 
 Given 276 dates (herein, days) of training data, with ~3000 stocks per day
@@ -55,3 +57,27 @@ Further data exploration:
 Data preprocessing like clustering or outlier detection to de-bias predictions
 
 Fine-tune the loss function to something other than MSE
+
+## Strategies tried so far
+
+All scores are Spearman correlation coefficient
+
+"rx" means retrain every x days
+
+Linear model with LASSO, alpha = 0.001
+  * training: 3.538
+  * testing: r0 - 2.784, r2 - 2.958, r4 - 3.000
+
+LightGBM with optimized params
+  * training: 2.676
+  * testing: r0 - 2.549, r2 - 2.844
+
+XGBoost with basic params
+  * training: 0.851
+  * testing: r0 - 1.166
+
+CatBoost with basic params
+  * training: 2.579
+
+CatBoost with optimized params
+  * training: 
