@@ -338,16 +338,19 @@ Golden Section search:
     total bracket reduction factor of 0.62, compared to 0.5 from bisection
     search. Gives linear convergence.
 
+Downhill simplex sets up N-dimensional simplex, then executes moves to slowly
+ooze the simplex toward a min. E.g., pull one vertex through opposite plane
+
 Naive multi-dimensional minimization loops along x, then y, then z...
   * Requires tons of tiny steps to get anywhere if slope is tilted (curvature is
     bigger along some directions more than others)
 
 Steepest descent (with maximal step sizes) makes 90-degree zig-zag pattern,
 since next gradient is orthogonal to prior step.
-
-Conjugate gradients take smart non-interfering steps
   * Gradients give `N` information per evaluation. Need at least `N^2` info to
     find min
+
+Conjugate gradients take smart non-interfering steps
   * Conjugate set of vectors have all pairs `u A v = 0`. In our case, `A` is
     Hessian matrix.
     * Next step doesn't correct prior step at all
@@ -394,145 +397,6 @@ E.g., Multiply ABCDE matrices to minimize operations
 E.g., Find best-scoring match between two DNA sequences
   * Allowed edits are deletion, insertion, and substitution. 
   * Traverse table with sequences along columns and rows
-
-## 14. Modeling data
-
-Want to minimize merit function and calculate goodness of fit and parameter
-error bars
-  * Merit function may have multiple minima
-
-### Maximum likelihood estimation
-
-Minimizing square error is same as minimizing `-log(L)` when `yi ~ Normal(f(xi),
-s^2)`
-  * `s` is same std dev for all data
-  * All data are independent s.t. likelihood is simple product
-  * Note: Normal dist is bad for counts (Poisson has fatter tails) and outliers
-
-Chi-sq statistic changes `s` to `si`, a given uncertainty for each observation.
-  * This prevents factoring out common `s`, leading to `-log(L) ~ sum((yi -
-    yhat) / si)^2`
-  * This statistic is drawn from the chi-sq dist with `N - m` d.o.f.
-  * Non-normal residuals lead to low statistics, so `p > 0.001` is actually fine
-  * Aim for `chi-sq ~ v`, where v is d.o.f. Large `v` --> chi-sq ~ Normal(`v`,
-    `2v`)
-
-Can estimate single error bar for all data `s` by minimizing SSE, then taking
-`s^2 = 1/N * sum((yi - yhat)^2)` (MSE)
-  * Cannot use chi-sq statistic for goodness of fit anymore
-
-### Fitting to y = a + bx
-
-Minimize `sum((yi - a - b xi)^2 / si^2)` for a and b, then collect:
-  * `S = sum(1 / si^2)`
-  * `Sx = sum(xi / si^2)`
-  * `Sy = sum(yi / si^2)`
-  * `Sxx = sum(xi^2 / si^2)`
-  * `Sxy = sum(xi yi / si^2)`
-  * `Delta = S Sxx - (Sx)^2`
-  * Can rearrange sums to avoid roundoff -- see text
-
-This yields expressions for `a` and `b`. 
-  * Use error propagation `sf^2 = sum((df/dxi)^2 si^2)` to get `sa^2 = Sxx /
-    Delta` and `sb^2 = S / Delta`
-  * `Cov(a,b) = -Sx / Delta`, `Corr(a,b) = -Sx / sqrt(S Sxx)`
-  * Goodness of fit is given by traditional chi-sq
-
-`chi-sq = (1 - r^2) sum((yi - ybar)^2 / si^2)`, where `r` is linear correlation
-coefficient
-
-No `si` given? Set `si = 1` and multiply `sa^2` and `sb^2` by `chi-sq / (N-2)`
-where `chi-sq` is calculated from model fit to get new parameter uncertainties 
-
-### General linear least squares
-
-`y = sum(ai Xi(x))`, where `Xi(x)` are basis functions
-  * Can be any form, like Fourier, polynomials, etc.
-
-Create design matrix `A` with elements `aij = Xj(xi) / si` and target vector `b`
-with elements `bi = yi / si`. 
-  * `A m = b`, where `m` is model weights vector. Generally, rows > cols.
-  * `(A^T A) m = A^T b` gives nice N x N equation to solve
-  * `C = inv(A^T A)` is covariance matrix of parameters, s.t. diagonal elements
-    are squared parameter uncertainties `smi^2` 
-    * Error propagation: `smi^2 = s^2 * (C A^T * 1/s)^2 = C A^T A C^T = inv(A^T
-      A) A^T A C = C`
-
-Solving above `(A^T A) m = A^T b` with LU decomp has roundoff error issues
-  * Use QR decomp of A or SVD instead
-
-Can freeze parameters, remove from problem by incorporating into `b` vector,
-then re-fill in final answer and zero out their variances/covariances
-
-(Near)-singularity in normal equations leads to zero pivots or sensitive
-parameters
-  * Happens when >=2 `m` vectors are equally valid -- some basis functions
-    capture no information
-  * SVD pushes down null vectors and provides least squares estimates for
-    remaining vectors
-
-After SVD:
-  * Parameter estimates are `sum(Ui * b / wi) * Vi`
-  * Sq uncertainties for `mi` are `sum(1/wj^2 Vij^2)`, where `wi` is the singular value
-    and `Vi` is the corresponding column of `V` -- each uncertainty is
-    independent of the others!
-    * `Vi` vectors are principal axes of uncertainty ellipsoid of `m` params
-  * Covariance matrix for parameters has elements `Cij = sum(Vik Vjk / wk^2)`
-  * If zero-pivot encountered, just zero-out its inverse
-    * Good cutoff for small values is `N * eps * w_max`
-
-Only downside to SVD is extra `N * M` space to store design matrix, and slow
-speed
-
-### Nonlinear models
-
-Minimize chi-sq merit function iteratively
-
-We know the Hessian! Simply apply `delta_ai = c * sum(1/2 Hij delta_aj)`
-
-Levenberg-Marquardt method switches between inverse-Hessian and steepest descent
-  * Also dynamically sets the constant `c` above
-
-### Confidence intervals
-
-Ol' reliable: generate random synthetic datasets (with replacement), fit
-parameters to each, and report original fit +/- std dev across fits
-
-Generate confidence region in parameter space. You pick confidence level and
-region shape
-  * Good shape: region containing all parameter vectors s.t.
-    they are within constant-chi-sq difference from original fit. Pick
-    constant-chi-sq s.t. 95% of parameter vectors lie within region.
-
-Confidence region for parameter subset is simply projection of full region onto
-subspace. Never use raw intersection instead of projection!
-
-If residuals have Normal distribution:
-  * You can use `C = inv(X^T X)` to estimate parameter covariance matrix 
-
-Further, if you have a linear model or you have enough samples s.t. parameter
-uncertainties lie within linearized model's region
-
-### Markov Chain Monte Carlo
-
-MCMC is good when estimating/sampling posterior
-  * Requires detailed balance and ergodicity (and aperiodicity)
-  * Top eigenvalue of transition matrix is 1, 2nd eigenvalue determines
-    convergence speed
-  * Samples are complete -- can marginalize out unwanted data
-  * Picking transition distribution (moves) can be tricky
-    * E.g., 2 moves -- `k` fixed and `l` small, `k++` and `l` changed s.t. `l/k`
-      constant
-  * ✅ Use `log(p)` to prevent under/overflow during unnormalized probability
-    density (like `exp(-delta_e/T)`) calculations
-
-Gibbs sampler takes independent samples from each component variables'
-conditional pdf.
-  * (+) Yields big moves, unlike tiny moves from MCMC
-  * (-) Must know/calculate normalize conditional pdfs
-  * Works well for discrete variables, where normalization is quick. Numerical
-    integration for continuous variables is slow -- better to use MCMC.
-  * ❗️ Not the same as doing MCMC with moves one component at a time!
 
 ## Geometry
 
