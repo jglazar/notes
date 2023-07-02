@@ -81,7 +81,20 @@ If x and y distributions are sufficiently Normal (no fat tails):
     * Fisher's z-transformation is `z = 1/2 ln((1 + r)/(1 - r))`. This is
       distributed as `Normal(1/2(ln((1+r)/(1-r) + r/(N-1))), 1/sqrt(N-3))`
 
-TODO: Rank correlation
+Rank correlation -- replace number with its relative rank
+  * Replace repeats with mean rank if they were all different
+  * Ranks are drawn from Uniform(0, 1) dist and sum is guaranteed `= N*(N+1)/2`
+  * Spearman rho: linear correlation of ranks. Test significance with `t = rho
+    sqrt((N - 2)/(1 - rho^2))`
+    * Related to `D = sum(xi - yi)^2` where `rho = 1 - 6D/(N^3 - N)`
+    * D is distributed as `Normal((N^3 - N)/6, N^2(N-1)(N+1)^2 / 36)`
+  * Kendall's tau: enumerate all pairs of `(xi, yi), (xj, yj)`, then calculate
+    `tau = (a-d) / (sqrt(a+d+ex) * sqrt(a+d+ey))`, where `a` is number of
+    concordant pairs (x up and y up), `d` is number of discordant pairs, `ex(y)`
+    is tie in y(x) rank
+    * tau has distribution `Normal(0, (4N + 10)/(9N * (N - 1)))`
+    * More robust, but less powerful (more likely to accept null hypothesis)
+  * Kendall works better than Spearman for ordinal variables (few values)
 
 ### Smoothing
 

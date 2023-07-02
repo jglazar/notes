@@ -215,6 +215,118 @@ multiplications down to 7 by introducing many more adds/subs.
 Recursive Strassen method gives `O(N^log2(7))` time complexity. Pays off after
 `N > 100`
 
+## 11. Eigensystems
+
+`Ax = lambda x` only holds if `det(A - lambda I) = 0`, which expands to Nth
+degree polynoomial
+  * Root searching performs poorly for solving the polynomial
+
+Can shift eigenvalues by adding `tau I` to original matrix `A`
+
+Symmetric = Hermitian, orthogonal = unitary, both of which are normal (matrix
+commutes with conjugate transpose)
+  * Eigenvalues of Hermitian matrix are real
+  * Eigenvectors of normal matrix with unique eigenvalues are complete and
+    orthogonal
+    * Eigenvectors of degenerate eigenvalues can be swapped in linear
+      combinations. Can use Gram-Schmidt orthogonalization to find complete and
+      orthogonal set
+  * Non-normal matrices are defective, and its eigenvectors may not span space
+
+Left eigenvectors are right eigenvectors of the transpose of the matrix.
+  * Their eigenvalues are identical
+  * If matrix is symmetric, then left and right eigenvectors are just transposes
+  * Even for non-normal matrices, left and right eigenvectors are orthogonal
+    s.t. `Xr = inv(Xl)` upon proper normalization
+
+Similarity transform of A gives `inv(Xr) A Xr = diag(lambda)`
+  * Most diagonalization techiques nudge the system via similarity transforms
+  * Jacobi transformations zero-out an off-diagonal element. Householder
+    transformations and the elimination method zero-out rows or columns.
+  * Note: Gaussian elimination is not a similarity transform
+
+Factorization methods like QR use `A = Al Ar` --> `Ar Al = inv(Al) A Al`
+
+Easiest to get just eigenvalues, then get desired eigenvectors by inv. iteration
+
+### Jacobi transformations
+
+Foolproof for real symmetric matrices, but slower than QR if N >= 10
+
+Accumulates `A = ... inv(P3) inv(P2) inv(P1) A P1 P2 P3 ...`, where right side
+stores `Xr` (where cols are eigenvectors) and matrix has eigenvalues on diagonal
+
+Pick angle and calculate cosine `c` and sine `s`, then construct matrix `I + T`
+where T has `c` placed in 2 spots on diagonal and `s` on 2 off-diagonal spaces.
+This generates a plane rotation after `A' = (I+T)^T A (I+T)`
+
+For symmetric matrix, zeroing out corresponding element happens if angle = `(aqq
+- app) / 2apq`. Can avoid expensive trig with further approximations.
+
+Use cyclic Jacobi transformations across each element in matrix for overall
+`O(N^3)` time to converge
+
+### Householder reduction
+
+Givens reduction reduces matrix to tridiagonal form in known number of steps.
+Just don't annihilate inner corners of box
+
+Householder reduces to tridiagonal form with orthogonal transformations that
+annihilate entire row/column
+  * Uses matrix `P = I - 2 w x w^T` (outer product). P is its own inverse and
+    transpose. `w` uses matrix elements to enable zeroing
+
+### Tridiagonal matrices
+
+Recursion relation exists for solving characteristic polynomial to get
+eigenvalues. Can then apply typical root-finding method to polish root.
+  * Use inverse iteration to find corresponding eigenvectors
+
+QL decomp is achievable for any real matrix. Apply Householder transformations
+to eliminate values below diagonal
+  * Q is orthogonal, L is lower-triangular (can instead have upper-triangular R)
+  * Preserves symmetry, tridiagonal form, and Hessenberg form
+
+QL algorithm finds `Ai = Qi Li` then `Ai+I = Li Qi = Qi^T Ai Qi`
+  * Takes `O(N^3)` time per iteration in general. Tridiagonal only needs `O(N)`
+    and Hessenberg only needs `O(N^2)` per iteration.
+
+Can apply shifts `Ai - ki I = Qi Li` s.t. `Ai+I = Li Qi + ki I = Qi^T Ai Qi`
+  * Convergence is then determined by `(lambdaa - ki)/(lambdab - ki)` for
+    element `a_ab`
+  * Can apply implicit shifting for increased stability for small eigenvalues
+
+### Other special matrices and tips
+
+Complex: `(A + iB) (u + iv) = lambda (u + iv)` can be rewritten as stacked real
+matrix `[[A, -B], [B, A]] * [u, v] = lambda [u, v]`
+  * Hermitian matrix has `A^T = A` and `B^T = -B`
+  * 2n eigenvectors are pairs `(u + iv)` and `i(u + iv)`
+  * Complex conjugate pair eigenvalue pairs manifest as blocks along diagonal
+
+Balancing makes rows'/cols' norms approximately equivalent. Takes `O(N^2)` time.
+Uses similarity transforms.
+
+Element along diagonal with all-zeros in col/row is already an eigenvalue.
+Typically worthwhile to remove corresponding row and col from matrix
+
+Reduction to Hessenberg form can happen via Householder reflections or (more
+efficiently) an altered form of Gaussian elimination with pivoting
+
+### Improving eigenvalues and inverse iteration
+
+1. Set up `(A - tau I) y = b`, where `b` is a random vector. 
+2. Solve for `y`
+3. Replace `b` with normalized `y` and iteratively solve. 
+
+Eventually gets `tau` as eigenvalue and `y` as its eigenvector, with `b ~= 0`
+
+Works bc `lambdai+1 = lambdai + |bi|^2 / |bi y|`
+
+Want change in eigenvector to be large and change in eigenvalue to be small
+
+For degenerate/close eigenvalues, perturb eigenvalue and redo iteration
+
 ## 7. Random numbers
 
 See `rng.md` notes file
