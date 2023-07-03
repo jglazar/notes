@@ -98,3 +98,28 @@ Estimating the PSD
     * More poles --> more sensitivity to noise
 
 Digital filtering in real-time is useful for data streams
+  * Can use FFT instead, with real symmetric filter and removed
+    trend (subtract line connecting first and last data points)
+  * Linear filter -- `yj = sum(ci x_(n-i)) + sum(di y_(n-i))`
+    * Finite impulse response (FIR) has no second term (only function of `xi`)
+    * Infinite impulse response has nonzero second term
+    * Related to filter `H(f) = sum(ci exp(-2 pi m i f delta)) / (1 - sum(di
+      exp(-2 pi m i f delta)))`
+    * Difficult to infer suitable `ci` and `di` to reproduce desired filter
+  * For FIR, inverse-FT-inferred `ci` create oscillations between discrete
+    values in `H(f)`
+  * IIR filters are unstable and can become homogeneous (exponentially grow)
+    * Stable if all complex roots of `z^N - sum(di z^(N-i)) = 0` are inside unit
+      circle, where `z = exp(2 pi m f delta)`
+    * Bilinear transform method gives simple way to design `ci` and `di` for
+      band-pass or notch filters, e.g.
+
+Linear prediction -- `yj = sum(di y_(n-i)) + xj`, where `xj` is correction 
+  * Great (better than polynomial extrapolation) for smooth oscillatory data
+  * Same as max entropy method -- create characterization of signal in terms of
+    finite number of poles representing spectrum in complex z-plane
+  * May need to edit roots to fall on unit circle after max entropy method 
+  * Linear predictive coding compresses data, but only by reducing the magnitude
+    of the stored number (just store `di` coefficients and `xj` correction)
+
+FFT in multiple dimensions can be applied in any order
