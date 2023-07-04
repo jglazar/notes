@@ -12,8 +12,9 @@ Smallest number whose digits multiply to 10000
 
 Paint a 3x3x3 cube, then cut into 1x1x1 cubes. Pick random cube and roll. What
 is the chance a painted side is face-up
-  * 6 middles w 1 painted side, 8 edges w 2, 8 corners w 3. `P(paint) =
-    P(paint|mid)P(mid) + P(paint|edge)P(edge) + P(paint|cnr)P(cnr) = 23/66`
+  * 1 center w 0 painted sides, 6 middles w 1, 12 edges w 2, 8 corners w 3.
+    `P(paint) = P(paint|ctr)P(ctr) + P(paint|mid)P(mid) + P(paint|edge)P(edge) +
+    P(paint|cnr)P(cnr) = 1/3`
 
 Sum of odd numbers to 50
   * Total sum is `n(n+1)/2`, which is evens + odds. But each even number is just
