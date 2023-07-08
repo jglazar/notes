@@ -476,6 +476,8 @@ Similar to DFS
 General framework:
   * define `Candidate` object, global current solution variable, and global
     solutions vector or counter
+    * `Candidate` represents a single addition to the current solution, not the
+      whole solution itself
   * `f` handles `Candidate` and returns nothing, altering global variable along
     the way
   * Each recursion is next step closer to end. Each iteration within recursion 
@@ -483,6 +485,11 @@ General framework:
   * Backtracking should happen within iteration
   * `is_valid` prunes search zones, like `not_attacked` for N-queens
   * `place` and `remove` are symmetric
+
+Initiate Candidate at -1 because we only consider possible_next
+
+Typical pattern: turn input array into Counter object, then Candidates are just
+(index, amount) tuples. Iterate through length of Counter
     
 ```
 def f(c): 
@@ -562,6 +569,14 @@ P-39 and P-40 Combination Sum is straightforward
   `ctr` is a Counter object and we iterate through `list(set(nums))` to 
   avoid duplicates
   * `output` appends (copy of) list to solutions list if `sum(current)==target`
+  * `at_end` checks if `idx == len(nums)-1`
+
+P-46 Permutations can be generated out-of-order
+  * `Candidate` is any of the numbers in the original
+  * `is_valid`: check if candidate is in current solution
+  * `place/remove` appends/pops value from solution list (can just act on end)
+  * `possible_next` is all the given nums
+  * `output` appends (copy of) list to solutions list. 
   * `at_end` checks if `idx == len(nums)-1`
 
 ## Unfold recursion to iteration
