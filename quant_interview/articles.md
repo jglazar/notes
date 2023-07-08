@@ -12,6 +12,12 @@ Many equivalent forms
 Satisfies recurrence relation `C0 = 1`, `Cn+1 = Sum from k=0 to k=n of Ck Cn-k`
   * Or, `Cn+1 = 2(2n+1)/(n+2) Cn`
 
+Recurrence relation is most easily seen for diagonal grid paths
+  * Set first point hitting x-axis at k = 1, 2, ..., n. Total paths to the
+    right is just C(n-k). For the total paths to the left, raise the path on
+    stilts (go up at move 1, down at move k), which is C(k) paths. Total is
+    sum(Ck Cn-k)
+
 Grows as `Cn ~ 4^n / (sqrt(pi) * n^(3/2))`
 
 The only odd Catalan numbers are where `n = 2^a - 1`
