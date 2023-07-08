@@ -1,52 +1,318 @@
 # A first course in probability by Sheldon Ross
 
+## Chapter 4 -- Random variables
+
+Geometric distribution isn't covered with Chapter 7 methods
+  * Use `x = (x - 1 + 1)` and expand
+  * Mean: `E[X] = sum(x q^(x-1) p) = sum((x-1) q^(x-1) p) + 1 = q E[X] + 1`
+  * Variance: `E[X^2] = sum(x^2 q^(x-1) p) = sum((x-1)^2 q^(x-1) p) + sum(2(x-1)
+    q^(x-1) p) + 1`
+
+## Chapter 6 -- Multiple variables
+
+X and Y distributed uniformly in circle of radius R
+  * Normalizing factor is 1/(pi R^2) = c
+  * Marginal pdf: Integral x=-sqrt(R^2-y^2) to x=+sqrt() (c) = c sqrt(R^2-y^2)
+  * cdf of distance: P(D <= d) = P(X^2 + Y^2 <= d^2) = Integral over region (c)
+    = (pi d^2) c
+  * Mean of distance: pdf is d(cdf)/dd = 2 pi d c, so mean = Integral from d=0
+    to d=R (2 pi d c d) = 2R / 3
+
+Buffon's needle -- prob of intersection?
+  * Distance from line to needle midpoint is X ~ U(0, D/2). Angle is T ~ U(0,
+    pi/2). Intersects if X < L/2 cos(T). Integral x=0 to x=D/2 Integral t=0 to
+    t=pi/2 = D pi/4 (inv. normalizing factor). Integral x=0 to x=L/2 cos(t)
+    Integral t=0 to t=pi/2 = 2L / (pi D)
+
+3 people uniformly distributed along (0,1). Prob no 2 are <= d apart?
+  * Assume WLOG X <= Y <= Z. Integral x=0 to x=1-2d Integral y=x+d to y=1-d
+    Integral z=y+d to z=1 dz dy dx. Then multiply by 6 for orderings. `(1-2d)^3`
+
+Distribution of X + Y is convolution of pdfs if X, Y independent
+  * cdf = P(X+Y < z) = Integral(F(z-y) f(y)) (by independence)
+  * pdf = d(cdf)/dz = Integral(f(z-y) f(y))
+
+Distribution of X + Y for uniform
+  * pdf = Integral y=-inf to y=+inf (fx(z-y) fy(y)) but consider z <= 1 and z >=
+    1 separately, since each has separate bounds to keep fx(z-y) nonzero
+
+Induction shows that cdf = `z^n / n!` if z <= 1
+  * Expected number of uniforms needed to exceed 1: P(N > (n-1)) - P(N > n) =
+    (n-1)/n!. Taking expectations gives e.
+
 ## Chapter 7 -- Expectation
 
 Can construct `E[Y] = sum(E[Xi]) = n E[Xi]` for many cases
   * Y ~ binomial --> n total Xi ~ Bernoulli(p)
   * Y ~ neg binomial --> r total Xi ~ Geometric(p)
-  * Y ~ hypergeometric --> n total Xi ~ Geometric(p)
+  * Y ~ hypergeometric --> n total Xi ~ Geometric(m/N)
+    * or m total Xi ~ Geometric(n/N)
 
 Don't overthink it! First trial has success chance `m/N`. Other trials are
 actually independent, so they also have success chance `m/N`. Can think of all
 choices happening simultaneously rather than sequentially
 
-### Problems
-
 Set up Xi as indicator of success. Then `E[Xi] = 0*P(fail) + 1*P(success) =
 P(success)`
 
-Y is number of ppl selecting own hat --> n total Xi with `E[Xi] = 1/n`
+Y is number of ppl selecting own hat
+  * n total Xi with `E[Xi] = 1/n`
 
-Coupon collector: Y is number of trials to collect all coupons. Xi is time to
-get i'th unique coupon. Xi is Geometric with `p = (n-i+1)/n`
+Coupon collector: Y is number of trials to collect all coupons
+  * Xi is time to get your i'th unique coupon. Xi is Geometric(`p = (n-i+1)/n`)
 
-Y is number of geese survived from n hunter shots with p0 chance each. Xi is
-survival of i'th goose. Xi is Bernoulli with `p = (1 - p0/n)^n`
+Y is number of geese survived from n hunter shots with p0 chance each
+  * Xi is survival of i'th goose. Xi is Bernoulli with `p = (1 - p0/n)^n`
 
-More problems
+Expected number of 0-runs in permutation of n 1s and m 0s, with N = n+m
+  * Xi is start of 0-run in i'th position. Xi is Bernoulli with `p = n/N
+    m/(N-1)` and X1 is m/N. E[Y] = sum(E[Xi]) = m/N + nm/N
 
-### Moments for number of events
+Can use expected value to determine bounds
 
-notes on content
+52 trees in a circle with 15 chipmunks. Prove there's 7 consecutive trees with
+>= 3 chipmunks
+  * Pigeonhole: 7 groups of 7, plus 3. Put 2 in each to get 14, but need 1 more
+  * Probabilistic: Xi is indicator if i'th chipmunk is in your tree or next 6.
+    Xi is Bernoulli with `p = 7/52`. So E[Y] = 15 * 7/52 > 2, meaning there must
+    be a tree with >= 2 chipmunks
 
-Example 3e
+Can use incl-excl to calculate max(Xi)
+
+Coupon collector with unique probabilities `pi`
+  * Xi is number of coupons until getting the i'th coupon. Xi is Geometric(pi).
+    E[max(Xi)] = sum(E[Xi]) - sum(E[min(Xi,Xj)]) + sum(E[min(Xi,Xj,Xk)])... and
+    E[min(Xi,Xj)] = E[Xi or Xj] = 1/(pi + pj)
+
+Can consider pairs of indicator events to calculate Var[X]
+  * E[Xc2] = 1/2 E[X^2 - X] = sum pairs(E[Xi Xj]) = sum pairs(P(Xi,Xj)). So
+    Var[Y] = 2 sum pairs(P(Xi,Xj)) + E[Y] - (E[Y])^2
+  * Can generalize to E[Xck] to get k'th moment
+
+Variance of Binomial(n,p)
+  * Xi is i'th event succeeding. Bernoulli with prob p. Var[Y] = 2 * nC2 p^2 =
+    n(n-1)p^2 + np - (np)^2 = np(1-p)
+
+Variance of Hypergeometric(m,n)
+  * Xi is i'th event succeeding. Bernoulli with prob m/N. Var[Y] = 2 * nC2
+    (m/N)((m-1)/(N-1)) + mn/N - (mn/N)^2 = ...
+
+Variance of hat problem
+  * Xi is i'th man getting his hat. Bernoulli with prob 1/N. Var[Y] = 2 * nC2
+    (1/N)(1/(N-1)) + 1 - (1)^2 = 1
+  * Higher moments are also 1
+
+Variance of coupon collector with unique probabilities `pi` within n picks
+  * Xi is indicator of i'th coupon not appearing in n picks. Xi is
+    Bernoulli((1-pi)^n). Var[Y] = 2 * sum pairs((1 - pi - pj)^n) + sum((1-pi)^n)
+    - (sum((1-pi)^n))^2
+
+Variance of negative hypergeometric
+  * Ace problem xxAxxAxxAxxAxx is equivalent to considering orderings of AAAAx
+    where x is some other specific card (7H, e.g.)
+  * Mean: Xi is indicator of i'th regular ball picked before r'th special ball.
+    Xi is Bernoulli(r/(m+1)), after finding `P(Xi) = r/(m+1)` is chance of
+    getting x before r As. Total draws is Y = r + sum(Xi) so E[Y] = r + nr/(m+1)
+  * Variance: find `P(Xi,Xj) = 2C2 * mC(r-1) / (m+2)C(r+1)` is chance of getting
+    x and y before r As in AAAAxy. Var[Y] = Var[X] = ...
+
+### Covariance
+
+Useful identities
+  * Cov[X, Y] = E[XY] - E[X]E[Y]
+  * Cov[aX, Y] = a Cov[X, Y]
+  * Cov[sum(Xi), sum(Yi)] = sum(sum(Cov[X, Y]))
+  * Var[sum(Xi)] = sum(Var[Xi]) + 2 sum pairs(Cov[Xi,Xj])
+    * Cov term = 0 for independent variables
+
+X - Y with X, Y Normal
+  * Mean = mux - muy, Variance = sigmax^2 + sigmay^2 - 2 rho sigmax sigmay
+
+Variance of binomial
+  * Use fact that E[Xi^2] = E[Xi] for indicators
+  * Var[Y] = sum(Var[Xi]) = n (E[Xi^2] - (E[Xi])^2) = n (p - p^2)
+
+Variance of survey of size n from population of size N
+  * Xi is indicator that i'th person from population is selected for survey.
+    Their score is `vi`
+  * Mean: E[Y] = E[sum(vi Xi)] = sum(vi n/N) = n vbar
+  * Variance: E[Xi,Xj] = n/N (n-1)/(N-1). Var[Y] = sum(Var[vi Xi]) + 2 sum
+    pairs(Cov[vi Xi, vj Xj]). Var[vi Xi] = vi^2 (n/N - (n/N)^2). Use
+    expectations to calculate Cov term
+
+Sample average and deviations from that average are uncorrelated, but not
+independent. Independent if Normal, though.
 
 ### Nested expectations
 
-Mining problem
+E[Y] = sum(E[Y|Xi] P(Xi))
 
-random number of random variables
+Guy has 3 doors. A leads to safety after 3 hours, B leads back after 5 hours, C
+leads back after 7 hours. Expected hours until leaving?
+  * E[Y] = E[Y|A] P(A) + ... = 3 1/3 + (5 + E[Y]) 1/3 + (7 + E[Y]) 1/3 = 15
+
+Random number of customers (mean 50) spends random amounts of money (mean $8).
+Assume independence. Expected revenue?
+  * E[Y] = E[sum(Mi)] = E[E[sum(Mi) | N=n]] = E[nE[M]] = E[n] E[M] = 400
 
 Variance of geometric
+  * Mean: consider 1st event success, giving recursion `E[Y] = 1p + (E[Y]+1)p`,
+    leading to E[Y] = 1/p
+  * Variance: recursion `E[Y^2] = 1p + (E[(Y+1)^2])(1-p)`, then expand
+    * Increment goes inside the expectation
 
-5m, 5n conditioning in integrals
+Expected number of uniforms to add s.t. sum is greater than x
+  * E[Y(x)] = integral from 0 to 1 (1 if y > x else E[Y(x-y)]) = 1 + integral
+    from 0 to x of E[Y(x-y)]. Diff. + bounds yields f'(x) = f(x) so f(x) = e^x
 
-Conditional variance
+Secretary problem -- maximize prob of picking best secretary
+  * X is best sec's position. Our strategy is to discard first k then pick best
+    so far. P(win) = sum(P(win|X=i) 1/n). No chance of winning for i <= k. Win
+    requires that best one of first i-1 is in k rejected, which has prob k/(i-1)
+    for i > k. Now sum to get 1/n sum from k+1 to n (k/(i-1)) and approximate
+    with integral to get k/n ln(n/k). Max at k = n/e, with prob 1/e
+
+P(X < Y) given fx(x) and fy(y) are independent
+  * Integral (P(X < Y | Y=y) fy(y)) = Integral (Fx(y) fy(y))
+
+P(X + Y = z) given fx(x) and fy(y) are independent
+  * Find cdf instead of pdf, then take derivative w.r.t z
+  * Integral (P(X < z - y | Y=y) fy(y)) = Integral (Fx(z-y) fy(y))
+
+Useful identities
+  * Var[X|Y] = E[(X - E[X|Y])^2 | Y]
+  * Variance also follows independence: Var[X|Y] = Var[X] if X,Y indep
+  * E[Var[X|Y]] = E[X^2] - E[(E[X|Y])^2]
+  * Var(E[X|Y]) = E[(E[X|Y])^2] - (E[X])^2
+  * Var[X] = E[Var(X|Y)] + Var[E[X|Y]]
+
+People arrive with Poisson(lambda t). Train arrives with U(0,T). Y = # ppl board
+  * Mean: `E[Y(T) | Y=t] = E[Y(t)] = lambda t`. `E[lambda t] = lambda T/2`
+  * Variance: `Var[Y(T)] = E[Var(Y|T)] + Var[E[Y|T]] = E[lambda T] + Var[lambda
+    T] = lambda T/2 + lambda^2 T^2 / 12`
+
+Sum of random number N of random variables Xi
+  * Mean: E[sum(Xi)] = E[E[sum(Xi) | N=n]] = E[n E[X]] = E[N] E[X]
+  * Variance: Var[sum(Xi)] = E[Var[sum of n Xi]] + Var[n E[X]] = E[N] Var[X] +
+    (E[X])^2 Var[N]
+
+Pdf of binomial with p ~ U(0,1)
+  * P(Y = y) = Integral (nCy p^y (1-p)^(n-y)) = nCy y!(n-y)!/(n+1)! = 1/(n+1)
+
+### Moment generating functions
+
+Common MGFs
+  * Binomial -- `(p e^t + 1 - p)^n`
+  * Poisson -- `exp(lambda (e^t - 1))`
+  * Geometric -- `p e^t / (1 - (1-p) e^t)`
+  * Neg Bin -- `(p e^t / (1 - (1-p) e^t))^r`
+  * Uniform -- `(e^tb - e^ta) / (t(b-a))`
+  * Exp -- `lambda / (lambda - t)`
+  * Gamma -- `(lambda / (lambda - t))^r`
+  * Normal -- `exp(mu t + (sigma^2 t^2 / 2))`
+  * Chi-sq -- `(1 - 2t)^(-n/2)`
+
+Negative binomial is just sum(Xi), where Xi is the time until the i'th failure
+and is Geometric(p)
+
+Sum of variables is multiplication of their MGFs
+
+Sum of random number of random variables
+  * E[mgf|N=n] = E[(mgf)^N], then take desired derivatives and set t=0
+
+Pdf of binomial with p ~ U(0,1)
+  * E[mgf] = Integral (mgf^n) dp = `1/(n+1) (exp(t(n+1)) - 1) / (exp(t) - 1) =
+    1/(n+1) (1 + e^t + e^2t + ... + e^nt)`, which reveals pdf = 1/(n+1) for all
+    i up to n
+
+If joint MGF factorizes, then the two variables are independent
+
+X+Y and X-Y for X, Y iid Normal are independent
+  * Joint MGF = `E[exp(t(X+Y) + s(X-Y))] = E[e^(t+s)X] E[e^(t-s)Y] = exp(2 mu t
+    + sigma^2 t^2) exp(sigma^2 s^2)`, which is mgf for Normal(2 mu, 2 sigma^2)
+      and Normal(0, 2 sigma^2)
+  * Can instead calculate joint pdf using transform method
 
 ### Problems
 
-7.9
+Gamble 1 unit on coin toss until win once, then stop
+  * P(win money) = 1/2
+  * P(lose money): P(win) + P(0) + P(lose) = 1. P(win) = 1/2 and P(0) = 1/4, so
+    P(lose) = 1/4
+  * E[profit] = 1/2 + 0 + -1/8 + -2/16 + -3/32 + ... = 1/2 - 1/4(sum(n/2^n)) = 0
+  * Alternatively, W = 2 - N, where N is the number of trials and is
+    Geometric(1/2). E[W] = 2 - E[N] = 0
+  * Alternatively, E[W] = 1/2 * 1 + 1/2(-1 + E[W]) --> E[W] = 1/2 E[W] so E[W]=0
+
+E[XY], E[X], and E[Y] just require plugging in relevant function and integrating
+over whole joint pdf. Don't need to integrate out marginal then get expectation
+
+Distance to hospital is |x| + |y|. Area is (-3/2,3/2) for X and Y. E[distance]?
+  * Consider top-right quadrant. Integral from x=0 to x=3/2 Integral from y=0 to
+    y=3/2 (x+y) = 3/2
+
+A and B randomly pick 3 out of 10 objects. Can overlap
+  * Expected number chosen by both: P(Xi) = 9/100 --> 9/10
+  * Expected number chosen by neither: P(Xi) = 49/100 --> 4.9
+  * Expected number chosen by one: P(Xi) = 21/100 --> 2.1 * 2 = 4.2
+
+People walk into party and sit at new table if no table has a friend
+  * Expected number of tables: Xi is i'th person has no friends. P(Xi) =
+    (1-p)^(i-1), so sum(P(Xi)) = `((1-p)^n - 1)/((1-p) - 1) = (1 - (1-p)^n)/p`
+
+n balls in n numbered urns s.t. ball i uniformly goes into urns 1...i
+  * Expected number of empty urns: Xi is i'th urn empty. Start listing out Xi
+    for P(X1), P(X2),... and note P(Xi) = (n-1)!/n! * (i-1) = (i-1)/n. Sum from
+    2 to n = sum from 1 to n-1 of i/n = (n-1)n/2 / n = (n-1)/2
+  * Prob that none is empty: P(none empty) = P(not X1 and not X2...). Can use
+    incl-excl, but that'll take too long. Recursion from end shows that n'th
+    ball must go to n'th urn, (n-1)th... so total prob = 1/n!
+
+Expected number of changeovers in n flips of biased coin?
+  * Xi is i'th and (i+1)th flips are different. P(Xi) = P(X) = 2p(1-p), so
+    answer is 2p(n-1)(1-p)
+
+Expected number of men next to women for random permutation of nM nW
+  * Xi = i'th man is standing next to a woman. P(Xi) = P(2nd is woman | 1 slot)
+    P(1 slot) + P(L or R is woman | mid) P(mid) + P((n-1)th is woman | n slot)
+    P(n slot)... messy algebra
+
+Expected number of trials to remove all black balls, when each one is replaced
+with a white ball with prob (1-p)
+  * Recursion: `E[N] = p(E[N] + 1) + (1-p)(E[N-1] + 1)`, then build from E[1] to
+    find pattern E[N] = N/(1-p)
+  * Identify neg. bin. with n trials and (1-p) success. Mean = n/(1-p)
+
+Expected number of hat pairs in hat problem
+  * nC2 total pairs, each having 1/n 1/(n-1) chance of swap. Answer = 1/2
+
+Guess next card. Expected number correct when:
+  * No info given: Xi is chance of 7H = 1/52 --> answer = 1
+  * Card is flipped: Xi is chance of specific remaining card = 1/(52-i+1) = H52
+    ~= log(52)
+  * Told yes/no: Xi is chance you get your i'th card choice. X1 = 1, X2 = xxAxx
+    chance it's in latter half = 1/2, X3 = xxAxxBxx chance you get A and B then
+    it's in 3rd part = 1/6... --> answer = sum(1/i!) ~= e - 1
+
+Expected number of matches for 1,14,27,40th card = A, 2,15... = 2, ...
+  * Each place has 4/52 chance --> answer = 4
+
+r types of coupons with individual probabilities of collecting
+  * Expected number collected before type 1: Geometric(p1) --> answer = 1/p1 - 1
+  * Expected number of types collected before type 1: Xi is getting type i
+    before type 1. P(Xi) = `pi / (pi + p1)`, imagine setting up line segment
+    with proportional probabilities and picking 1st variable. answer =
+    sum(P(Xi)) = sum(pi / (pi + p1)). Has correct limiting behavior
+    * Was easier for me to consider equal `pi`, leading to P(Xi) = 1/2. Just
+      reweight this to account for unequal `pi`
+
+101 items in 10 boxes. At least 1 box must contain > 10 items.
+  * Use Pigeonhole or probabilistic: E[X] = 10.1
+
+Cov[X,Y] for n rolls where X = number of 1s and Y = number of 2s
+  * Cov[sum(Xi), sum(Yi)] = sum over pairs(Cov[Xi, Yi]) = n * Cov[X, Y] bc rolls
+    are independent. Cov[X, Y] = E[XY] - E[X]E[Y] = 0 - 1/36 (can't have both on
+    same roll) --> answer = -n/36
 
 ## Chapter 10 -- Simulation
 
