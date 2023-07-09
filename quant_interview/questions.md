@@ -361,8 +361,13 @@ Stick-breaking questions
   * Expected length of smaller of 2 segments: integral from 0 to 1/2 of (x) +
     integral from 1/2 to 1 of (1-x) = 2 * 1/8 = 1/4
   * Expected length of smallest of 3 segments: set up square, then specify X <=
-    Y (1/2 of square), X <= Y-X, X <= 1-Y (1/3 of possible mins). Calculate
+    Y (top-left 1/2 of square), X <= Y-X, X <= 1-Y (1/3 of possible mins). Do
     integral from x=0 to x=1/3 of integral from y=2x to y=(1-x) of (x). Then
-    multiply by 3 for min possibilities and then 2 for X <= Y. Final answer 1/9
-
-
+    multiply by 3 for min possibilities and then 2 for X <= Y. This represents
+    normalization for the pdf. Final answer 1/9
+  * Chance of forming triangle: set up square, then specify X <= Y, X <= Y-X <=
+    1-Y. These conditions require normalization constant 2 * 3! = 12. Area is
+    bounded by Y=1/2, Y=(X+1)/2, and Y=2X. Find areas of two triangles = 1/64 +
+    1/192, then multiply by 12 to get 1/4
+    * Alternatively, set up equilaterial triangle wherein points represent stick
+      lengths (by altitude theorem). Success if point in middle triforce.
