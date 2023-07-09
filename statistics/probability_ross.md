@@ -125,6 +125,8 @@ Useful identities
   * Var[sum(Xi)] = sum(Var[Xi]) + 2 sum pairs(Cov[Xi,Xj])
     * Cov term = 0 for independent variables
 
+Don't compute Cov[X1,X2 | B]. Instead, expand into expectations, then condition
+
 X - Y with X, Y Normal
   * Mean = mux - muy, Variance = sigmax^2 + sigmay^2 - 2 rho sigmax sigmay
 
@@ -306,6 +308,10 @@ r types of coupons with individual probabilities of collecting
     * Was easier for me to consider equal `pi`, leading to P(Xi) = 1/2. Just
       reweight this to account for unequal `pi`
 
+Pick balls w/o replacement with unique weights
+  * Expected number before ball 1: Xi is i'th ball is selected before ball 1.
+    For equal weights, P(Xi) = 1/2. Just reweight to `pi/(pi+p1) = wi/(wi+w1)`
+
 101 items in 10 boxes. At least 1 box must contain > 10 items.
   * Use Pigeonhole or probabilistic: E[X] = 10.1
 
@@ -313,6 +319,44 @@ Cov[X,Y] for n rolls where X = number of 1s and Y = number of 2s
   * Cov[sum(Xi), sum(Yi)] = sum over pairs(Cov[Xi, Yi]) = n * Cov[X, Y] bc rolls
     are independent. Cov[X, Y] = E[XY] - E[X]E[Y] = 0 - 1/36 (can't have both on
     same roll) --> answer = -n/36
+
+In a group of 100 people:
+  * Expected number of days that are 3 ppl's bday: Xi is 3 ppl have this bday.
+    Xi is Binomial(100, 1/365) giving P(Xi) = `100C3 (1/365)^3 (364/365)^97`, so
+    answer = `365 * 100C3 (1/365)^3 (364/365)^97`
+  * Expected number of distinct bdays: Xi is someone has bday today. P(Xi) = `1
+    - (364/365)^100`, so answer = `365 (1 - (364/365)^100)`
+
+Urn 1 has 5W 6B. Urn 2 has 8W 10B. Two balls from Urn 1 are given to Urn 2, then
+three balls are selected from Urn 2. Expected number of white balls?
+  * Xi is i'th white ball in Urn 1 is selected. Yi is i'th white ball in Urn 2
+    is selected. P(Xi) = 2/11 3/20 and P(Yi) = 3/20. Answer = `5P(Xi) + 8P(Yi)`
+
+Bottle has m big and n small pills. If big is selected, it turns into small. If
+small is selected, it is removed
+  * Expected number of remaining pills after last big is taken: Xi is i'th
+    original small remains. Yi is i'th new small remains, where i is i'th unique
+    big pill. P(Xi) = 1/(m+1) [set up xxAxxAxxAxx]. P(Yi) = 1/(m-i+1) [set up
+    xxAxx, xxAxxAxx,...] 
+    * Can also solve with 2D recursion/DP in (m,n) grid. f(m,n) = m/(m+n) f(m-1,
+      n+1) + n/(m+n) f(m,n-1)
+  * Expected day of last pill: E[D] = 2m+n - E[p], given above
+
+Whenever you see E[N] = e, it's likely `E[N] = 1 + 1/2! + 1/3! + ... + 1/n!`.
+  * E.g., Xi is seeing your i'th card, given yes/no answers, and N is correct
+    guesses (see above)
+
+E[min] and E[max] of n U(0,1)
+  * m'th order statistic: m nCm (F(a))^(m-1) f(a) (1-F(a))^(n-m)
+  * max: n (F(a))^(n-1) f(a), min: n (1-F(a))^(n-1) f(a)... integrate for E[x]
+
+A,B,C,D are iid with mean 0 and var 1
+  * Corr[A+B,B+C] = (E[(A+B)(B+C)] - E[A+B]E[B+C])/sqrt(Var[A+B]Var[B+C]) = 1/2
+  * Corr[A+B,C+D] = 0
+
+Play dice game where P1 and P2 each try to beat dealer
+  * Cov(X1, X2) > 0 because win likely means bad dealer roll
+  * Cov(X1, X2) = E[X1 X2] - E[X1] E[X2], then condition on each individual E[X]
 
 ## Chapter 10 -- Simulation
 
