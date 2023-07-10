@@ -121,7 +121,7 @@ Variance of negative hypergeometric
 Useful identities
   * Cov[X, Y] = E[XY] - E[X]E[Y]
   * Cov[aX, Y] = a Cov[X, Y]
-  * Cov[sum(Xi), sum(Yi)] = sum(sum(Cov[X, Y]))
+  * Cov[sum(Xi), sum(Yj)] = sum(sum(Cov[Xi, Yj]))
   * Var[sum(Xi)] = sum(Var[Xi]) + 2 sum pairs(Cov[Xi,Xj])
     * Cov term = 0 for independent variables
 
@@ -357,6 +357,86 @@ A,B,C,D are iid with mean 0 and var 1
 Play dice game where P1 and P2 each try to beat dealer
   * Cov(X1, X2) > 0 because win likely means bad dealer roll
   * Cov(X1, X2) = E[X1 X2] - E[X1] E[X2], then condition on each individual E[X]
+
+Roll dice with X = # rolls until 6 and Y = # rolls until 5
+  * E[X|Y=5] constructs pdf 1/5 (4/5)^(x-1) for x < 5 and 1/6 (4/5)^4
+    (5/6)^(x-1-4) for x > 5
+
+Calculating integrals for E[X|Y=y] requires calculating f(x|y) = f(x,y)/f(y).
+Cannot just directly integrate joint pdf
+
+Roll 2 dice and win sum or re-roll. Sum = 7 ends game with 0 winnings
+  * Best strategy: `E[X] = sum from 2 to c (Pi E[X]) + sum from c+1 to 12
+    (Pi i)`, skipping 7 due to 0 EV. Best policy is re-rolling if <= 7 (or
+    equivalently, <= 6 since 7 ends game). Expected winnings is 6.66
+
+Flip coin until both H and T have shown up
+  * Expected tosses: E[X] = P(1st is T) E[tosses until H] + P(1st is H) E[tosses
+    until T] + 1 = (1-p)/p + p/(1-p) + 1
+  * Prob last is H: same as P(1st is T) = 1-p
+
+Urn has 10R, 8B, 12G balls. X is number of red and Y is number of blue
+  * Cov[X,Y]: Set X = sum(Xi) and Y = sum(Yi). Cov[X,Y] = sum sum Cov[Xi,Yj] =
+    80 Cov[Xa, Ya] = 80 (E[Xa Ya] - E[Xa] E[Ya]) = 80 (12/30 11/29 - 12/30
+    12/30) = -0.66
+  * Negative covariance makes sense due to occupation
+  * Can also do E[XY] = sum(E[XY|X=x] P(X=x)), where X is hypergeometric with
+    P(X=x) = 10Cx 20C(12-x) / 30C12. E[XY|X] = x 8 (12-x)/20, then applying
+    expectation over that gives 2/5 (12 E[X] - E[X^2]), where E[X] and E[X^2]
+    are for X's hypergeometric dist.
+
+Urn with nW, mB balls. 
+  * Expected number of white then black: Xi is i'th position has W then (i+1)th
+    position has B. P(Xi) = n/N m/(N-1) --> answer = nm/N
+
+10 married couples sit at 5 tables
+  * Expected number of couples seated together: Xi is i'th husband is seated
+    with wife. P(Xi) = 3/19 --> answer = 30/19 = 1.58
+    * Don't sum over all people due to double-counting partnerships!
+  * Expected number if each table has 2M 2W: Xi is i'th table's number of
+    couples. Total ways is 10C2 10C2, ways with 0 is 10C2 8C2, ways with 1 is
+    10C2 2C1 8C1, ways with 2 is 10C2 2C2. Then calculate expectation = 2
+    * Alternatively, each husband now has P(Xi) = 2/10 --> answer = 2
+
+Die is rolled until all numbers shown
+  * Expected number of times 1 appears: expected number of rolls is coupon
+    collector n Hn = 6 H6 = 14.7. Expected 1s = 1/6 * 14.7 = 2.45
+
+Deck of nR nB is revealed. Each R revealed when #R > #B gets $1
+  * Expected winnings: Xi is i'th red card satisfies condition. P(Xi) = 1/2 by
+    symmetry --> answer = n/2
+
+Have players 2C 3F 4B, making 3 teams of 3 each
+  * Expected number of perfect teams: Xi is i'th team is perfect. P(Xi) = 2C1
+    3C1 4C1 / 9C3 = 2/7 --> answer = 6/7
+
+Draw hand of 13 cards and let X = number of aces and Y = number of spades
+  * Cov[X,Y] = E[XY] - E[X]E[Y], then calculate E[XY] by conditioning on X.
+    Answer is zero.
+  * X and Y aren't independent. P(X = 13, Y = 4) = 0 != P(X = 13) * P(Y = 4)
+
+Put m items into n cells. Each cell has a normalized weight 
+  * Expected number of collisions: collisions = m - (# full) = m - n + # empty.
+    E[# empty] = sum(Xi) with P(Xi) = (1-pi)^m --> answer = m - n + sum(1-pi)^m
+
+Put n items in box H and m items in box T. Flip biased coin and remove an item
+  * Expected number of flips until both empty: consider first m+n flips. E[X] =
+    sum(E[N|iH] P(iH)) = sum(f(n-1, -(n-i)) (m+n)Ci p^i (1-p)^i). The
+    expectation `f_ab` will have one subscript zeroed out (since we emptied 
+    either H or T box), and the value is (n-i)/p or (i-n)/(1-p) (neg. bin. mean)
+
+Pick 3 cards. X is number of aces in hand
+  * E[X|ace of spades chosen] = 1 + 3 * 2/51 = 57/51
+  * E[X|>=1 ace chosen] = 4 * P(Xi|A) = 4 * (3/52 / (1 - (48 47 46)/(52 51 50)))
+
+Flip biased coin until getting nH or mT
+  * Expected flips: max(X,Y) + min(X,Y) = X+Y --> E[N] = E[X] + E[Y] -
+    E[max(X,Y)]. E[X] = n/p, E[Y] = m/(1-p). Condition like box problem to get
+    E[max(X,Y)]. Final answer is long expression
+
+Hat problem has r hat sizes, ni men wearing size i, hi hats of size i
+  * Expected number matching: Y = sum over r sum over ni (Xi). P(Xi) = hi / n
+    --> answer = sum(hi ni) / n
 
 ## Chapter 10 -- Simulation
 
