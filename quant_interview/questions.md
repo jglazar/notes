@@ -126,6 +126,68 @@ Can use the fact that `x^(1/x)` reaches peak at `x = e` to solve:
   * `e^pi^2 ~ pi^e^2` --> raise both sides to `1/(pi pi e e)` and square
   * `e^sqrt(pi) ~ pi^sqrt(e)` --> raise both sides to `1/sqrt(pi e)` and sqrt
 
+Place $1 bet on any die number. Roll 3 biased dice. Win $1 per correct face
+  * Expected winnings: E[X] = 3 p (1-p)^2 + 6 p^2 (1-p) + 3 p^2, then integrate
+    from 0 to 1 for all p to get 3/2, then subtract 1 for $1 cost to bet
+  * Alternatively, place a bet on each number then win guaranteed $3. Expected
+    winnings per ticket = $0.50
+
+Pick balls from 50B 50R urn
+  * Expected number of color changes: Xi is i'th position has B then (i+1)th has
+    R. P(Xi) = 50/100 50/99 --> answer = 1/2 50/99 * 99 * 2 (for BR and RB) = 50
+
+Archer shoots 2 arrows and is told 1 is better than 2
+  * Prob 3rd shot is best: list possibilities 123 132 213 231 312 321 then keep
+    only 123 132 312 --> answer = 1/3
+
+Pull balls from kB 1R urn. First person to grab R wins
+  * Go 1st or 2nd: list out possibilities. RB BR (doesn't matter), RBB BRB BBR
+    (P1), RBBB BRBB BBRB BBBR (doesn't matter), RBBBB BRBBB BBRBB BBBRB BBBBR
+    (P1). So doesn't matter if k even and go 1st if k odd
+
+Jar has 10R 20B 30G balls
+  * Prob of a B and a G remaining after last R: set up xxR1xxR2...xxR10xx then
+    find P(deplete B before R) = 29C9/30C10 = 1/3. P(deplete G before R) =
+    39C9/40C10 = 1/4. Intersection = 2 * 1/12 = 1/6 (2 for orderings). answer =
+    1 - (1/4 + 1/3 - 1/6) = 7/12
+  * Alternatively, consider last candy is B with prob 20/60. Then arrange
+    remaining 40 candies, for which prob of last candy = G is 30/40. Similarly
+    for last candy is G --> answer = 20/60 30/40 + 30/60 20/30 = 7/12
+
+Noodle problem: bowl has n=100 noodles. Take one end and connect to random other
+end until you no longer can
+  * Use recursion to note pattern. Start from n=1
+  * Expected number of loops: set up recursion E[N] = 1/(2n-1) (E[N-1] + 1) +
+    (2n-2)/(2n-1) E[N-1]. E[N] = 1 + 1/3 + 1/5 + ... + 1/(2N-1). N=100 -->
+    answer ~= 3.28
+  * Probability of one big loop: find recursion Pn = 1 2/3 4/5 ...
+    (2N-2)/(2N-1). N=100 --> answer ~= 8.8%
+
+Draw n numbers with replacement from 1,2...,n
+  * Expected number of distinct values: D = n - F, so E[D] = n - E[F]. E[F] =
+    sum(P(Xi)) = n P(Xi) = n (1-1/n)^n --> answer = n(1 - (1-1/n)^n) ~= n(1-1/e)
+
+Place n points on a circle, then draw a convex hull connecting them all
+  * Chance hull surrounds center: this event is same as saying there exists no
+    semicircle containing all points. P(0 semicircle) = 1 - P(>= 1 semicircle) =
+    1 - n (1/2)^(n-1), where each point can be origin of a semicircle. Construct
+    semicircle with circumference through the point and center.
+
+Keep adding U(0,1) variables until exceeding 1
+  * P(N>=n): P1 = 0, P2 = 1/2 (set up triangle in XY unit square), P3 = 1/6 (set
+    up pyramid in XYZ unit cube)... Pn = 1/n!
+  * E[N] = sum(n/n!) = e
+  * Alternatively, set E[N] as fct of x `f(x) = 1 + integral from 0 to x
+    (f(x-y))`. Then take derivative to get `f'(x) = f(x)` so `f(x) = k exp(x)`.
+    f(0) = 1 gives k = 1, then f(1) = e
+
+Start at 0 and take random walk until hitting +a or -b
+  * P(hit +a before -b): set n = a+b. We seek f(0) and know f(a)=1 and f(-b)=0.
+    Then f(-b+1) = 1/2 f(-b) + 1/2 f(-b+2) = 1/2 f(-b+2), f(-b+2) = 1/2 f(-b+1)+
+    1/2 f(-b+3),... backsubstitution gives f(-b+x) = x/(x+1) f(-b+x+1). So
+    f(a-1) = f(-b+n-1) = (n-1)/n f(a) = (n-1)/n. Backsolving gives f(-b+x) =
+    x/n. Finally, f(0) = f(-b+b) = b/n = b/(a+b)
+
 ## QuantNet
 
 Note: like in rejection sampling for MC integration, the subset will be
@@ -369,5 +431,14 @@ Stick-breaking questions
     1-Y. These conditions require normalization constant 2 * 3! = 12. Area is
     bounded by Y=1/2, Y=(X+1)/2, and Y=2X. Find areas of two triangles = 1/64 +
     1/192, then multiply by 12 to get 1/4
+    * Triangle area can be found via `1/2 det(x0 y0 1, x1 y1 1, x2 y2 1)`
     * Alternatively, set up equilaterial triangle wherein points represent stick
       lengths (by altitude theorem). Success if point in middle triforce.
+
+Egg drop: given 2 eggs, create an algorithm to minimize worst-case time to
+determine floor threshold for egg breakage
+  * Simplest: 1,3,5,...,99 then you immediately know. This is 50 in worst case.
+  * Skips: 10,20,30,...100 then you iterate through 9. This is 19 in worst case.
+  * Dynamic: start at x, then increment by (x-1),(x-2),...,1. This is x in worst
+    case. Solve 1+2+...+x = 100 --> x = 13.6 --> answer = start at 14, then 27,
+    then 39, then 50,... then increment when needed.
