@@ -55,6 +55,8 @@ Use memoryless principle to build up solution
   * Create matrix with best value up to that weight (j), given possible 
   subsequence of items (i). Compare diagonally with max( m[i-1, j-wj] + 
   vi, m[i-1,j] ) to decide to accept/reject new item
+    * Switching indices: best value up to weight (i) given possible subsequence
+      (j). Compare max( vj + m[i-wi,j-1], m[i,j-1] )
   * Longest increasing subsequence. Create array with longest subsequence 
   ending in that element. Requires iterating over previous elements of 
   array repeatedly -- O(n^2). m[i] = max( [m[i]+1 if n[i] < num] )
