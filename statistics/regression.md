@@ -148,6 +148,11 @@ multicollinearity or overfitting is an issue. Bad for inference
 
 Least absolute deviation (LAD) is robust. Same as MLE when e ~ Laplace 
 
+Parameters are assumed to be `Normal(b_hat, stdvar(b))` where `stdvar(b)
+= inv(X^T X) s^2` and s^2 is estimated residual variance
+  * Emerges because parameter estimates are n weighted sums of (yi - ymean)
+  * Parameters are t-dist. if residuals are Normal or Normal if CLT is invoked
+
 ### Other techniques
 
 Other estimation techniques
@@ -208,6 +213,10 @@ Remedies:
 Special methods below (regularization, logistic, Poisson) require numerical
 optimization of MLE or least squares to estimate parameters
 
+Note that generalized linear regression has link(E[yi|xi]) = xi b. Don't simply
+regress link(yi) onto x! Link is applied to expectation, not raw data, and needs
+special MLE to fit.
+
 ### LASSO and ridge regression
 
 Not scale-invariant! Be sure to standardize independent variables 
@@ -252,27 +261,55 @@ Bayesian interpretation
 ### Logistic regression
 
 Log-odds is linear combination of independent variables
-
-Can become a classifier if a cutoff probability is specified
+  * `ln(p/(1-p)) = b0 + b1 x`
+  * Link function is logit -- `E[yi|xi] = pi = 1/(1 + exp(-(b0 + b1 x)))` -->
+    `logit(E[yi|xi]) = ln(pi/(1-pi)) = xi b`
+    * mu = -b0/b1 is crossover point where p = 0.5
+  * Logit link assumes logistic errors, probit link assumes std Normal errors
+    * Probit was historically preferred until 1960s
 
 Linear increases in an independent variable multiplicitavely scales odds
-
-Logistic function -- `1/(1 + exp(-(b0 + b1 x)))`
-  * mu = -b0/b1 is crossover point where p = 0.5
+  * Odds ratio increases by factor exp(b1) for each unit increase in x1
 
 Likelihood = product(pi^yi (1-pi)^(1-yi))
+  * Assumes yi ~ Bernoulli(pi)
   * Define loss = negative log likelihood and find that we're minimizing
     cross-entropy between the predicted and actual distributions
+  * Logistic regression is only case where MLE is max entropy bc of exp. family
 
+Can become a classifier if a cutoff probability is specified
+  * Vary cutoff to create receiver-operator curve
 
+Multiple (m) categories can be captures with m-1 unique regressions
+  * First category has probability p0(x) = 1 - sum(pi(x))
+  * Others have pi(x) = exp(x bi) / (1 + sum(exp(x bj)))
 
+No analytic optimum -- use Newton method for MLE, MCMC for Bayesian estimation w
+prior, variational Bayes.
+  * Luckily, derivative is simply d(log(L))/dbi = sum((y-pj)xji)
 
+Fit testing done via deviance, which is chi-sq dist. when we have much data
+  * D = ln(L^2 / Lnull^2) = 2(ln(L) - ln(Lnull))
+  * Compare SSE random permuted regression - SSE dummy (always guess ymean)
+  * p-value has interpretation of proportion of random datasets with better fit
+  * D = -2 ln(L / Ls), where Ls is perfect (saturated) model's likelihood
+    (usually estimated as 1)
+
+Parameter testing
+  * Likelihood ratio test -- stepwise include new variable and check for
+    likelihood ratio significance with chi-sq.
+  * Wald test -- Wi = bi^2/stdvar(bi) is approx. chi-sq.
+
+Can correct for oversampling rare case with `b0' = b0 + log(p/(1-p)) +
+log(p'/(1-p'))` where p is true prevalence and p' is sample prevalence
 
 ### Poisson regression
 
 Models count data and contingency tables. Also called log-linear model
 
 Logarithm of E[Y|X] is linear in parameters, or E[Y|X] = exp(Xb)
+  * Link function is log -- `E[yi|xi] = lambda_i = exp(xi b)` --> `ln(E[yi|xi])
+    = xi b`
   * But don't simply take logarithm of yi and perform linear regression! Ignores
     Poisson discreteness. Also has issues with zero-counts
 
@@ -280,3 +317,29 @@ Negative binomial regression is similar, but doesn't require variance = mean
 
 Likelihood = product(lambda^y exp(-lambda) / y!), where lambda = exp(Xb)
   * Log likelihood = sum(yi xi b - exp(xi b))
+
+## Time series on Kaggle
+
+Autocorrelation plot shows correlations at lags
+
+Partial autocorrelation plot shows regression of current on lag
+
+`sm.tsa.seasonal_decompose` splits signal into trend, seasonal, and residual
+  * Residual should be stationary 
+
+Augmented Dickey-Fuller test sees if time series is random walk
+
+Models 
+  * Autoregression with lag -- Yt = mu + b Y(t-1) + et
+    * b = 1 is random walk. b = 0 is white noise. -1 < b < +1 is stationary. b =
+      -c e is mean reversion. b = +c e is momentum.
+    * If adding Y(t-k), include all further times too
+  * Moving average with lag -- Yt = mu + et + b e(t-1)
+  * ARMA combines AR + MA -- Yt = mu + b1 Y(t-1) + et + b2 e(t-1)
+  * ARIMA handles nonstationary time series -- dYt = b1 dY(t-1) + et + b2 e(t-1)
+  * VAR (vector autoreg.) handles many time series
+  * State space specifies covariance and noise structures
+  * SARIMA handles seasonal nonstationary time series
+  * Unobserved component handles trend + seasonality + cycles + predictors
+  * Dynamic factor handles multiple VAR for many targets
+
