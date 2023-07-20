@@ -82,16 +82,16 @@ Graphs
 Dynamic Programming
   * 🟩 P-70 Climbing Stairs ☑️
   * 🟨 P-198 House Robber ☑️
-  * 🟨 P-213 House Robber II
-  * 🟨 P-5 Longest Palindromic Substring
-  * 🟨 P-647 Palindromic Substrings
-  * 🟨 P-91 Decode Ways
+  * 🟨 P-213 House Robber II ☑️
+  * 🟨 P-5 Longest Palindromic Substring ☑️
+  * 🟨 P-647 Palindromic Substrings ☑️
+  * 🟨 P-91 Decode Ways ☑️
   * 🟨 P-322 Coin Change ☑️
-  * 🟨 P-152 Maximum Product Subarray
-  * 🟨 P-139 Word Break
+  * 🟨 P-152 Maximum Product Subarray ☑️
+  * 🟨 P-139 Word Break ☑️
   * 🟨 P-300 Longest Increasing Subsequence ☑️
-  * 🟨 P-62 Unique Paths
-  * 🟨 P-1143 Unique Paths
+  * 🟨 P-62 Unique Paths ☑️
+  * 🟨 P-1143 Longest Common Subsequence ☑️
 
 Greedy
   * 🟨 P-53 Maximum Subarray ☑️
@@ -227,9 +227,9 @@ left = right = 0
 best = score(left, right) 
 while right < len(arr) - 1:
     right += 1
-    window.add(s[right])
+    window.add(arr[right])
     while invalid(window) and left < right:
-        window.remove(s[left]) 
+        window.remove(arr[left]) 
         left += 1
     best = max(best, score(left, right))
 return best
@@ -805,3 +805,153 @@ Kruskal's algorithm for generating a minimum spanning tree
   * Set up union-find with each vertex as it's own parent
   * For each edge, if `find(edge[0]) != find(edge[1])` then `union(edge[0],
     edge[1])` and add edge to tree
+
+## Dynamic programming
+
+Formulate recursive (top-down) solution, then apply memoization with cache
+
+Bottom-up solution can get memory boost by overwriting as matrix is made
+
+Each entry in the array/matrix represents best solution if problem ended there
+
+```
+from functools import lru_cache
+if edge_case: return edge_case_soln
+@lru_cache(maxsize=None)
+def f(i): if i <= 0 return base_case; return min(f(i-1), ...) + a
+f(last_i)
+```
+
+Common pattern for 2D is 0/1 Knapsack
+  * Consider subproblem where only available items are those at rows <= i
+  * Each new row discovers new item. You can include or keep prior solution
+
+Word problems (P-1143, P-72) sometime have below condition for discovering
+a match. Like adding both letters to solution simultaneously.
+  * if a[i]==b[j]: return f(i-1,j-1) + a (a=1 for P-1143, a=0 for P-72)
+
+Following code is useful for checking palindromes:
+  * if l==r or l==r-1: return s[l]==s[r]
+  * return s[l]==s[r] and f(l+1, r-1)
+  * Only need len(s) * 2 space in lru cache
+
+P-198 House robber
+  * Edge case: if len(nums) == 1: return nums[0]
+  * if i == 0: return nums[0]
+  * if i == 1: return max(nums[0], nums[1])
+  * return max(f(i-1), f(i-2)+n)
+  * Bottom-up optimization: track prev2 and prev1
+
+P-213 House robber 2
+  * Edge cases: if len(nums)==1: return nums[0]; 2 --> max(nums)
+  * One go-around from 0 to n-2 (don't rob last house), then another from 1 to
+    n-1 (don't rob 1st house), then compare
+
+P-322 Coin change
+  * This is the integer partition problem
+  * if i == 0: return 0; i < 0 return inf
+  * return min(f(x-c) for x in coins) + 1
+  * Bottom-up optimization: iterate through coins and keep only most recent row
+
+P-518 Coin change 2 -- use 2D matrix like 0/1 Knapsack
+  * if a < 0 return 0; if i == 0 return not(a%coins[i])
+  * return f(i-1, a) + f(i, a-coins[i])
+
+P-300 Longest increasing subsequence
+  * if i == 0 return 1
+  * return max(f(j)+1 if nums[i] > nums[j] else 1 for j in range(i))
+  * Pick best overall: return max(f(i) for i in range(len(nums)))
+
+P-53 Max subarray
+  * Called Kadane's algorithm
+  * if i == 0: return arr[0]
+  * return max(f(i-1) + arr[i], arr[i])
+  * Pick best overall: return max(f(i) for i in range(len(arr)))
+
+P-152 Max product subarray
+  * Keep track of positive and negative products
+  * if i == 0: return (nums[0], nums[0])
+  * return (max(f(i-1)[0] * nums[i], f(i-1[1] * nums[i])), min(...))
+  * Pick best overall: return max(f(i)[0] for i in range(len(arr)))
+
+P-91 Decode ways
+  * Edge cases: if s[0] == '0' or '00' in s: return 0
+  * m = {str(i):chr(ord('A')+i-1) for i in range(1,27)}
+  * if i <= 0: return 1
+  * n = 0; if s[i]!='0': n+=f(i-1); if s[i-1:i+1] in m: n+=f(i-2); return n
+
+P-647 Palindromic substrings
+  * Easiest to traverse matrix backwards manually
+  * Matrix has i = start, j = end. Only need upper triangle
+  * m = [[0 for _ in s] for _ in s]; for i in range(len(s)): m[i][i] = 1
+  * for i in range(len(s)-1,-1,-1) for j in range(i+1,len(s)):
+    * if s[i]==s[j]: if i==j-1 or m[i+1][j-1]: m[i][j]=1
+  * return sum(sum(l) for l in m)
+  * Alternatively, use palindrome checker above
+    * for i, j as before: if f(i,j): update best
+
+P-5 Longest palindomic substring
+  * Same as P-647, but update ans with s[i:j+1] if it's longer than current best
+
+P-139 Word break
+  * if s[l:r+1] in d: return True
+  * return any(f(l,r-j) and f(r-j+1,r) for j in range(1,r-l+1))
+
+P-1143 Longest common subsequence
+  * if i < 0 or j < 0: return 0
+  * if a[i] == b[j]: return f(i-1,j-1) + 1
+  * return max(f(i-1,j), f(i,j-1))
+
+P-72 Edit distance
+  * Prepend null character to both words
+  * if i <= 0 or j <= 0: return max(i,j)
+  * if a[i-1] == b[j-1]: return f(i-1,j-1) + 0
+  * return min(f(i-1,j), f(i,j-1), f(i-1,j-1)) + 1
+
+P-746 Min cost climbing stairs
+  * if i <= 1: return 0
+  * return min(f(i-1) + cost[i-1], f(i-2) + cost[i-2])
+
+P-416 Partition equal subset sum
+  * Require sum of some subset = half of total sum 
+  * Edge case: if sum(nums)%2: return False
+  * if i < 0 or j < 0: return False
+  * if nums[i] == target: return True
+  * return f(i-1,target) or f(i-1,target-nums[i])
+  * return f(len(nums)-1, sum(nums)/2)
+
+P-309 Buy stock with cooldown
+  * Write a deterministic Markov chain
+  * State 0 is bought/holding, state 1 is cooldown, state 2 is sold/waiting
+    * State 1 can be merged into states 0 and 2 
+    * States 0 and 2 can wait or execute
+  * Edge case: if len(prices) <= 1: return 0
+  * if s == 0: return max(f(i-1,0), f(i-1,2) - prices[i]) if i>0 else -prices[0]
+  * if s == 1: return f(i-1,0) + prices[i] if i>0 else 0
+  * if s == 2: return max(f(i-1,2), f(i-1,1)) if i>0 else 0
+  * return max(f(len(prices)-1, s) for s in (0,1,2))
+
+P-714 Buy stock with fee
+  * Same as P-309 but only 2 states
+  * if s == 0: return max(f(i-1,0), f(i-1,1) - prices[i]) if i>0 else -prices[0]
+  * if s == 1: return max(f(i-1,1), f(i-1,0) + prices[i] - fee) if i>0 else 0
+  * return f(len(prices), 1)
+
+P-494 Target sum
+  * if i == 0: return sum((nums[i]==t, nums[i]==-t))
+    * Accounts for nums[i] = t = 0
+  * return f(i-1, t-nums[i]) + f(i-1, t+nums[i])
+
+P-983 Min cost for tickets
+  * Trick is to carry over costs from prior days if not traveling
+  * No 2D matrix needed!
+  * if d <= 0: return 0
+  * if d not in days: return f(d-1)
+  * return min(f(d-1)+costs[0], f(d-7)+costs[1], f(d-30)+costs[2])
+
+P-740 Delete and earn
+  * if i == 0: ctr[uniqs[0]] * uniqs[0]
+  * if uniqs[i-1] == n-1: 
+    * if i <= 2: max(f(i-1), ctr[arr[i]] * arr[i])
+    * else: max(f(i-1), ctr[arr[i]] * arr[i] + f(i-2))
+  * else: f(i) = f(i-1) + ctr[arr[i]] * arr[i]
