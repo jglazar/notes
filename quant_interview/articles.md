@@ -16,7 +16,7 @@ Recurrence relation is most easily seen for diagonal grid paths
   * Set first point hitting x-axis at k = 1, 2, ..., n. Total paths to the
     right is just C(n-k). For the total paths to the left, raise the path on
     stilts (go up at move 1, down at move k), which is C(k) paths. Total is
-    sum(Ck Cn-k)
+    sum(Ck Cn-k) from k = 0 to k = n-1
 
 Grows as `Cn ~ 4^n / (sqrt(pi) * n^(3/2))`
 
