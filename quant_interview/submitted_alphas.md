@@ -52,6 +52,8 @@ avg_ret = power(ts_product(returns+1, lookback), 1/lookback);
 comp_avg = power(ts_product(rel_ret_comp+1, lookback), 1/lookback);
 a = zscore(comp_avg / avg_ret);
 when = ts_rank(ts_std_dev(returns, 60), 126) > 0.55; 
+b = trade_when(when, a, -1);
+group_vector_neut(b, ts_mean(returns, 120), subindustry)
 ```
 
 USA, TOP3000, Decay 5, Delay 1, Truncation 0.1, Neutralization Subindustry\
