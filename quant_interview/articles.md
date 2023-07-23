@@ -117,3 +117,80 @@ Does the stock market overreact?, Bondt and Thaler, 1985
 
 Check out [Random Services](randomservices.org/random/markov/index.html) for a
 great course
+
+## Number sequences
+
+Useful for recognizing solutions, then backsolving recurrence relations
+
+### Famous sequences
+
+1. Harmonic numbers -- Hn = 1, 3/2, 11/6, 25/12, 137/60, 49/20
+  * Z = sum(Xi), E[Z] = sum(E[Xi]) = sum(1/i) or E[N] = 1/N + E[N-1]
+2. Coupon collector -- n * Hn = 1, 3, 11/2, 25/3, 137/12, 147/10
+  * Z = sum(Xi), E[Z] = sum(E[Xi]) = sum(((n-i)/n)^-1)
+3. Fibonacci numbers -- 1, 1, 2, 3, 5, 8, 13, 21
+  * E[N] = E[N-1] + E[N-2]
+  * Ratio of Fn and F(n-1) approaches golden ratio = (1 + sqrt(5))/2 ~= 1.61
+  * Tribonacci numbers -- 0, 1, 1, 2, 4, 7, 13, 24, 44, 81
+4. Catalan numbers -- 1, 1, 2, 5, 14, 42, 132
+  * Cn = sum(Ci C(n-1-i)) from i=0 to i=n-1, 2nCn - 2nC(n-1) =
+    1/(n+1) 2nCn. Appears after using reflection principle to count paths
+  * Partial sums from 0 slot -- 1, 2, 4, 9, 23, 65, 197, 626, 2056
+  * Partial sums from 1 slot -- 0, 1, 3, 8, 22, 64, 196, 625
+5. Lazy caterer seq. -- 1, 2, 4, 7, 11, 16
+  * Max slices of cake with n cuts: Ln = n (new regions, at most) + L(n-1) =
+    1 + n(n+1)/2
+6. Magic square sums -- 15, 34, 65, 111, 175
+  * Square of n^2 numbers s.t. all rows/cols/diags sum to same
+    constant. Contains integers from 1 to n^2. 
+7. Trees -- 0, 1, 1, 2, 4, 9, 20, 48, 115, 286, 719
+  * Arrangements of n-1 nonoverlapping circles, unique functions w parentheses
+    and exponentiation ((x^x)(x), e.g.)
+  * `f(n): return n if n <= 1 else sum(sum(d*f(d) for d in
+    divisor_tuple(k))*f(n-k) for k in range(1, n))//(n-1)`
+8. Partitions -- 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42
+  * Ways to partition number n. Use Leetcode Coin Change 2 solution
+9. Central binomial powers -- 1, 2, 6, 20, 70, 252, 924
+  * Appear in middle of even rows in Pascal's triangle. Number of n-digit
+    binary numbers with seen 1s <= 0s as number is read. 2nCn
+10. Bell numbers -- 1, 1, 2, 5, 15, 52, 203, 877
+  * Ways to partition set = Bn = sum((n-1)Ci Bi) from i=0 to i=n-1
+  * Also, ways to factorize squarefree number, rhyme schemes (ABAA, e.g.),
+    moments of Poisson distribution with mean 1
+
+### Other sequences
+
+1. Look-and-say seq. -- 1, 11, 21, 1211, 111221, 312211, 13112221
+2. Primes -- 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
+3. Sylvester numbers -- 2, 3, 7, 43, 1807, 3263443
+  * Sn = 1 + product(Si) from i=0 to i=n-1 
+4. Factorials -- 1, 1, 2, 6, 24, 120, 720, 5040
+5. Derangements -- 1, 0, 1, 2, 9, 44, 265, 1854
+  * Incl-excl gets n! - n (n-1)! + nC2 (n-2)! - ... = n! sum((-1)^i/i!), i=0-n
+  * Dn / n! goes to 1/e as n goes to infinity, since exp(-1) = sum((-1)^i / i!)
+6. Woodall numbers -- 1, 7, 23, 63, 159, 383
+  * Formula is Wn = n 2^n - 1
+7. Cullen numbers -- 1, 3, 9, 25, 65, 161, 385
+  * Formula is Cn = n 2^n + 1
+8. Jacobsthal numbers -- 0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683
+  * Formula is Jn = J(n-1) + 2 J(n-2)
+9. Pell numbers -- 0, 1, 2, 5, 12, 29, 70, 169, 408
+  * Formula is Pn = 2 P(n-1) + P(n-2)
+  * Ratio of consecutive elements approximates sqrt(2)
+
+### Figurate sequences
+
+1. Triangular -- 0, 1, 3, 6, 10, 15, 21, 28, 36, 45
+  * Number of dots used to create equilateral triangle = 1+2+...+n = n(n+1)/2,
+    or Tn = n + T(n-1) with T1 = 1. Also, number of handshakes needed for n ppl
+2. Tetrahedral -- 0, 1, 4, 10, 20, 35, 56, 84
+  * Sum of first n Triangular numbers = sum(Tn) from n=1 to n=n = n(n+1)(n+2)/6
+3. Square pyramidal -- 0, 1, 5, 14, 30, 55, 91, 140
+  * Stacks of smaller squares = sum(i^2) from i=1 to i=n = n(n+1)(2n+1)/6
+4. Star -- 1, 13, 37, 73, 121, 181
+  * Places in Chinese checkers board = Sn = 6n(n-1) + 1
+
+In general, the sum of p'th powers of the first n integers is given by
+Faulhaber's formula
+  * sum(i^p) from i=1 to n =  1/(p+1) sum((p+1)Ci Bi n^(p-i+1)) from i=0 to i=p
+    where Bi is the i'th Bell number
