@@ -465,10 +465,22 @@ since next gradient is orthogonal to prior step.
 Conjugate gradients take smart non-interfering steps
   * Conjugate set of vectors have all pairs `u A v = 0`. In our case, `A` is
     Hessian matrix.
+    * grad(f) = Ax - b (in 2nd order expansion of f) --> Ax = b at min,
+      d(grad(f)) = A dx1 implies we want dx2 dot d(grad(f)) = dx2 dot A dx1 = 0
     * Next step doesn't correct prior step at all
-  * This allows a single pass minimizing through all vectors
+  * This allows a single pass minimizing through all vectors if function is only
+    quadratic. Gives quadratic convergence otherwise
   * Can perform type of Gram-Schmidt orthogonalization to get sequence of
-    orthogonal vectors `g` and conjugate vectors `h`. No Hessian needed!
+    orthogonal vectors `g` and conjugate vectors `h`. 
+    * No Hessian needed! Just construct `g` and `h` then follow `h`
+  * Start with `h` = `-grad(f)`
+
+This CG is actually "nonlinear CG" (Fletcher-Reeves or Polak-Ribierre method).
+Original CG iteratively solves Ax=b for symmetric positive definite A, wherein
+minimizing squared Anorm(error) happens to minimize 1/2 x^T A x - x^T b
+  * Estimates, step vectors, and residuals all span n'th Krylov subspace
+  * Residuals are orthogonal, step vectors are A-conjugate
+  * See Trefethen and Bau Chapter 38 for more
 
 Variable metric methods build iterative approximation for inverse of Hessian
   * DFP and BFGS are popular
