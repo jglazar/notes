@@ -756,7 +756,7 @@ def simple_union(a, b):
     parent_a, parent_b = find(a), find(b)
     parents[parent_a] = parent_b
 
-def compress_find(i):
+def compress_find(v):
     # correct all intermediaries to point directly to set leader
     if v != parents[v]:
         v = parents[v] = find(v)
@@ -955,3 +955,29 @@ P-740 Delete and earn
     * if i <= 2: max(f(i-1), ctr[arr[i]] * arr[i])
     * else: max(f(i-1), ctr[arr[i]] * arr[i] + f(i-2))
   * else: f(i) = f(i-1) + ctr[arr[i]] * arr[i]
+
+## Graphs
+
+Breadth-first search
+
+```
+from collections import deque
+v, q = set([start]), deque([start])
+while q:
+    m = q.popleft()
+    for neigh in graph[m]:
+        if neigh not in v:
+            v.add(neigh)
+            q.append(neigh)
+```
+
+Depth-first search
+
+```
+v = set()
+def dfs(node):
+    v.add(node)
+    for neigh in graph[m]:
+        if neigh not in v:
+            dfs(neigh)
+```
