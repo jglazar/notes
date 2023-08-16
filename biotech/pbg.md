@@ -1,6 +1,6 @@
 # Penn Biotech Group meetings
 
-## 20 July meeting
+## 20 July 2023 meeting
 
 Organization
   * Career development (cases, competitions), business development (finance,
@@ -51,3 +51,55 @@ Meetings
 Next up
   * Subgroup meetings
   * Turnover meetings with prior chairs
+
+## 15 August 2023 meeting
+
+Steven is co-VP of investment research, Helen is VP of industry affairs, Yuwan
+is director of curriculum, David is director of career development, Gabrielle is
+co-president of career development.
+
+Reaching out to alumni
+  * Alumni database is in career development folder in Google Drive. Last
+    updated Fall 2020
+  * LinkedIn works better than email for reaching out to alumni
+  * Use cold contact template on Google Drive.
+  * Keep Excel spreadsheet to prevent double-contacting
+  * Volunteer rewards include PBG-engraved wine glasses or Starbucks gift cards
+
+Event signups
+  * Use Google Forms for event signups. See samples in Google Drive.
+    * No need to get demographic data (school, program, etc.), but good for
+      internal record-keeping and analytics
+    * Ask ppl for Penn email. Events are for Penn students only!
+    * Ask Penn Med ppl to provide alternative email due to firewall issues
+  * Provide syllabus during signup. See samples in Google Drive.
+  * See Nektaria for making flyers, or use Canva with PBG account
+  * Can reach out to department chairs to spread the word
+
+Last year's investment research series/pitch competition 
+  * Started planning in Jan and started program after Spring Break
+  * Wound up improvising some weekly speakers 
+    * Plan further ahead! Reserve speakers in last week of January, preferably
+  * Getting judges was easy, but speakers was hard
+    * Speakers may ask for sample slides -- see Google Drive
+  * Common complaint among potential participants -- "I won't work on Wall St."
+    * Try pricing a single asset instead of company? Similar to case comp
+  * Many participants did not follow through from signup to pitch comp
+  * Should we restrict access to non-consultants?
+  * Need to get good sponsorship $ this year (tough year for biotech!)
+
+Other events
+  * No mini-MBA this Spring, since that would overlap with investment research
+  * End September -- career services workshop with Joseph Barber --
+    resumes/interviewing
+  * Early October -- career development panel
+  * ⭐️ Mid October -- skills seminar -- 2 hours, 8-10PM (timezone issues), ~200
+    ppl. have prior winning teams teach about case comp. Cover licensing,
+    marketing, getting to market (make pdfs?). 
+  * Late October - early November -- lecture series -- 4 speakers talking about
+    industry, startups, regulation, law (Mike Poisel at PCI?)
+  * ⭐️ End Jan - End April -- investment research series/comp
+
+For now, weekly meetings about 30-40 min, 5-6PM on Tuesdays. Will eventually
+become biweekly and split into Gabrielle+Yuwan and Me+Steven+David
+  * Next meeting -- outline slides
