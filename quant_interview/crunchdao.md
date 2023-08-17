@@ -66,7 +66,21 @@ All scores are Spearman correlation coefficient
 
 Linear model with LASSO, alpha = 0.001
   * training: 3.538
-  * testing: r0 - 2.784, r2 - 2.958, r4 - 3.000
+  * testing: r0 - 2.784, r2 - 2.958, r4 - 3.000, r6 - 2.979, r8 - 2.991
+
+Linear model with Elastic Net
+  * alpha = 0 (LinearRegression)
+    * training: 3.591
+  * alpha = 0.000001
+    * training: 3.608
+  * alpha = 0.0001
+    * training: 3.748
+    * testing: r4 - 3.278
+  * alpha = 0.001
+    * training: 3.734
+    * testing: r4 - 3.237
+  * alpha = 0.01
+    * training: 2.309
 
 LightGBM with optimized params
   * training: 2.676
@@ -78,6 +92,3 @@ XGBoost with basic params
 
 CatBoost with basic params
   * training: 2.579
-
-CatBoost with optimized params
-  * training: 
