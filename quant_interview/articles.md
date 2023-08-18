@@ -194,3 +194,38 @@ In general, the sum of p'th powers of the first n integers is given by
 Faulhaber's formula
   * sum(i^p) from i=1 to n =  1/(p+1) sum((p+1)Ci Bi n^(p-i+1)) from i=0 to i=p
     where Bi is the i'th Bell number
+
+## Wikipedia - Modern Portfolio Theory
+
+Returns expectation = w^T r, variance = w^T C w where r is expected return of
+stocks and C is covariance of stock returns
+
+Minimize w^T C w - q r^T w for w s.t. sum(w) = 1 and q >= 0
+  * q is risk tolerance factor
+
+Optimization can be performed with Markowitz critical line algorithm for
+quadratic programming with linear constraints and asset bounds
+
+Capital allocation line is tangent to efficient frontier and has y-intercept at
+risk-free rate in plot of returns vs. risk 
+  * Tangency point is portfolio with highest Sharpe ratio
+  * This line allows for better portfolios since it's above efficient frontier
+
+Idiosyncratic risk is mitigated via diversification (reducing overall variance
+by leveraging negative covariances). Systematic risk is mitigated via long-short
+strategies to maintain market-neutral portfolio
+  * Conditional asset pricing models consider impact of asset on portfolio, and
+    therefore rely on covariance 
+
+CAPM yields E[Ri] = Rf + Bi (E[Rm] - Rf), where Rf is risk-free returns, Rm is
+market returns, and Bi is OLS estimate of asset vs. market (proxy for risk)
+  * Assume weight wa is small compared to wm. Assume any money (weight) placed
+    into asset is as good as money put into market portfolio
+  * wa(E[Ra] - Rf) / (2 wa wm Cov[a,m]) = wa(E[Rm] - Rf) / (2 wa wm Cov[m,m])
+  * Bi = Cov[a,m] / Cov[m,m], which is just OLS estimate!
+  * New variance / market variance ~= 1 + 2 wa (Bi - 1)
+
+Criticisms
+  * Variance is symmetric, but people are loss-averse
+  * No model structure, just probabilistic fitting
+  * Relies on assumption of elliptical joint returns pdf
