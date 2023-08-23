@@ -88,6 +88,7 @@ Rank correlation -- replace number with its relative rank
     sqrt((N - 2)/(1 - rho^2))`
     * Related to `D = sum(xi - yi)^2` where `rho = 1 - 6D/(N^3 - N)`
     * D is distributed as `Normal((N^3 - N)/6, N^2(N-1)(N+1)^2 / 36)`
+    * Can also perform permutation test under null hyp and see proportion > val
   * Kendall's tau: enumerate all pairs of `(xi, yi), (xj, yj)`, then calculate
     `tau = (a-d) / (sqrt(a+d+ex) * sqrt(a+d+ey))`, where `a` is number of
     concordant pairs (x up and y up), `d` is number of discordant pairs, `ex(y)`
