@@ -2,6 +2,8 @@
 
 ## Wikipedia - Covariance
 
+Note that Cov takes 2 variables and Var takes only 1
+
 Cov[X,Y] = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y]
   * Latter form can have catastrophic cancellation
   * Discrete form, pi equal: 1/n^2 sumi(sumj(1/2 (xi - xj) (yi - yj)))
@@ -94,6 +96,9 @@ Hadamard product is elementwise matrix mult.
   * If Z = X x Y, then CovZ = CovA x CovB
 
 Partitioned matrix inversion uses A = Schur(D) = A - B inv(D) C
+  * For block matrix M = [[A,B],[C,D]], inverse of Schur(D) = A - B inv(D) C
+    gives top-left element in inv(M)
+    * Can be useful for solving systems of linear equations
   * For multivariate Normal, Cov[X|Y] = Schur(D) where C = B^T (by symmetry) and
     E[X|Y] = E[X] + B inv(D) (Y - E[Y])
   * Sample covariance has Wishart distribution
@@ -142,3 +147,76 @@ Geometric picture comes from constraints -- see article
 
 Vector equations are simple generalizations of these equations
 
+## Linear regression intuition
+
+Mainly from StackExchange answers
+
+X^T X maps from alpha to beta
+  * Consider prediction as vector in column space given by sum(Bi xi). These
+    coordinates are in a non-orthogonal basis (cols of X)
+  * Consider direct orthogonal projection onto each xi -- X^T v
+  * So XB gives skew-coodinates, then X^T projects onto each axis to get alphas
+  * a = X^T X B --> B = inv(X^T X) a
+  * E.g., B = inv(X^T X) X^T y, where X^T y is orthogonal projection of y onto
+    each xi
+
+For skew vs. orthogonal coordinates: P = SC , where P is n x p perpendicular
+axis coords, S is n x p skew coords, and C is p x p symmetric matrix of cosines
+  * SB = a has S convert from skew-coords (B) to orthogonal coords (a). inv(S)a
+    = B has S convert from orthogonal coords (a) to skew-coords (B)
+
+R^2 = 1/n y^T X B = 1/n sum(Corr[y,Xi] Bi) for centered + normalized y and X
+  * R^2 = ESS/TSS = yhat^T yhat / y^T y = 1/n (yH)^T Hy = 1/n Y X^T B
+    * Hat matrix is symmetric and idempotent: H^T H = H H = H
+  * Geometrically, R^2 = yhat^T yhat = B^T C B, which gives diagonal of
+    parallelogram as function of sides
+
+Can have significance in X2 simple reg but non-sig in X1, X2 multiple reg
+  * Typical case -- X1, X2, y all correlate. yhat is B1 X1 + B2 X2
+  * This case -- y falls along X1 and still correlates with X2. Multiple reg
+    drops y onto X1 perfectly, leaving B2 = 0
+  * Suppressor case -- y and X2 are orthogonal, so simple reg gives B2 = 0. y
+    and X1 correlate, then residual has negative corr with X2 leading to B2 < 0
+  * Consider 
+
+Great trick -- draw 3D picture with n = 3, p = 2. Set up X1 and X2 skewed
+spanning a plane, then draw y and it's projection onto that plane yhat
+  * Can consider Gram-Schmidt style regression
+
+## Feature selection
+
+See StackExchange and https://www.stat.cmu.edu/~larry/=stat401/
+
+Stepwise regression is often taught in textbooks, but tends to overfit data and
+prevents use of p-values/significance tests/conf intervals
+
+Using p-values in general is bad because it is easy to get significance for
+large data
+
+LASSO is most common. Use CV to pick regularizer strength value.
+
+Multicollinearity can be hard to detect if many variables X1 = X2 + X3 + ... 
+  * Assume Xi ~ Normal(0, s^2) and set Xa = 1/k (X1 + X2 + X3 + ... + Xk).
+    Then Corr[Xi,Xa] = Cov[Xi,1/k(sum)] / sqrt(Var[Xi]Var[Xa]) = 1/k s^2 /
+    sqrt(s^2 1/k^2 k s^2) = 1/sqrt(k)
+  * Causes singular X^T X -- dependent col is linear sum of indep cols
+    * At least one zero-eigenval, causing 0 determinant
+    * Near-singular --> det(X^T X) small --> det(inv(X^T X)) = 1/det(X^T X) huge
+    * Cov goes from positive definite to semi-definite: v X^T X v can yield zero
+      when v is eigenvector with zero eigenvalue
+
+Cov is positive definite when X is full rank:
+  * C = 1/n times a sum of xi^T xi, so vCv is a sum of squares which can't be
+    negative, indicating positive semi-definiteness 
+  * vCv = 0 for v orthogonal to all xi. C is pos-definite if X is full-rank
+
+Variance inflation factor = ratio of variance from simple reg vs. multiple reg
+  * Happens to be same as 1/(1-R^2), with R^2 from regressing X1 on all other
+    Xi. This pops out of Schur complement representation of Var[B1]
+  * Set up block matrix of X^T X = [[X1/1, X1/-1],[X-1/1, Xwith-1/-1]]
+  * Schur complement of 1/1 element is Schur(D) = A - B inv(D) C. The inverse of
+    this is the 1/1 element in inv(X^T X)
+  * Finally, Var[B1] = s^2 * (x1^T x1 - inverse 1/1 element). Inv element = a
+    C-1/-1 a where a = X-1^T x1 is orthogonal projection of x1 onto each X-1.
+  * This simplifies to s^2 / SSR = s^2 / ((n-1) Var[X1] [1 - R^2])
+  * Typical cutoff is 1/(1-R^2) >= 10 

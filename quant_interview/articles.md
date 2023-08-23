@@ -229,3 +229,79 @@ Criticisms
   * Variance is symmetric, but people are loss-averse
   * No model structure, just probabilistic fitting
   * Relies on assumption of elliptical joint returns pdf
+
+## Derivations of my own
+
+Unbiased estimator with higher variance -- inv(X^T X) X^T y + (ypred - y)
+  * Below, call A = inv(X^T X) X^T and H = XA = hat matrix
+  * E[Bhat] = (A + H - I)(XB) = AXB + HXB - XB = B
+  * Var[Bhat] = s^2 (A + H - I)(A^T + H - I) = s^2(inv(X^T X) + (I-H)). Note
+    that diagonal elements of (I-H) are 0 <= x <= 1 bc so is Hii
+  * Note: need to chop off ypred - y at length p to match dimension
+
+Orthogonal bases lead to lower Var[Bhat]
+  * Consider X^T X = [[A,C^T],[C,D]] so inv(X^T X) has top-left element inv(A -
+    C^T inv(D) C) by Schur complement
+  * A and D are both mini-X^T X matrices and are symmetric + positive semidef.
+    Therefore so is inv(D) bc D = V S V^T --> invert positive eigenvalues
+  * So C^T inv(D) C >= 0 and A - C^T inv(D) C is smaller than A, meaning inverse
+    is bigger. Thus, variance is bigger
+
+Flipping Y and X simple linear regression changes B but not significance
+  * B = CorrXY sy/sx, B' = CorrXY sx/xy, B/(1/B') = r^2 <= 1
+  * Overall R^2 of fit doesn't change, so neither does F-statistics =
+    R^2/(1-R^2) (n-2)
+  * Test stat for slope = Cov[X,Y]/s sqrt(Var[X]) ?= Cov[Y,X]/s' sqrt(Var[Y])
+    --> Y^T(I-H)Y X^T X ?= X^T(I-H')X Y^T Y --> true
+  * Results don't change at all if variables are standardized first
+
+## Quantopian python notebooks
+
+We should keep outliers that capture info, but not ones from pure noise
+
+Regime changes happen in time, which cause new distributions. This breaks homosk
+  * E.g., Exxon Mobil stock after 2014
+  * Check for breakpoints with `stats.diagnostic.breaks_cusumolsresid`
+
+Beta hedging takes short on SP500 to remove dependency on market
+  * E[Y] = alpha + B E[market] --> E[Y] = alpha
+  * Var[Y] = B^2 Var[Market] --> Var[Y] = 0
+  * Estimated Bhat will not perfectly match in future time periods
+  * Can leverage strategy to get desired returns while keeping 0 variance
+
+Long-short equity removes need for beta hedging by being market-neutral. Long
+top-ranked stocks and short bottom-ranked stocks
+  * This is probably what CrunchDAO is doing
+
+Fama-French adds market cap, book/price, momentum to market risk (CAPM) model
+  * Accounts for hot small caps outperforming CAPM prediction
+  * R = a + B1 F1 + ...
+  * Can preprocess factors by normalizing across assets
+    * Winsorization sets top x% to least extreme value -- tames outliers
+
+Trading cost = leverage turnover tradingdays transactioncost. Can have 2%
+increase in costs from 0.01% increase in transaction costs
+
+PCA gives ad-hoc factors, which can then be used to group alike assets or value
+portfolio/beta-hedge
+
+IR = Sharpe = (info coef) sqrt(breadth) --> max with many good uncorrelated bets
+  * Hedge out common factors like market/sector exposure
+  * Sector/market risk is naturally hedged in pairs trade
+  * Cross-sectional strategy: de-mean alpha vector by sector avg
+  * Event-driven strategy: add offsetting alphas in same sector or hedge w ETF
+
+Get stationary time series by taking differences (many times if needed)
+  * Order of integration checks if i'th cumulative sum has sum(|bj|^2) = 0 where
+    corresponding time series Xt = sum(bj innov(t-j) + signal(t))
+  * Returns (pct change) are typically more stationary than prices
+  * A set of I(1) time series is cointegrated if a linear combination is I(0)
+    * Some linear combo cancel autocorrelation/trends. Useful for pairs trading
+
+Correlation and cointegration are different
+  * High corr, low coint -- X1 and X2 are roughly straight lines w diff slopes
+  * Low corr, high coint -- X1 is noise, X2 is square wave, so X1 + 0 X2 is I(0)
+  * Perform (rolling) CV to ensure cointegration holds over time
+
+Covariance matrix is best estimated with shrinkage -- C = (1-d)S + (d)I, where S
+is sample covariance matrix. Ledoit-Wolf method finds optimal d
