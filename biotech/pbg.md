@@ -103,3 +103,123 @@ Other events
 For now, weekly meetings about 30-40 min, 5-6PM on Tuesdays. Will eventually
 become biweekly and split into Gabrielle+Yuwan and Me+Steven+David
   * Next meeting -- outline slides
+
+## EBoard mtg 8/23/2023
+
+Big events throughout year. Kickoff should be big
+
+10 companies with cases, est $24k donations
+  * Some large biopharma, 1 non-profit, 1 MIT startup
+
+Want better demarcation bt team lead, team member, and others in case team
+  * PBG doesn't guarantee placement on case
+  * Consulting VP/Pres and (separately) team leads should do weekly check ins
+
+Data from current members about what to improve
+  * Enhancing recruitment -- clarity on what PBG provides
+  * DEI
+  * ⭐️ Incorporate feedback into each stage of events. Collect data
+
+Use Google Calendar (linked in email) for Eboard/group/subgroup mtgs. 
+  * Use public PBG general calendar sparingly -- verify w presidents first
+
+Wharton Grad Association has club fair Wed 8/30 5:30-8:30PM. Details via Slack
+
+Case comp in planning
+  * Application opens 10/2, prompt announced 10/24
+  * 3 coffee chats
+  * Skill building course only for selected teams. Part 2 is demo from last
+    year's winner
+  * 2 offers, accepted CaseCoach. $4k 1st place prize, $2k 2nd, $1k 3rd, top 3
+    get 6mo CaseCoach 
+  * Still need monetary sponsor. Round 1 judges Stephen Sammut + Tomas Isakowitz
+
+Skill building course (above) by David P. 10/18 6PM
+  * Adapt last year's slides from Matias
+
+Library research guide needs updating
+  * Meet w Marcella Barnhart at Wharton Library (Zoom call, Monday 8/28 1PM)
+  * PBG-wide accessible educational materials on website
+  * More news outlets? Knowledge maps? Wharton profs?
+  * Reach out to Anum Das
+
+Investment research
+  * Prior speakers -- Kelley/Barlow (Foresite), Sammut (Wharton), Ostrup
+    (Parkman), Rosen (Venrock)/Atkinson/Brock (Commodore), Ghadban (Alix)/Watt
+    (Breakout)/Kennedy-Smith (RTW), Li (UBS)
+  * Start 2/5, end 4/22
+    * Late Jan coffee chat, early March social?
+  * Lots of people intimidated by stock pitch. Work was overwhelming 
+  * Try single asset valuation. Competition with teams from 4-6
+  * Get 10 MBAs to help/mentor each team
+
+Podcast
+  * Daniel Jacome (prior podcast host!) and Ena Oru hosting 1st podcast
+  * Available on Spotify and Apple Podcasts
+
+Reimbursements should take a few months. WGA has a system with a training course
+
+Tasks
+  * Volunteer for kick-off (early setup)
+  * Wharton club fair
+  * Meet the team survey (done)
+  * Patagonia order form
+    * PBG merch -- non-profit or for-profit to fund event
+  * Next e-board mtg 9/20 or 9/21
+
+## 24 August subgroup meeting
+
+Last year: market analysis for specific antibody treatment. Go-to-market strat
+
+Day 1 Bio slides
+  * Want broad reach with some info on some processing, some new
+    therapies/science, drug dev timeline, drug discovery, regulations,
+    patents/filings, market landscape, basic financials (casual)
+  * Science and some other topics are specific to case prompt
+
+Day 1 Finance slides
+  * Cut CAPM, probability
+  * Keep defns, informational resources (Library Guide, e.g.)
+    * Bloomberg terminals, MarketResearch.com, patent search
+  * Asset valuation -- discounted cash flows
+
+Aim for 60-75 slides total
+  * Present time <1/3 on science, <1/3 on finance, mostly on market
+    analysis/regulations/patents. Focus on application not theory
+  * Will hopefully have prompt in mid-Sept
+
+Feedback from last year
+  * Cut back on lecture about team building/bonding
+  * Skip over bio science. Teams typically have bio background
+  * Roadmap/outline at beginning
+
+Scheduling
+  * 10/18 6 - 7:30/8PM
+  * Want final draft by 10/11
+  * Want rough draft by 10/2
+  * Want outline by next week (David will make)
+  * Will subdivide and work on September. Can present 1/3 1/3 1/3
+  * ⭐️ Come to a Monday case comp session
+
+Resources
+  * BioPharmCatalyst has readouts on company pipelines -- want PBG acct
+  * DrugHunter searches drugs and has summaries/case studies -- want PBG acct
+
+Invitees
+  * Samut as judge, not speaker (too boring)
+  * Start Excel spreadsheet with names and contact info -- put in career dev
+  * Panel in Fall should be consulting focus. Did women in consulting last year
+    * Find mgmt, life science, technical consulting to get survey
+
+## Chat with Marcella Barnhart
+
+Mark Bray and David Polefrone attending
+
+Main mode of marketing from library to clubs is via leadership
+  * Some issues regarding commercial use
+  * Can have direct communication from members to librarians
+
+New content must be useful for many groups to be added
+  * Stat news, Tenorman report will be added
+  * Some things are too expensive or have bad price/authentication model (10 ppl
+    cap, e.g.)
