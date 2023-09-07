@@ -223,3 +223,62 @@ New content must be useful for many groups to be added
   * Stat news, Tenorman report will be added
   * Some things are too expensive or have bad price/authentication model (10 ppl
     cap, e.g.)
+
+## Subgroup meeting
+
+### Investment Research course
+
+Me, David, Steven
+
+Asset pricing model is good. Acquisition, time to market, market size
+
+Assignments/homework should be smaller, but focused. Less homework-like.
+
+Historical cases? Fictional ones? Case study perhaps, with current candidate.
+Could be hard to find information
+
+I do syllabus design, Steven does case sourcing
+
+First 4 weeks (before Spring Break) is intro: FDA timeline, IP, e.g.
+
+Post-spring-break is panel discussions. We have good roster ready-to-go
+
+2/5 is first week. Want judges secured by 2/1. Want speakers for weeks 1-4 by
+12/20. Want all speakers and panels by 2/1. Backload with panels (diverse,
+younger speakers)
+
+Reach out to speakers early + iterate material, or provide outline to them
+
+Want syllabus by 10/18. 10/31 is final draft
+
+Reach out to speakers in 1st week of October. Want consistent day/time for each
+session -- consult with rest of E-Board. Likely T/W/H evenings. Want hybrid
+setup, likely in Huntsman Hall
+
+Start speaker/sponsor/judging Excel sheet + syllabus Word doc + case studies
+this week
+
+Want more focus on VC. Preferably not Steven Sammut (kinda boring)
+  * Lots of connections via Penn Health X
+  * PCI could be good for judges
+
+Application open 1/18 to 1/31. Want weeks 1-4 assignments done by 1/18, rest by
+3/2. Want case prompts by 2/26 (time to think over Spring Break)
+
+### Skill building course
+
+David takes care of slides 1-20. I do slides 31-40. Steven does 21-30
+
+Slides 1-10: Intro, personal introductions, industry breakdown, stakeholders in
+life sciences, regulations, biotech lifecycle (commercialization), risk/time
+adjustments, product types (very briefly)
+
+Provide sources, formatting. Try following style guide. 1-2 references per slide
+
+Plug the library guide (esp. in slides 41-45)
+
+Focus on skill-building course in next 2 weeks
+
+One new slide deck version per week
+
+Weekly meetings 6pm Thursday, except next week (7pm)
