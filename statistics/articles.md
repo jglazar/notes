@@ -220,3 +220,52 @@ Variance inflation factor = ratio of variance from simple reg vs. multiple reg
     C-1/-1 a where a = X-1^T x1 is orthogonal projection of x1 onto each X-1.
   * This simplifies to s^2 / SSR = s^2 / ((n-1) Var[X1] [1 - R^2])
   * Typical cutoff is 1/(1-R^2) >= 10 
+
+## Kalman filter
+
+https://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
+
+Notation -- next step is k. Prime (') decrements to step k-1, our current step
+
+At time k-1, we have state vector xk' and variance Pk'. Then apply kinematics to
+get next state vector xk = Fk xk' and next variance Pk = Fk Pk' Fk^T
+
+External controls are modeled with interaction matrix Bk and inputs uk. This
+gives xk = Fk xk' + Bk uk
+
+Extra noise adds variance Qk, yielding total covariance Pk = Fk Pk' Fk^T + Qk
+
+Now we have a full state prediction with uncertainty. These are fed through a
+measurement matrix Hk to get observations. We also have newly measured values zk
+with uncertainty Rk
+
+When multiplying Gaussians:
+  * Mean = mu0 + K (mu1 - mu0)
+  * Variance = C0 - K C0
+  * Kalman gain = K = C0 inv(C0 + C1)
+
+Gaussian 1 is prediction with mean = Hk xk and variance = Hk Pk Hk^T. Gaussian 2
+is observation with mean = zk and variance = Rk. Final answer after
+simplification is Gaussian with mean = xk + K1 (zk - Hk xk) and variance = Pk -
+K' Hk Pk, where K1 = Pk Hk^T inv(Hk Pk Hk^T + Rk), xk and Pk as above
+
+So we use xk' and Pk' along with Fk, Bk, uk, and Qk to predict xk and Pk. Then
+update prediction with measurement zk and Hk and Rk to get final answer
+
+Simple 1D case:
+  * xk = xk' + (sp^2 + sq^2) / (sp^2 + sq^2 + sr^2) (zk - xk') -- conservatively
+    weighted update
+  * pk = pk' - (sp^2 + sq^2) / (sp^2 + sq^2 + sr^2) (sp^2 + sq^2) -- lowered
+    variance due to measured info
+
+Notes from online Jupyter notebook course:
+  * Need good estimates for variances, o/w too much reliance on data (noisy) or
+    matrix model (biased, ignores shifts in data)
+  * Kalman is type of g-h filter: xpred = xprev + v dt, r = z - xpred, v += h
+    r/dt, xpred += g r -- g gives position response, h gives velocity response
+  * Filters often "ring" (oscillate) before converging on nice smooth line
+  * Discrete filters predict by convolving state pdf with transition kernel
+    (motion noise), then update w likelihood fct. Called "predictor-corrector".
+    This is just repeated Bayes rule
+  * Univariate Kalman filter (no velocity) can't account for changes in
+    velocity (always under/overshoots) unless control uk = vk
