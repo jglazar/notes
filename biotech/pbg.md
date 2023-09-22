@@ -282,3 +282,36 @@ Focus on skill-building course in next 2 weeks
 One new slide deck version per week
 
 Weekly meetings 6pm Thursday, except next week (7pm)
+
+## Meeting with David and Steven
+
+21 September 2023
+
+### Skill building course (SBC)
+
+Sponsor will do 30-60 min training session, reducing our time
+  * Aim for 1 slide/minute
+
+Case prompt is fairly generic so far. Something about possible AI 
+
+Important notes to hit:
+  * How to perform market analysis and map out competitors
+  * Important question: what does software do for biotech?
+  * Definitely insert timeline funnel for drug development, esp. for rare disease
+  * Eroom's Law -- lower R&D productivity
+    * Risks of drug development, study from 2013
+    * ⭐️ Risk + time discounting. I can cover that
+  * Company and asset lifecycles can be covered at same time. Use same timeline
+
+Nature reviews are good source for graphs
+
+⭐️ Things to do for my slides:
+  * Make simplified spreadsheet for RXRX evaluation
+  * Expand on RXRX info/background, given AI prompt
+  * Expand out sources to 2+ slides -- give people detailed info
+
+Pitch slides for IR sponsors are work-in-progress
+  * Updated timeline, spruced up images
+  * Sponsorship tiers
+    * IR sponsors give $1-2k typically
+    * Benefits for each tier listed in chart
