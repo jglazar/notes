@@ -442,3 +442,17 @@ determine floor threshold for egg breakage
   * Dynamic: start at x, then increment by (x-1),(x-2),...,1. This is x in worst
     case. Solve 1+2+...+x = 100 --> x = 13.6 --> answer = start at 14, then 27,
     then 39, then 50,... then increment when needed.
+
+## PuzzledQuant
+
+You have weights of size 2, 4, 8, ..., 2^n and a scale with two sides. How many
+ways are there to pile weights one by one s.t. left side is always > right side?
+  * Sounds similar to Bertrand's ballot problem
+  * There are n weights and 2 sides each, leading to `2n * 2(n-1) * ... = n!
+    2^n` total ways to place weights
+  * You must place the largest weight on the left side
+  * Similar to Catalan number, consider xxxXxxx where X represents placing the
+    largest weight. Can place ... xXxxx xxXxx xxxXx ...
+  * Sum from 0 to n-1 ((n-1)Ci fi (n-1-i)! 2^(n-1-i)), where first term
+    represents selecting and placing i weights, then you place the largest
+    weight on the left side, then you place all remaining weights in any order
