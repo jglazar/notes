@@ -269,3 +269,21 @@ Notes from online Jupyter notebook course:
     This is just repeated Bayes rule
   * Univariate Kalman filter (no velocity) can't account for changes in
     velocity (always under/overshoots) unless control uk = vk
+
+## Regime modeling -- Two Sigma
+
+https://www.twosigma.com/articles/a-machine-learning-approach-to-regime-modeling/
+
+Fit 4-dist 17-dim Gaussian mixture model to 17 pre-computed factors
+  * Use CV and evaluate log-likelihood to tune number of dists
+
+Interpretations and frequencies of each state
+  1. Crisis, 17%: high volatility, negative equity and credit returns, worse
+     emerging markets performance, positive interest/low-risk returns, great
+     trend-following and large-cap returns, highest factor-factor correlation
+  2. Steady-state, 47%: equity/credit/style factors perform well, local equity
+     and emerging markets returns are flat
+  3. Inflation, 20%: US local inflation has huge returns, global equity and
+     interest rates underperform, high foreign currency
+  4. Danger, 16%: global equity does well but high volatility, higher overall
+     volatility, style factors except momentum perform well 
