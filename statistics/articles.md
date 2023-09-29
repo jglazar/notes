@@ -287,3 +287,250 @@ Interpretations and frequencies of each state
      interest rates underperform, high foreign currency
   4. Danger, 16%: global equity does well but high volatility, higher overall
      volatility, style factors except momentum perform well 
+
+## Kaggle competition winners
+
+### Optiver realized volatility prediction
+
+Most people reverse engineered the time ID to get real prices
+
+1st place
+  * New features with nearest neighbor aggregation
+  * Blend LightGBM, MLP, 1D-CNN
+    * CNN: 584 -dense- 1024 -reshape- 128x8 -conv- 384x8 -avgpool- 384x4 -conv-
+      384x4 -maxpool- 384x2 -reshape- 768 -dense- 1
+  * ❌ Didn't work: domain-specific features, TabNet, training on residual,
+    dimensional reduction
+
+4th place
+  * Predict target / realized volatility of 0-600 seconds
+  * Predict average volatility of all stocks in given time
+
+7th place
+  * LGBM + FFNN ensemble
+  * Get mean, slope, and error of linear regression on ftrs in 100-sec periods
+  * BorutaSHAP with XGBRegressor for feature selection. Kept ~60
+    * Domain-specific ftrs were unimportant
+
+18th place
+  * If CV improves with new feature, try on leaderboard. Keep if LB score up
+  * Use RNN to extract features for each stock at each time
+    * RNN is too slow
+    * More practically, use handmade features instead of RNN
+  * Use transformer to capture inter-stock relationships
+    * Blend with TabNet and NN with different feature sets
+  * Use nearest neighbors to find top-N closest times, then average ftrs for
+    each stock from neighbors as new ftrs
+
+25th place
+  * Tried defining alternate weighted average price fct, but no improvement
+    * WAP minimizes function
+  * Alternate WAP fct evaluated at current price gives liquidity 
+  * Trade volume / liquidity has correlation of 0.88 with log-volatility
+  * LGBM selects features
+  * Ensemble 2 NN on 4 folds. One takes all 190 ftrs, other takes 40 best ftrs
+  * Multi-input multi-output rather than individual models for each stock
+
+### Two sigma financial modeling challenge
+
+7th place
+  * XGB was efficient and fast
+  * Reverse engineering prices via rolling stddev or cross-sectional normaliz.
+    didn't work
+  * Features: 1st and 2nd order differences 
+  * Switch between trending and mean-reversion depending on return dispersion
+  * Auxiliary strategy bets on inflection points from market extremes (like
+    getting cheap options)
+
+12th place
+  * Blend 7 models: Ridge A,B,C with selected features, 222 trees, XGB, Ridge
+    online rolling fit trained every 100 timesteps, Variance by timestep
+
+### JPX Tokyo stock exchange predictoin
+
+4th place
+  * Rank `return_1day` descending, and if `expecteddividend > 0`, rank it lowest
+  * `return_1day = ftrs['adjustedclose'].pct_change(1)`
+
+7th place
+  * Group stocks by sector and train LGBM on each sector
+    * Optuna tuned `num_leaves, max_depth, learning_rate, n_estimators`
+  * Rank by predicted change ratio
+
+8th place
+  * Create ftrs: open-close returns, close-close returns, amplitude, volatility,
+    moving avgs
+    * Set sensible defaults
+  * Walk-forward CV for LGBM
+
+### Jane Street market prediction
+
+1st place
+  * Blend Autoencoder+MLP and XGBoost
+    * Bottleneck + MLP + Keras Tuner 8601c5. Adjust CV to prevent leakage
+    * Autoencoder+MLP alone still earns 1st place
+  * 5-fold 31-gap purged time-series CV. Remove first 85 days due to different
+    feature variance, forward-fill missing vals, use mean of abs vals of
+    targets as sample weights
+  * Autoencoder makes new ftrs, which are added to originals for downstream MLP
+  * Add target info to autoencoder to create more relevant ftrs, add Gaussian
+    noise layer before encoder to prevent overfitting, use swish activation
+    instead of ReLU to prevent dead neurons and smooth gradient
+  * Batch normalization and dropout for MLP, early stopping with BCE loss
+  * Average over 3 random seeds to reduce variance
+  * Hyperopt for hyperparamter tuning
+
+3rd place
+  * Ensemble of 15 49-layer MLPs
+  * Input batchnorm + log ftrs extension - 1x - 3 dense layers w 100 units,
+    batchnorm, dropout 0.35, mish activation - 23x - 2 dense layers same as
+    above - skip connection sbt blocks 0 and 1-23 - output dense layer with 5
+    resps, sigmoid activation
+  * Threshold at 0.5
+  * Remove first 85 days, include rows with zero weight, NaN fill with median
+    conditioned on f0
+  * Train: batch 30k, Adam with lr=1e-3, 200 epochs, loss mixes BCE and utility
+    * Train on 85-300, validate on 350-500. Rerun with 8 rng seeds
+  * Inference by converting to tf-lite (greatly improves speed)
+
+10th place
+  * Geometric Brownian motion w drift fitting gives returns of each time horizon
+    * Uses returns to predict drift
+  * Mixture density network with neg-log-lik loss fct estimates same thing
+    * Predict lower-triangular sqrt of cov matrix and mean vector. Very finicky
+    * Uses features and drift to predict returns
+
+23rd place
+  * Classification labels from sigmoid(a * returns)
+  * Log-transform weights for CV
+  * Ensemble 20 MLPs, 5 densenets, 5 resnets on large-weight data; 1 MLP on rest
+  * Submit 1 final model with threshold 0.49 and another with 0.51 (bull, bear)
+
+39th place
+  * Mean OOF utility scores, basic GroupKFold split with 50 dates as groups
+  * Rolling lag features for ftr0, before/after lunch time, slope of ftr64
+  * Multi-label output, skip resp4 target, predict mean of all other resps
+  * 3-layer MLP with batch normalization and dropout. Optimize using LAMB w
+    lookahead. 50 models total (5 folds, 10 seeds each)
+  * Bet if 66% of models vote for it. Higher threshold for bigger bets (lowers
+    variance). Each model has 1 vote per target
+  * ❌ AdaHessian optimizer, TabNet, and knowledge distillation performed worse
+
+44th place
+  * 5-fold purged time series CV with 20 gap, early stopping with valid-auc
+  * Fill NaN with 0 and FeatureNeutralization(p=0.25), fill NaN with mean,
+    denoising autoencoder
+  * Ensemble of NN, CNN, and DenseNet. Weights determined by CV
+
+## G-Research crypto forecasting
+
+2nd place
+  * LightGBM GBDT with squared loss. No ensembling, regularizatoin,
+    augmentation, neutralization. Only tune number of estimators, number of
+    leaves, and learning rate
+  * CPython and Numba for feature generation (not shared with public)
+  * 6-fold walk-forward grouped CV, 40-week groups, gap 1 week, 20 week skips
+
+3rd place
+  * 7-fold embargo CV for single LightGMB
+  * Only use close, use difference bt change of each currency and change of all
+    currencies, ignore times with too few cryptos, forward fill, use log of
+    ratio of current value to prior value, use diff bt price and avg crypto
+
+7th place
+  * Nx90x14x9 time, minute, asset, ftrs input - Nx90x14x64 MLP - add 2D
+    positional embedding - axial transformer encoder - pooling for time series
+    Nx14x64 - transformer encoder - MLP - output Nx14
+
+9th place
+  * Use Hull moving avg, lag feature with Fibonacci sizes 55,210,340,890,3750
+  * 3 LightGBM: one each trained on up, down, neutral markets. Default params
+
+13th place
+  * 17 ftrs w lagged and timestamp avgs, target engineering, pred switching
+    * EMAs, historical returns, historical vols over various lookbacks
+    * Avg above ftrs over timestamps to produce more ftrs
+    * Binning to 500-1000 unique values worked well
+    * Split target into forward 15 min return and beta of future on past
+  * Ensemble LGBM and Keras NN
+  * Download and train on additional data from Binance helped a little
+  * ❌ Didn't work: classification, hyperparam tuning, PCA features, using all
+    14 assets features
+
+14th place
+  * Ensemble 2 LGBM: one learning each asset individually with 20 technical
+    indicators and 2 time features; one learning all asset data
+  * SMA diff, Bollinger bands, RSI, ATR, log returns, upper/lower shadow
+
+23rd place
+  * Add features asset return, portfolio return, difference, asset return for
+    moving avg. All for past 1,2,3,5,10,15,20,30,40,50,60 min.
+  * Ensemble of 12 * 5 LGBM models
+  * Add Gaussian noise to all ftrs and target to smooth tree predictions and
+    augment dataset
+
+37th place
+  * Ensemble of default XGB, low tuned XGB, and 2 LGBMs, each w different seed
+
+### Ubiquant market prediction
+
+1st place
+  * Ensemble average of (LGBM x 5 folds) and (TabNet x 5 folds)
+    * Custom MLPs were unstable in CV
+  * Add avg value at each time for top 100 ftrs after sorting correlation of 300
+    features with target
+  * Purged group time series CV
+
+2nd place
+  * Ensemble 5 LightGBM with early stopping based on CV correlation
+  * Add 300+100 ftrs as above and mean/std/1st/5th/9th deciles for each ftr
+  * Purged group time series CV k-fold with embargo
+  * ❌ Didn't work: Autoencoder MLP, feature neutralization, PCA
+
+3rd place
+  * 5 seeds ensemble of 6-layer transformer, maxseqlength = 3500 investments, PCCLoss
+  * 10 epochs on training and 3 on supplemental data
+  * Original 300 ftrs, random zero on ftr level and random mask on seq level
+  * Last 100/200/300 CV
+  * ❌ Didn't work: feature clipping, avg ftr groups by time id, ftr selection
+    by corr, sample selection/weighting, target norm./clipping, LGB, MLP, 1DCNN
+
+5th place
+  * NN with 4 dense layers, Adam optimizer, MSE loss, RMSE and WCorr metrics
+    * 300,256,128,32 MLP. Ensemble 20 models, each trained on 20% of data and
+      validated on 5%
+  * Target log transformation, remove 127 outliers
+  * Transform ftrs with QuantileTransformer
+  * Custom CV with 20 folds and 10 purged timesteps
+
+7th place
+  * Single LGB with hand-tuned params, extratrees=True
+  * Custom (secret) feature engineering
+    * Basic version with only original 300 ftrs scores outside of medal range
+  * Standard TimeSeriesSplit CV
+
+8th place
+  * Weighted ensemble of 0.92(1/2 (10 LGBM) + 1/2 (30 NN)) + 0.08(custom model)
+  * Split dataset in 2 to save memory
+  * Add avg of each ftr per timestep and diff b/t current value and rolling avg
+    of hand-selected ftrs
+    * Check if ftr correlates with target's sign when significantly different
+      from rolling avg
+  * Custom model based off rare events of informative ftrs scores poorly
+  * CV on last 25% of data. Final submission used entire dataset
+  * Form bull/bear model by multiplying/dividing positive/negative preds by 1.4
+
+17th place
+  * NN with hidden layers of size 1000 and 512
+  * Train for 21 epochs, go through entire train set twice per epoch, L2 with
+    128 batch and decaying learning rate for 1st run and L1 + variance with 1000
+    batch and small constant learning rate for 2nd run.
+  * Average predictions from 11th, 16th, and 21st epochs
+  * Remove ftrs using permutation importance
+  * Add missing ftr to check if stock is present in previous timestep. Common in
+    Chinese market to suspend trading
+  * Batch normalize all ftrs except missing ftr
+  * Only use stocks after 850th timestep, weight new timesteps higher
+  * Scale target using mean and std within each timestep
+  * ✅ Tips: blend NN with LightGBM (but beware memory issues), don't run many
+    hyperparam experiments (low signal-noise)
