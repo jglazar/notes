@@ -407,20 +407,20 @@ Most people reverse engineered the time ID to get real prices
   * Submit 1 final model with threshold 0.49 and another with 0.51 (bull, bear)
 
 39th place
+  * 3-layer MLP with batch normalization and dropout. Optimize using LAMB w
+    lookahead. 50 models total (5 folds, 10 seeds each)
   * Mean OOF utility scores, basic GroupKFold split with 50 dates as groups
   * Rolling lag features for ftr0, before/after lunch time, slope of ftr64
   * Multi-label output, skip resp4 target, predict mean of all other resps
-  * 3-layer MLP with batch normalization and dropout. Optimize using LAMB w
-    lookahead. 50 models total (5 folds, 10 seeds each)
   * Bet if 66% of models vote for it. Higher threshold for bigger bets (lowers
     variance). Each model has 1 vote per target
   * ❌ AdaHessian optimizer, TabNet, and knowledge distillation performed worse
 
 44th place
+  * Ensemble of NN, CNN, and DenseNet. Weights determined by CV
   * 5-fold purged time series CV with 20 gap, early stopping with valid-auc
   * Fill NaN with 0 and FeatureNeutralization(p=0.25), fill NaN with mean,
     denoising autoencoder
-  * Ensemble of NN, CNN, and DenseNet. Weights determined by CV
 
 ## G-Research crypto forecasting
 
