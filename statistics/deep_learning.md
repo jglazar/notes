@@ -681,6 +681,33 @@ Squiggly line within 2D plane.
   * AI tasks like images, sound, and text obey manifold assumption. 
   Uniform noise never resembles realistic examples.
 
+## Deep feedforward networks (Chapter 5)
+
+Deep learning learns basis, rather than using generic basis (poor
+generalization) or custom basis (domain-specific)
+
+Need nonlinear functions within NN. Use affine transformations with nonlinear
+activation functions
+  * ReLU is easy to optimize with gradient-based methods and generalizes well
+    * Generalizations are max(0,zi) + ai min(0,zi). Abs val has ai = -1 (good
+      for images); leaky has ai = 0.01; parametric learns ai
+  * Maxout groups zi into k groups and outputs max of given group. Learns the
+    activation fct. Has catastrophic forgetting issue.
+  * Saturation of sigmoid causes low gradients, which is bad for learning
+
+Loss function is typically negative log-lik of p(y|x,b) (same as cross-entropy)
+rather than SSE or SAE, since those have vanishing gradients for saturated units
+
+Linear units used for Gaussian outputs; sigmoid for Bernoulli; softmax for
+multinoulli
+
+Deep networks require fewer parameters and nodes than shallow. Deep
+architectures express useful priors and learn many small building blocks
+
+Skip connections allow gradient to flow more directly from output to input
+
+Backprop uses dynamic programming to store intermediate derivs in chain rule
+
 ## Linear factor models (Chapter 13)
 
 Linear factor model generates x by adding noise to linear 
