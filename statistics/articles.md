@@ -534,3 +534,34 @@ Most people reverse engineered the time ID to get real prices
   * Scale target using mean and std within each timestep
   * ✅ Tips: blend NN with LightGBM (but beware memory issues), don't run many
     hyperparam experiments (low signal-noise)
+
+## Linear algebra notes
+
+Ax = b where A is nxp has 1 solution if A is n = p, 0 solutions if n > p, inf
+solutions if n < p
+
+If n > p, use least squares to get best possible x
+
+If n < p, we can get a unique solution by seeking minimum ||x||^2
+  1. Get a trivial solution by zeroing out bottom elements of x and solving
+     rectangular A' x' = b. Solution is vector s
+  2. Find nullspace vectors of A and collect into matrix N 
+  3. Minimize (s - Nc)^T (x - Nc) where c is desired vector of weights. Solution
+     is H = inv(N^T N) N^T S --> optimum is s - Hs, which is residual after
+     projecting s onto nullspace!
+
+Note that n < p optimum is not simply ridge regression, since that doesn't
+require strict adherence to Ax = b
+
+Setting x and b and finding A has infinite solutions except for n = p = 1
+  * Set first vector = 1/x1 * y and rest as zero, or second vector = 1/x2 * y
+    ..., or linear combinations thereof
+  * Ax = y --> Ax x^T = y --> A = y inv(x x^T), but x x^T is rank 1 and has no
+    inverse. Can use inv(x x^T + cI) to get approximate answer (set small c)
+  * Solution is A = b x' + Z (I - x x'), where x' is normalized and transposed
+    x and Z is any matrix with appropriate dimensions
+    * Verify: Ax = b x' x + Z (I - x x')x = b + Z (x - x) = b
+
+Moore-Penrose inverse gives least-sq solution or least-norm solution
+  * Left: inv(A^T A) A^T, right: A^T inv(A A^T)
+  * SVD of A = U D V^T --> pseudoinverse = V inv(D) U^T
