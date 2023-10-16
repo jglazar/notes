@@ -108,3 +108,36 @@ Node degree counts neighbors; node centrality accounts for node importance
   * Closeness centrality = 1/sum(shortest path length bt u and v)
   * Clustering coefficient = edges among neighbors / neighborsC2 = # triangles
   * Graphlet degree vector = # graphlets a node touches
+
+## Spectral graph theory
+
+### Tutorial on spectral clustering
+
+Graph Laplacian is discrete analog to continuous Laplacian, which is 2nd deriv
+  * Highlights edges in images, where there's high "curvature"
+
+Eigendecomp of Laplacian (or original adj. matrix) is permutation invariant
+
+Lowest eigenvector is 1-vector, since all rows must sum to 0
+  * Degeneracy of eigenvalue 0 is number of clusters
+
+Normalization reduces influence of a few highly connected nodes
+  * Unnormalized = L = D - A, where D is diagonal degree matrix
+  * Symmetric = Lsym = D^-1/2 L D^-1/2 = I - D^-1/2 A D^-1/2
+  * Random walk = Lrw = D^-1 L = I - D^-1 A = I - P, where P is Markov matrix
+  * Use normalized Laplacian, esp. random walk. 
+    * Normalized Laplacians maximizes within-cluster similarity and are
+      statistically consistent (converge with more sampling)
+    * Symmetric's evecs are multiplied with D^1/2
+
+Clustering algorithms:
+  * Collect first few evecs of L, then perform k-means clustering on rows, using
+    evec values as features
+  * Collect first few generalized evecs that solve Lv = l Dv (evecs of Lrp),
+    then proceed as above
+  * Collect first few evecs of Lsym, then normalize row sums to 1, then proceed
+
+DeepWalk has similar performance, wherein you run random walks from each node
+(simulating the Markov matrix rather than calculating its eigenvalues)
+
+Works on feature-free (non-attributed) graphs
