@@ -315,3 +315,42 @@ Pitch slides for IR sponsors are work-in-progress
   * Sponsorship tiers
     * IR sponsors give $1-2k typically
     * Benefits for each tier listed in chart
+
+## Meeting with David and Steven
+
+26 October 2023
+
+Send emails in 2nd week of November -- start on 11/10
+
+Seminars next semester are Thursdays at >5PM
+
+Want to steer clear of finals week
+
+Want syllabus first, then fit in speakers (not vice versa)
+  * No need to be super specific in intro email
+  * Main variable is number of respondants
+  * Weeks 1,2,5 can be done by us, if needed
+  * Check LinkedIn contacts -- aim for recent grads
+  * Work on shared Excel file in Box. Want to reformat/organize
+
+## Meeting with David and Steven
+
+2 November 2023
+
+Email template in PBG IR Box Word doc
+  * Use provided template to send emails
+  * Expected 10 emails per E-Board volunteer
+  * Ask for 30 min phone intro call, which will cover slides
+
+LinkedIn messages should be shorter. "Do you have some time to catch up on the
+phone?". Can be informal for recent grads/folks we know
+
+Sponsorship goal for now is as much as possible. David will take care of
+
+IR Contact Excel sheet
+  * Color blocks denote companies
+  * Mengdi and Yee Hoon took care of outreach last time
+  * Hit rate will be about 1/10
+  * Break down sponsorships vs panels/lectures
+
+⭐️ I convert syllabus into table -- slide 12
