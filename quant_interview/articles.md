@@ -86,6 +86,17 @@ Portfolio selection, Markovitz, 1952
 
 A new interpretation of information rate, Kelly, 1956
   * Introduced the Kelly Criterion for bet sizing to maximize geometric growth
+  * Rate = (1+fb)^pN * (1-fa)^(1-p)N --> max w.r.t. f --> f = p/a - (1-p)/b
+  * Maximizing expected utility when u(w) = log(w) is same as max expected
+    growth rate
+    * Let Vt/V0 = exp(rt) --> log(Vt) − log(V0) = rt. 
+    * Maximizing E[log(Vt)] is same as max E[r] 
+    * E.g. 2 to 1 coin: E[Vt] = 1/2 log(1+2f) + 1/2 log(1-f) --> f = 1/4, so bet
+      1/4 of bankroll to maximize growth rate
+    * Log utility is type of "constant relative risk" aversion utility fct
+  * Similar to lognormal prices: Y = a * x1 * x2... --> log(Y) = log(a) +
+    log(x1) + ... --> Normal dist by CLT --> Y ~ lognormal
+    * Y = a (1 + rt/n)^n ~ a exp(rt) as n -> infinity
 
 Capital asset prices: a theory of mkt. eq. under cond. of risk, Sharpe, 1964
   * Introduced beta and CAPM to calculate return from risk
