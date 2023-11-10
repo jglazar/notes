@@ -71,10 +71,10 @@ Backtracking
   * 🟨 P-79 Word Search ☑️
 
 Graphs
-  * 🟨 P-200 Number of Islands
-  * 🟨 P-133 Clone Graph
-  * 🟨 P-417 Pacific Atlantic Water Flow
-  * 🟨 P-207 Course Schedule
+  * 🟨 P-200 Number of Islands ☑️
+  * 🟨 P-133 Clone Graph ☑️
+  * 🟨 P-417 Pacific Atlantic Water Flow ☑️
+  * 🟨 P-207 Course Schedule ☑️ 
   * 🟨 LOCKED Number of Connected Components in an Undirected Graph
   * 🟨 LOCKED Graph Valid Tree
   * 🟥 LOCKED Alien Dictionary 
@@ -981,3 +981,48 @@ def dfs(node):
         if neigh not in v:
             dfs(neigh)
 ```
+
+Topological search has Kahn's algo and DFS variant
+  * Kahn uses BFS and prunes edges, only visiting once prereqs are resolved
+  * DFS marks nodes as temporarily or permanently visited, watching conflicts
+
+```
+# Kahn
+q = deque(sources); ans = []
+while q:
+    n = q.popleft(); ans.append(n)
+    for m in list(out[n]):
+        out[n].remove(m); inc[m].remove(n)
+        if len(inc[m]) == 0: q.append(m)
+    return ans if all(len(ps)==0 for c,ps in inc.items()) else error
+
+# DFS
+ans = []; pmt_marks = tmp_marks = {n:False for...}; error_flag = False
+def f(n):
+    nonlocal ...
+    if pmt_marks[n]: return; if tmp_marks[n]: error_flag = True, return 
+    tmp_marks[n] = True
+    for m in list(out[n]): f(m)
+    tmp_marks[n] = False, pmt_marks[n] = True, ans.append(n)
+while any(not pmt_marks[n] for ...):
+    n = [n ... if not pmt_marks[c]][0], f(n)
+return ans if not error_flag else error
+```
+
+
+P-200 Number of Islands uses BFS repeated for each coordinate
+  * Check `if grid[y][x] == "1" and (x,y) not in v` before BFS
+  * Increment num of islands for each new BFS
+
+P-133 Clone Graph uses BFS with custom NodeDict to construct parallel graph
+  * Override `__missing__(self,key): self[key]=Node(key); return self[key]`
+    method to insert new node with val = key when key is missing from dict
+  * Include `if not root: return node` edge case
+  * Insert `mynodes[m.val].neighbors.append(mynodes[n.val])` during BFS
+
+P-417 Pacific Atlantic Flow uses BFS from ocean inwards to mark nodes, then
+applies set intersection
+  * Load up queues before with known nodes. Avoids strenuous double-visits
+    during for-loops
+
+P-207 Course Schedule is simple topological sort
