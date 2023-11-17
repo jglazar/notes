@@ -354,3 +354,64 @@ IR Contact Excel sheet
   * Break down sponsorships vs panels/lectures
 
 ⭐️ I convert syllabus into table -- slide 12
+
+## Meeting with Full Curriculum team 
+
+Me, Steven, David, Gabrielle, Mengdi, Helen
+
+16 November meeting
+
+Get slides ready before emails?
+  * Delegate 1 slide deck per topic? Or each speaker brings their own?
+  * Want more audience participation
+  * Likely infeasible to collaborate with speakers on slides
+  * Could make slide skeletons?
+  * Working with Matt Ostrup was the best
+
+Syllabus dates
+  * Want 3 names per week, then can prioritize 
+  * Want speakers for first two intro lecture 
+    * Alex Cogdill for corporate VC or intro
+    * Want accountant for financial analysis lecture -- Su Entriken, Huan Zhou
+  * Put Sammut later
+  * Get Josh Kennedy-Smith separately for public investing (overshadowed in panel)
+  * Ostrup is best for private equity lecture
+  * Cassidy Blundell for venture capital
+  * Harim Won
+  * Helen can reach out to IP/PCI ppl: Heather Steinman, Mike Poisel
+  * Rosen/Atkinson/Brock for scientific due diligence or market analysis
+    (interactive slides)
+  * VC panel could have new ppl, but Ghadban (if needed)/Watt work well. One of
+    Kelley/Barlow
+
+Sponsorship list: Foresite, Venrock, Commodore, Parkman, 3rd Rock
+  * Set base level (Bronze) at $1k, Silver at $3k, Gold at $5k
+    * 3rd Rock was non-commital last year. We lowered Bronze to $500, which is
+      all they gave. They wanted too much recruiting help
+
+Request speaker role and sponsorship from company
+  * Sponsor total goal is $7.5k. Last year was $3.5k. Case comp got $14k
+  * Wharton money will likely be dry in spring semester
+  * Avoid taxes with gift cards
+
+Finish sending emails by Dec 9
+
+Schedule talks for Thursday evenings
+  * Want in-person option at Wharton (requires reservation payment?)
+  * Start on Thursday 2/8
+  * Announce syllabus Friday 2/2
+  * Request 1 question per person
+  * Keep it open to pro-bono case participants. Evaluate case-by-case
+    * Should be OK'd by project manager
+  * Lectures are open to PBG members; competition only for admitted ppl
+
+Asset valuation
+  * We pick 10 examples/recommendation. Use participants' responses from
+    interest forms
+  * Want high-risk-high-reward assets
+  * Can guide teams as they choose assets
+  * Provide rubric and prompt. E.g., "You're in big pharma merger dept. You want
+    clinical-stage asset to bolster pipeline."
+    * Select from private or small public company. Could limit to private
+    * Less than Phase 3
+    * Want scientific due diligence
