@@ -456,3 +456,16 @@ ways are there to pile weights one by one s.t. left side is always > right side?
   * Sum from 0 to n-1 ((n-1)Ci fi (n-1-i)! 2^(n-1-i)), where first term
     represents selecting and placing i weights, then you place the largest
     weight on the left side, then you place all remaining weights in any order
+
+You have n pairs of numbered gloves. Prob of creating pairs s.t. no pair differs
+by more than 1?
+  * Label each member A and B. Total ways to generate pairs = (2n)!/((2!)^n n!),
+    factoring out orderings within and between pairs
+  * Consider 1A. Can have 1A1B or 1A2A or 1A2B. This gives recurrence f(n) =
+    f(n-1) + 2 f(n-2)
+  * Final answer solves recurrence x^2 - x - 2 = 0 with initial conditions to
+    give f(n) = 1/3 (2^(n+1) + (-1)^n)
+
+Variance of z coordinate on unit sphere
+  * Straightforward solution: integrate z = cos(theta) over theta and phi
+  * Clever solution: E[X^2 + Y^2 + Z^2] = 1 --> E[Z^2] = 1/3 --> Var[Z] = 1/3
