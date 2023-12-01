@@ -307,3 +307,44 @@ Be sure that you:
   * Don't upload API keys or `.env` files to GitHub
   * Don't hard code dates and expect them to always be in the future
   * Test the main functionality of a function, not the functions called therein
+
+## Monads in Python
+
+A monad is a monoid in the category of endofunctors
+
+Functor = (value, map) pair, where the map acts on the value
+  * E.g., `class Functor: def __init__(self, val): self.v = value; def map(self,
+    fct): return Functor(fct(self.v))`
+  * Returns a new functor that contains fct(value) after applying map
+
+Endofunctor returns functor with same type as original calling functor (new
+value, same map)
+  * E.g., `class StrFunctor: ... def map(self, fct): return
+    ListFunctor([fct(self.v)])` is NOT an endofunctor because it returns a
+    ListFunctor rather than a StrFunctor
+
+Functors enable composition
+  * E.g., `F1.map(fct1).map(fct2)` is functor
+
+A monoid is a set of data with a binary operation 
+  * Operation should be associative -- x + (y+z) = (x+y) + z
+  * Should have an identity element (add with 0, mult with 1, e.g.)
+  * E.g., lists with operation `append` are monoids
+
+So a monad is an endofunctor and a monoid
+  * Has value and map that returns a functor of same type
+  * Has operation that is binary, associative, and has identity element
+
+Monads can encapsulate side effects
+
+Maybe monad can have Optional value (can be None)
+  * `def map(self, fct): return self if self.v is None else fct(self.v)`
+  * E.g., `def safe_div(x,y): return Maybe(None) if y==0 else Maybe(x/y)`
+    * Now we can perform sequence `Maybe(10).map(lambda x:
+      safe_div(x,0)).map(lambda x: safe_div(x,2))`
+
+Railroad-oriented programming allows sequence evaluation to proceed down
+different tracks. E.g., valid values or None for `safe_div`
+
+Can define `@maybe` decorator that replaces exceptions with Maybe monads
+  * `def dct(*a,**kw): try:return Maybe(fct(*a,**kw)) except:return Maybe(None)`
