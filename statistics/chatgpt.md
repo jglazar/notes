@@ -137,3 +137,54 @@ Tail generation reminds the LLM of previously established rules
 Semantic filters removes/retains info in original text
   * E.g., remove all dates and condense this text
 
+# ChatGPT data analysis
+
+Advanced data analysis tool (formerly Code Interpreter, hereafter ADAT)
+can read documents and summarize using statistics and graphs
+
+Can start with just data, and iterate through visualization, analysis, 
+explanations, and extensions
+  * E.g., upload recipe to create grocery list, estimate calories/macros, ...
+
+Have ADAT ask you questions about your goals
+
+ADAT has no internet access and limited toolkit. Has short memory and needs
+everything specified in single conversation
+  * Break projects into chunks and provide feedback
+
+Can treat documents as objects (to be acted upon) or knowledge (to be
+analyzed and interpreted)
+  * ADAT will handle interpretation tasks. Will generate Python for others
+
+ADAT can solve rule-heavy tasks ChatGPT would fail, like Wordle
+  * ChatGPT can even hallucinate new data
+
+ADAT can read document, identify missing details and re-read, break down
+questions contained within, follow instructions within, and explore
+hypotheticals
+
+ADAT can figure out data structure, verify consistency
+
+Can analyze media like videos, audio, and images
+  * Find and display specific video frames, resize and transform images, create
+    gifs, create powerpoints, generate metadata
+
+Pipelines offer straightforward ways to accomplish complex tasks
+  * E.g., turn video into blog post by loading transcript, identifying tone and
+    concepts, drafting post outline, and filling in and polishing
+  * Can iterate through plan ideas
+
+Split large documents into chunks. Can implement a search method
+
+Handle large outputs step-by-step. Save and combine incremental outputs
+
+10 best practices
+  * Save intermediate files to prevent loss of progress
+  * Plan step-by-step to enhance repeatability
+  * Use mementos where ADAT lists out the plan, current step, and progress
+  * Have ADAT read and explain all documents and data in several ways
+  * Implement error detection to prevent hallucinations going unnoticed
+  * Have ADAT try alternate approaches 
+  * Be explicit about goals, requirements, and constraints
+  * Edit the conversation when errors occur to avoid error propagation
+  * Tell ADAT to analyze without Python when needed
